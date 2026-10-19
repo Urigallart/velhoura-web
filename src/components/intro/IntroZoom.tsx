@@ -96,7 +96,7 @@ export function IntroZoom({
     // The name on the glass slides off to the right as the camera goes in.
     scene.current.style.setProperty(
       "--intro-logo",
-      String(easeInOut(clamp01((p - 0.08) / 0.55))),
+      String(Math.pow(clamp01(p / 0.4), 1.6)),
     );
 
     if (shade.current) shade.current.style.opacity = String(1 - e);
