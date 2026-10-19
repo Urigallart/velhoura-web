@@ -19,13 +19,10 @@ type SectionHeadingProps = {
 };
 
 /**
- * The eyebrow is a running order, not a decoration: a signal-coloured index,
- * a rule, and the section's name. It is the same object on every section, which is
- * what lets a reader know where they are without a progress bar.
+ * A section's headline. `index` and `label` are still accepted so every
+ * caller keeps compiling, but no eyebrow is drawn: the headline stands alone.
  */
 export function SectionHeading({
-  index,
-  label,
   lines,
   subtitle,
   className,
@@ -37,21 +34,6 @@ export function SectionHeading({
     <div
       className={cn(align === "center" && "mx-auto max-w-3xl text-center", className)}
     >
-      {(index || label) && (
-        <Reveal y={12}>
-          <p
-            className={cn(
-              "t-label mb-7 flex items-center gap-3",
-              align === "center" && "justify-center",
-            )}
-          >
-            {index && <span className="text-ember">{index}</span>}
-            <span aria-hidden="true" className="h-px w-7 bg-line-strong" />
-            {label}
-          </p>
-        </Reveal>
-      )}
-
       <MaskedTitle
         lines={lines}
         split={split}

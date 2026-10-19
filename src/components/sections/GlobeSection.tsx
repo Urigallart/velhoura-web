@@ -126,14 +126,7 @@ export function GlobeSection() {
     <section id="story" className="band relative border-t border-line">
       <div className="shell">
         <div className="text-center">
-          <Reveal y={10}>
-            <p className="t-label !font-sans !normal-case !tracking-normal !text-[0.875rem] flex items-center justify-center gap-3">
-              <span aria-hidden="true" className="h-px w-7 bg-line-strong" />
-              {t.label}
-              <span aria-hidden="true" className="h-px w-7 bg-line-strong" />
-            </p>
-          </Reveal>
-          <MaskedTitle
+<MaskedTitle
             as="h2"
             split="word"
             lines={t.lines}

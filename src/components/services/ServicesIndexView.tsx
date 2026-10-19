@@ -4,7 +4,6 @@ import { MaskedTitle } from "@/components/ui/MaskedTitle";
 import { Reveal } from "@/components/ui/Reveal";
 import { ServiceVisual } from "@/components/services/ServiceVisual";
 import {
-  areaNames,
   getServicePages,
   getServices,
   servicePath,
@@ -44,15 +43,11 @@ export function ServicesIndexView({ locale }: { locale: Locale }) {
   const t = copy[locale];
   const services = getServices(locale);
   const pages = getServicePages(locale);
-  const areaName = areaNames[locale];
 
   return (
     <>
       <section className="border-b border-line pt-32 pb-16 sm:pt-40 sm:pb-24">
         <div className="shell">
-          <Reveal y={10}>
-            <p className="t-label">{t.label}</p>
-          </Reveal>
           <MaskedTitle
             split="word"
             as="h1"
@@ -91,12 +86,7 @@ export function ServicesIndexView({ locale }: { locale: Locale }) {
             <div className="shell">
               <div className="grid gap-y-6 md:grid-cols-12 md:gap-x-10">
                 <div className="md:col-span-5">
-                  <p className="t-label flex items-center gap-3">
-                    <span className="text-ember">{area.index}</span>
-                    <span aria-hidden="true" className="h-px w-7 bg-line-strong" />
-                    {areaName[area.id]}
-                  </p>
-                  <h2 className="t-h1 mt-6 text-balance">{area.promise}</h2>
+                  <h2 className="t-h1 text-balance">{area.promise}</h2>
                 </div>
                 <div className="flex items-end md:col-span-7">
                   <p className="t-body max-w-[48ch]">{area.body}</p>

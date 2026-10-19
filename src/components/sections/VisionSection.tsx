@@ -30,31 +30,16 @@ export function VisionSection({ locale = "es" }: { locale?: Locale }) {
   const t = copy[locale];
   return (
     <section className="grain grain-invert relative isolate overflow-hidden border-y border-night bg-night py-[clamp(128px,20vw,272px)] text-paper-raise">
-      {/* Ember wash and hairlines — the hero's substrate in negative. */}
+      {/* Ember wash — the hero's substrate in negative. */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0"
       >
         <div className="absolute left-1/2 top-1/2 h-[64vh] w-[78vw] -translate-x-1/2 -translate-y-1/2 rounded-[50%] blur-[120px] bg-[radial-gradient(ellipse_at_center,color-mix(in_oklab,var(--ember)_34%,transparent),transparent_68%)]" />
-        {[30, 50, 70].map((top) => (
-          <span
-            key={top}
-            className="absolute left-0 h-px w-full"
-            style={{
-              top: `${top}%`,
-              background:
-                "linear-gradient(90deg,transparent,rgba(255,255,255,0.14),transparent)",
-            }}
-          />
-        ))}
       </div>
 
       <div className="shell relative text-center">
-        <Reveal y={10}>
-          <p className="t-label !text-paper-raise/45">{t.label}</p>
-        </Reveal>
-
-        <MaskedTitle
+<MaskedTitle
           as="p"
           lines={t.lines}
           className="t-h1 mx-auto mt-9 max-w-[17ch] text-balance text-paper-raise"

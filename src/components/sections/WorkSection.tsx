@@ -70,13 +70,7 @@ export function WorkSection() {
         {/* Heading row: claim on the left, pitch and action on the right. */}
         <div className="grid gap-y-10 md:grid-cols-12 md:gap-x-10">
           <div className="md:col-span-7">
-            <Reveal y={10}>
-              <p className="t-label flex items-center gap-3 !text-paper-raise/50">
-                {t.label}
-                <span aria-hidden="true" className="h-px w-16 bg-paper-raise/20" />
-              </p>
-            </Reveal>
-            <MaskedTitle
+<MaskedTitle
               as="h2"
               lines={t.lines}
               className="t-h1 mt-6 text-balance text-paper-raise [&_.t-em]:text-paper-raise/45"

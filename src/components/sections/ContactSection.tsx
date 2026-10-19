@@ -49,15 +49,7 @@ export function ContactSection() {
 
       <div className="shell relative">
         <div className="mx-auto max-w-3xl text-center">
-          <Reveal y={12}>
-            <p className="t-label flex items-center justify-center gap-3">
-              <span className="text-ember">10</span>
-              <span aria-hidden="true" className="h-px w-7 bg-line-strong" />
-              {t.label}
-            </p>
-          </Reveal>
-
-          <MaskedTitle
+<MaskedTitle
             lines={t.lines}
             className="t-h1 mt-8 text-balance"
             stagger={110}
