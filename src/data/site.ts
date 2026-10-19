@@ -5,15 +5,17 @@
 export const site = {
   name: "Velhoura",
   /** What the studio is and where, in the words a search result shows. */
-  tagline: "Agencia digital en Barcelona",
+  tagline: "Agencia digital desde Barcelona",
   /**
    * The home page's <title>. Leads with what people type into Google
-   * ("diseño web Barcelona"), not with the brand, which nobody searches yet.
+   * ("diseño web", "agencia de diseño web"), not with the brand, which nobody
+   * searches yet. The studio is in Barcelona but works across Spain and abroad,
+   * remotely, so the reach is national rather than one city.
    */
-  title: "Diseño web y marketing digital en Barcelona — Velhoura",
+  title: "Diseño web y marketing digital en toda España — Velhoura",
   /** Search-result snippet: kept under ~155 characters so Google shows it whole. */
   description:
-    "Agencia digital en Barcelona: páginas web desde 199 €, tiendas online, SEO, Google Ads y diseño de marca para pymes y autónomos. Presupuesto sin compromiso.",
+    "Agencia digital con base en Barcelona: páginas web desde 199 €, tiendas online, SEO y Google Ads para negocios de toda España y de cualquier país, en remoto.",
 
   /**
    * The studio's canonical origin. It feeds `metadataBase`, canonical links,
@@ -55,7 +57,7 @@ export const contact = {
   phone: "" as string,
   whatsapp: "" as string,
   /** Where the studio is, as it should read on the page. */
-  area: "Barcelona y alrededores",
+  area: "Barcelona · Toda España y en remoto",
   socials: [
     { label: "Instagram", href: "" },
     { label: "LinkedIn", href: "" },

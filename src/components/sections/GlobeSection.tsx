@@ -41,7 +41,7 @@ const copy = {
     chapters: [
       {
         title: "Aquí empezamos.",
-        body: "Barcelona. Somos Oriol e Ian, y trabajamos con negocios de la ciudad y de alrededor.",
+        body: "Barcelona. Somos Oriol e Ian, y trabajamos con negocios de aquí, del resto de España y de otros países.",
       },
       {
         title: "Con quien hablas es quien lo hace.",
@@ -78,7 +78,7 @@ const copy = {
     chapters: [
       {
         title: "This is where we start.",
-        body: "Barcelona. We're Oriol and Ian, and we work with businesses in the city and around it.",
+        body: "Barcelona. We're Oriol and Ian, and we work with businesses here, across Spain and abroad.",
       },
       {
         title: "Who you talk to is who builds it.",

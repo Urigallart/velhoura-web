@@ -26,7 +26,7 @@ const copy = {
     main: "Principal",
     mainMobile: "Principal (móvil)",
     all: "Ver todos →",
-    blurb: "Marca, web y captación para pymes de Barcelona.",
+    blurb: "Marca, web y captación para negocios de toda España.",
     language: "Idioma",
   },
   en: {
@@ -37,7 +37,7 @@ const copy = {
     main: "Main",
     mainMobile: "Main (mobile)",
     all: "See all →",
-    blurb: "Brand, web and growth for Barcelona businesses.",
+    blurb: "Brand, web and growth for businesses anywhere.",
     language: "Language",
   },
 };

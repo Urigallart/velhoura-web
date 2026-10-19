@@ -25,7 +25,7 @@ export const servicePagesEn: Record<string, PageEn> = {
     slugEn: "brand-identity",
     name: "Brand identity",
     tag: "Logo",
-    metaTitle: "Logo design and brand identity in Barcelona",
+    metaTitle: "Logo design and brand identity",
     metaDescription:
       "We create your business's logo and visual identity: symbol, colours, typefaces and a simple guide to apply it well everywhere.",
     headline: ["A brand", "*people remember.*"],
@@ -77,7 +77,7 @@ export const servicePagesEn: Record<string, PageEn> = {
     slugEn: "graphic-design-and-packaging",
     name: "Graphic design and packaging",
     tag: "Graphic",
-    metaTitle: "Graphic design and packaging for businesses in Barcelona",
+    metaTitle: "Graphic design and packaging for businesses",
     metaDescription:
       "Stationery, catalogues, signage, social media pieces and packaging: graphic design that keeps your brand consistent in every piece.",
     headline: ["Every piece,", "*up to standard.*"],
@@ -129,7 +129,7 @@ export const servicePagesEn: Record<string, PageEn> = {
     slugEn: "web-design",
     name: "Web design and WordPress",
     tag: "WordPress",
-    metaTitle: "Website design and WordPress for small businesses in Barcelona",
+    metaTitle: "Website design and WordPress for small businesses",
     metaDescription:
       "Fast, mobile-ready company websites that are easy to edit, designed to turn visits into enquiries.",
     headline: ["Your best salesperson,", "*always open.*"],
@@ -181,7 +181,7 @@ export const servicePagesEn: Record<string, PageEn> = {
     slugEn: "online-stores",
     name: "Online stores",
     tag: "E-commerce",
-    metaTitle: "Online store design for small businesses in Barcelona",
+    metaTitle: "Online store design for small businesses",
     metaDescription:
       "Online stores with catalogue, cart, secure payments and order management, so you sell even after closing time.",
     headline: ["Keep selling", "*after you close.*"],
@@ -233,7 +233,7 @@ export const servicePagesEn: Record<string, PageEn> = {
     slugEn: "custom-development",
     name: "Custom development",
     tag: "Custom",
-    metaTitle: "Custom web development and applications in Barcelona",
+    metaTitle: "Custom web development and applications",
     metaDescription:
       "Client areas, booking systems, internal dashboards and web applications built around the way your business works.",
     headline: ["Tools that", "*save you hours.*"],
@@ -285,7 +285,7 @@ export const servicePagesEn: Record<string, PageEn> = {
     slugEn: "seo",
     name: "SEO",
     tag: "Google",
-    metaTitle: "SEO for small businesses in Barcelona",
+    metaTitle: "SEO for small businesses",
     metaDescription:
       "We improve your Google ranking so people searching for what you offer in your area find you: technical SEO, content and business profile.",
     headline: ["Be found", "*when they search.*"],
@@ -337,7 +337,7 @@ export const servicePagesEn: Record<string, PageEn> = {
     slugEn: "google-ads",
     name: "Google Ads campaigns",
     tag: "Campaigns",
-    metaTitle: "Google Ads campaign management in Barcelona",
+    metaTitle: "Google Ads campaign management",
     metaDescription:
       "Google Ads campaigns with a controlled budget, aimed at searches with buying intent and measured by real enquiries.",
     headline: ["Customers from", "*day one.*"],

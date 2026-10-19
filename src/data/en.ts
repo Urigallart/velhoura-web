@@ -7,11 +7,11 @@
 import { maintenancePrice } from "./plans";
 
 export const siteEn = {
-  tagline: "Digital agency in Barcelona",
-  title: "Web design and digital marketing in Barcelona — Velhoura",
+  tagline: "Digital agency from Barcelona",
+  title: "Web design and digital marketing agency — Velhoura",
   description:
-    "Digital agency in Barcelona: websites from €199, online stores, SEO, Google Ads and brand design for small businesses and freelancers. Free, no-obligation quote.",
-  area: "Barcelona and surroundings",
+    "Barcelona-based digital agency working remotely with clients across Spain and worldwide: websites from €199, online stores, SEO, Google Ads and branding.",
+  area: "Barcelona · Spain-wide and remote",
   nav: {
     "/#services": "Services",
     "/#pricing": "Pricing",
@@ -266,7 +266,7 @@ export const faqsEn: { q: string; a: string }[] = [
   },
   {
     q: "What kind of companies do you work with?",
-    a: "Mostly small and medium businesses, shops and professionals in Barcelona and the surrounding area who want a serious online presence without coordinating several suppliers.",
+    a: "Mostly small and medium businesses, shops and professionals who want a serious online presence without coordinating several suppliers. We're based in Barcelona and work with clients all over Spain and in other countries, remotely.",
   },
   {
     q: "What does the process look like?",
@@ -277,12 +277,16 @@ export const faqsEn: { q: string; a: string }[] = [
     a: "Just tell us what you do and what you want to achieve. If you already have a logo, copy or photos, we'll use them; if not, we'll help you prepare them.",
   },
   {
+    q: "Do you work with clients outside Barcelona or in other countries?",
+    a: "Yes. We're based in Barcelona, but we work with businesses all over Spain and in other countries. The whole project runs remotely, over video calls and email, in English or Spanish.",
+  },
+  {
     q: "Do you make websites for freelancers and small businesses?",
     a: "Yes, that's most of our work. For a freelancer or a small business we usually start with a landing page or a site of a few pages, well built and mobile-ready, that can grow later when the business needs it.",
   },
   {
     q: "Can you help me show up on Google?",
-    a: "Yes. Every site we build ships with technical SEO done: speed, structure and copy written so Google understands what you do. If you want to go further, we work on local SEO in Barcelona and Google Ads campaigns so you appear when people search for you.",
+    a: "Yes. Every site we build ships with technical SEO done: speed, structure and copy written so Google understands what you do. If you want to go further, we work on SEO (including local SEO for wherever your business is) and Google Ads campaigns so you appear when people search for you.",
   },
   {
     q: "What happens once the site is live?",

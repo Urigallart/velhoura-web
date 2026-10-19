@@ -8,14 +8,14 @@ import { useLocale } from "@/i18n/useLocale";
 
 const copy = {
   es: {
-    blurb: "Agencia digital en Barcelona. Marca, web y captación de clientes para pymes, hechas por un mismo equipo.",
+    blurb: "Agencia digital con base en Barcelona. Marca, web y captación de clientes para negocios de toda España y de fuera, hechas por un mismo equipo.",
     sections: "Secciones",
     navigation: "Navegación",
     contact: "Contacto",
     rights: "Todos los derechos reservados.",
   },
   en: {
-    blurb: "Digital agency in Barcelona. Brand, web and customer growth for small businesses, made by one team.",
+    blurb: "Barcelona-based digital agency. Brand, web and customer growth for businesses in Spain and worldwide, made by one team.",
     sections: "Sections",
     navigation: "Navigation",
     contact: "Contact",
