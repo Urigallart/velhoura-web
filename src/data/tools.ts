@@ -72,7 +72,7 @@ export const designTools: Tool[] = [
   { name: "Notion", icon: siNotion },
   { name: "Linear", icon: siLinear },
   { name: "Apple", icon: siApple },
-  { name: "Simon", mono: "S" },
+  { name: "Simon Electric", logo: "/brands/simon-electric.png" },
 ];
 
 /** AI, marketing, commerce and development. */
