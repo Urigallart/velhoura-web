@@ -52,6 +52,14 @@ export function CookieNotice() {
     return () => window.clearTimeout(id);
   }, []);
 
+  // Lets the chat launcher step above the notice on narrow screens.
+  useEffect(() => {
+    const root = document.documentElement;
+    if (visible) root.setAttribute("data-cookie-notice", "");
+    else root.removeAttribute("data-cookie-notice");
+    return () => root.removeAttribute("data-cookie-notice");
+  }, [visible]);
+
   function dismiss() {
     setVisible(false);
     try {

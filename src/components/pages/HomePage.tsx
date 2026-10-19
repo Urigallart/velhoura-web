@@ -32,7 +32,7 @@ export function HomePage({ locale }: { locale: Locale }) {
     <>
       <IntroZoom
         hero={<Hero locale={locale} />}
-        screen={<Hero locale={locale} />}
+        screen={<Hero locale={locale} interactive={false} />}
       />
       <ToolsSection locale={locale} />
       <GlobeSection />

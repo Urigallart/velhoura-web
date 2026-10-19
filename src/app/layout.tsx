@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { ContactModal } from "@/components/contact/ContactModal";
+import { AssistantChat } from "@/components/assistant/AssistantChat";
 import { CookieNotice } from "@/components/legal/CookieNotice";
 import { contact, site } from "@/data/site";
 import { gateScript } from "@/components/intro/geometry";
@@ -159,6 +160,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <main id="main">{children}</main>
         <Footer />
         <ContactModal />
+        <AssistantChat />
         <CookieNotice />
       </body>
     </html>

@@ -1,5 +1,6 @@
 import { HeroBackdrop } from "@/components/visual/HeroBackdrop";
 import { ButtonLink } from "@/components/ui/Button";
+import { HeroCharacters } from "@/components/assistant/HeroCharacters";
 import type { Locale } from "@/i18n/locale";
 
 const copy = {
@@ -36,11 +37,15 @@ const copy = {
  * the server HTML and resolves on its own timeline — no hydration, no rAF, no
  * blank hero if JavaScript is slow, throttled in a background tab, or absent.
  */
-export function Hero({ locale = "es" }: { locale?: Locale } = {}) {
+export function Hero({
+  locale = "es",
+  interactive = true,
+}: { locale?: Locale; interactive?: boolean } = {}) {
   const t = copy[locale];
   return (
     <section className="relative isolate overflow-hidden pt-32 pb-16 sm:pt-36 sm:pb-24">
       <HeroBackdrop />
+      <HeroCharacters locale={locale} interactive={interactive} />
 
       <div className="shell relative text-center">
         {/* Badge — says what the studio is before the claim says what it does. */}

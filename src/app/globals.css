@@ -663,3 +663,14 @@ html:not([data-intro-cards="sides"]) .intro-cards-sides {
     display: none;
   }
 }
+
+/* The chat launcher stays out of the way while the office intro plays. */
+html[data-intro="play"] .assistant-root {
+  display: none;
+}
+
+@media (max-width: 639px) {
+  html[data-cookie-notice] .assistant-root {
+    bottom: 11.5rem;
+  }
+}
