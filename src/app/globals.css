@@ -322,9 +322,16 @@
   [data-reveal][data-shown="true"] {
     opacity: 1;
     transform: none;
-    clip-path: inset(0 0 0 0);
     filter: none;
     will-change: auto;
+  }
+
+  /* Scoped to `wipe`, the only variant that animates clip-path. Applied to
+     every variant it left a resting `inset(0)` that clipped anything
+     overhanging the element's box — e.g. the "Recomendado" badge that sits
+     above the featured pricing card. */
+  [data-reveal="wipe"][data-shown="true"] {
+    clip-path: inset(0 0 0 0);
   }
 
   /* ── Masked type ────────────────────────────────────────────────────
