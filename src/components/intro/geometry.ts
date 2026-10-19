@@ -195,15 +195,18 @@ export function measure() {
 }
 
 /**
- * Runs inline, before the first paint, on the two home pages (`/`, `/en`). Every visit opens in the
- * office — only a reduced-motion preference skips it — and the geometry is
- * written here so the very first frame is already framed. Without JavaScript this never runs, `data-intro` stays unset, and
- * the CSS shows the page directly.
+ * Runs inline, before the first paint, on the two home pages (`/`, `/en`).
+ * A visit that opens the page opens in the office; a reload, or arriving with
+ * the browser's back/forward buttons, goes straight to the page itself, as
+ * does a reduced-motion preference. The geometry is written here so the very
+ * first frame is already framed. Without JavaScript this never runs,
+ * `data-intro` stays unset, and the CSS shows the page directly.
  */
 export const gateScript = `(function(){try{
 var lp=location.pathname;if(lp!=='/'&&lp!=='/en'&&lp!=='/en/')return;
 var d=document.documentElement;
-if(matchMedia('(prefers-reduced-motion: reduce)').matches){d.dataset.intro='skip';return}
+var nv=performance.getEntriesByType&&performance.getEntriesByType('navigation')[0];var nt=nv?nv.type:(performance.navigation&&performance.navigation.type===1?'reload':'navigate');
+if(nt==='reload'||nt==='back_forward'||matchMedia('(prefers-reduced-motion: reduce)').matches){d.dataset.intro='skip';return}
 d.dataset.intro='play';
 var g=(${computeIntro.toString()})(d.clientWidth,innerHeight);
 var v=(${introVars.toString()})(g);
