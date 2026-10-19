@@ -93,6 +93,12 @@ export function IntroZoom({
     const ty = g.cy0 * (1 - f) + (g.vh / 2) * f - s * fy;
     scene.current.style.transform = `translate3d(${tx}px, ${ty}px, 0) scale(${s})`;
 
+    // The name on the glass slides off to the right as the camera goes in.
+    scene.current.style.setProperty(
+      "--intro-logo",
+      String(Math.pow(clamp01(p / 0.4), 1.6)),
+    );
+
     if (shade.current) shade.current.style.opacity = String(1 - e);
 
     // The cards and the cue belong to the room: they step aside and fade in
@@ -288,36 +294,6 @@ export function IntroZoom({
                 WebkitMaskComposite: "source-in",
               }}
             />
-
-            {/* The laptop's chin carries our name instead of the photo's: the
-                baked-in label is painted over with the chin's own colour. All
-                measures are fractions of the 1671×941 plate, so it scales with
-                the scene. */}
-            <div
-              className="absolute flex items-center justify-center gap-[0.35em] text-[#b4b4b4]"
-              style={{
-                left: `${(808 / IMG_W) * 100}%`,
-                top: `${(656 / IMG_H) * 100}%`,
-                width: `${(96 / IMG_W) * 100}%`,
-                height: `${(18 / IMG_H) * 100}%`,
-                background: "#111314",
-                maskImage: "linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent)",
-                WebkitMaskImage: "linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent)",
-                fontSize: `calc(var(--intro-sw) * ${10.5 / IMG_W})`,
-                lineHeight: 1,
-                fontWeight: 500,
-                letterSpacing: "0.02em",
-              }}
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/brand/logo-mark.png"
-                alt=""
-                draggable={false}
-                style={{ height: "1.25em", width: "auto", filter: "brightness(0) invert(0.72)" }}
-              />
-              Velhoura
-            </div>
 
             {/* The glass, painted paper: the page's own ground, so whatever
                 the window's proportions the screen reads as one lit page. */}
