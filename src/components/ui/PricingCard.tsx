@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { useReducedMotion } from "motion/react";
 import { ButtonAction } from "@/components/ui/Button";
 import type { Plan } from "@/data/plans";
 import { detailCopy } from "@/data/planDetails";
@@ -37,12 +39,27 @@ export function PricingCard({
   const locale = useLocale();
   const t = detailCopy[locale];
 
+  // The card alternates between its price and its features on its own, every
+  // nine seconds; hovering or focusing it holds the current face.
+  const reduced = useReducedMotion();
+  const [face, setFace] = useState<0 | 1>(0);
+  const [held, setHeld] = useState(false);
+  useEffect(() => {
+    if (reduced || held) return;
+    const id = window.setInterval(() => setFace((f) => (f === 0 ? 1 : 0)), 9000);
+    return () => window.clearInterval(id);
+  }, [reduced, held]);
+
   return (
     // The whole card opens the details for pointer users; keyboard and
     // screen-reader users get the explicit button below, so nothing depends
     // on a click handler on a non-interactive element.
     <div
       onClick={onDetails}
+      onPointerEnter={(e) => e.pointerType === "mouse" && setHeld(true)}
+      onPointerLeave={() => setHeld(false)}
+      onFocus={() => setHeld(true)}
+      onBlur={() => setHeld(false)}
       data-plan-card
       className={cn(
         "group relative flex h-full cursor-pointer flex-col rounded-3xl p-6 text-ink sm:p-7",
@@ -59,16 +76,60 @@ export function PricingCard({
 
       <h3 className="text-[1.75rem] font-semibold leading-none tracking-[-0.04em]">{plan.name}</h3>
 
-      <p className="mt-3 flex-1 text-[0.9375rem] leading-relaxed text-ink/75">{plan.pitch}</p>
+      {/* Both faces share one cell, so the card never changes height. */}
+      <div className="mt-3 grid flex-1">
+        <div
+          className={cn(
+            "col-start-1 row-start-1 flex flex-col transition-opacity duration-700",
+            face === 0 ? "opacity-100" : "pointer-events-none opacity-0",
+          )}
+          aria-hidden={face !== 0}
+        >
+          <p className="flex-1 text-[0.9375rem] leading-relaxed text-ink/75">{plan.pitch}</p>
+          <div className="mt-7">
+            <p className="flex items-baseline gap-2">
+              {plan.pricePrefix && <span className="text-[0.9375rem] font-medium text-ink/70">{plan.pricePrefix}</span>}
+              <span className="t-num text-[clamp(2.25rem,3.4vw,3rem)] font-semibold leading-none tracking-[-0.05em]">
+                {plan.price}
+              </span>
+            </p>
+            {plan.priceNote && <p className="mt-2 text-[0.8125rem] text-ink/60">{plan.priceNote}</p>}
+          </div>
+        </div>
 
-      <div className="mt-7">
-        <p className="flex items-baseline gap-2">
-          {plan.pricePrefix && <span className="text-[0.9375rem] font-medium text-ink/70">{plan.pricePrefix}</span>}
-          <span className="t-num text-[clamp(2.25rem,3.4vw,3rem)] font-semibold leading-none tracking-[-0.05em]">
-            {plan.price}
-          </span>
-        </p>
-        {plan.priceNote && <p className="mt-2 text-[0.8125rem] text-ink/60">{plan.priceNote}</p>}
+        <ul
+          className={cn(
+            "col-start-1 row-start-1 space-y-2 transition-opacity duration-700",
+            face === 1 ? "opacity-100" : "pointer-events-none opacity-0",
+          )}
+          aria-hidden={face !== 1}
+        >
+          {plan.features.map((f) => (
+            <li key={f} className="flex gap-2.5 text-[0.9375rem] leading-snug text-ink/85">
+              <span aria-hidden="true" className="mt-[0.5em] size-1.5 shrink-0 rounded-full bg-ink" />
+              {f}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="mt-4 flex justify-center gap-2" role="group">
+        {[0, 1].map((i) => (
+          <button
+            key={i}
+            type="button"
+            aria-label={i === 0 ? t.priceFace : t.featuresFace}
+            aria-pressed={face === i}
+            onClick={(e) => {
+              e.stopPropagation();
+              setFace(i as 0 | 1);
+            }}
+            className={cn(
+              "h-2 rounded-full bg-ink transition-[width,opacity] duration-500",
+              face === i ? "w-6 opacity-90" : "w-2 opacity-30 hover:opacity-60",
+            )}
+          />
+        ))}
       </div>
 
       <ButtonAction
@@ -79,7 +140,7 @@ export function PricingCard({
         arrow
         size="lg"
         variant="solid"
-        className="mt-6 w-full"
+        className="mt-5 w-full hover:!bg-paper-raise hover:!text-ink"
       >
         {plan.cta}
       </ButtonAction>

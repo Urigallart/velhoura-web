@@ -161,6 +161,8 @@ export const detailCopy = {
     notIncluded:
       `El precio no incluye IVA ni costes de terceros como dominio, alojamiento o licencias, que se indican aparte en el presupuesto. El mantenimiento una vez publicada la web es opcional y se paga aparte, desde ${maintenancePrice("es")}.`,
     seeMore: "Ver qué incluye",
+    priceFace: "Ver precio",
+    featuresFace: "Ver características",
     close: "Cerrar",
     cta: "Quiero este plan",
     chosen: "Plan elegido",
@@ -178,6 +180,8 @@ export const detailCopy = {
     notIncluded:
       `The price excludes VAT and third-party costs such as domain, hosting or licences, which are listed separately in the quote. Maintenance once the site is live is optional and billed separately, from ${maintenancePrice("en")}.`,
     seeMore: "See what's included",
+    priceFace: "Show price",
+    featuresFace: "Show features",
     close: "Close",
     cta: "I want this plan",
     chosen: "Chosen plan",
