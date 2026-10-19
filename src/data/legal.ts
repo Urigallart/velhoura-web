@@ -48,3 +48,9 @@ export const processors = [
 
 /** How long contact-form data is kept if no project is contracted. */
 export const retention = "12 meses";
+
+/**
+ * The only thing the site stores in the browser: the localStorage flag that
+ * remembers the cookie notice was closed. Named in the cookie policy.
+ */
+export const COOKIE_NOTICE_KEY = "velhoura-cookie-notice";

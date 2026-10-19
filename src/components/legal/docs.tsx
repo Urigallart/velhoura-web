@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
-import { legalUpdated, owner, processors, retention } from "@/data/legal";
+import { COOKIE_NOTICE_KEY, legalUpdated, owner, processors, retention } from "@/data/legal";
 
 /**
  * The four legal documents: aviso legal, privacidad, cookies, términos.
@@ -315,14 +315,27 @@ export const docs: Record<"notice" | "privacy" | "cookies" | "terms", LegalDoc> 
               en tu navegador para seguirte.
             </p>
             <p>
+              Solo guardamos un dato en el almacenamiento local de tu navegador,
+              y únicamente si cierras el aviso de cookies:
+            </p>
+            <ul>
+              <li>
+                <strong>{COOKIE_NOTICE_KEY}</strong> — propia, de preferencia.
+                Recuerda que ya has cerrado el aviso para no volver a mostrártelo.
+                Guarda solo el valor «dismissed», no te identifica y no caduca
+                hasta que borres los datos del navegador.
+              </li>
+            </ul>
+            <p>
               Las tipografías se sirven desde nuestro propio servidor, sin
               conectar con Google, y no hay vídeos, mapas ni botones sociales
               incrustados de terceros.
             </p>
             <p>
-              Por eso no te mostramos un aviso para aceptar cookies: la ley solo
-              exige pedir tu consentimiento para las cookies que no son
-              estrictamente necesarias, y aquí no hay ninguna.
+              Por eso el aviso que ves al entrar es informativo y no te pide que
+              aceptes nada: la ley solo exige tu consentimiento para las cookies
+              que no son necesarias, y guardar una preferencia que tú mismo has
+              indicado no lo requiere.
             </p>
           </>
         ),
