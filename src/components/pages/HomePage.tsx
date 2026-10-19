@@ -2,6 +2,7 @@ import { Hero } from "@/components/sections/Hero";
 import { IntroZoom } from "@/components/intro/IntroZoom";
 import { WorkSection } from "@/components/sections/WorkSection";
 import { ServicesSection } from "@/components/sections/ServicesSection";
+import { NfcSection } from "@/components/sections/NfcSection";
 import { ShowcaseSection } from "@/components/sections/ShowcaseSection";
 import { PricingSection } from "@/components/sections/PricingSection";
 import { ProcessSection } from "@/components/sections/ProcessSection";
@@ -38,6 +39,7 @@ export function HomePage({ locale }: { locale: Locale }) {
       <GlobeSection />
       <WorkSection />
       <ServicesSection locale={locale} />
+      <NfcSection locale={locale} />
       <ShowcaseSection />
       <PricingSection locale={locale} />
       <ProcessSection />
