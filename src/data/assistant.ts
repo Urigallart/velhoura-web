@@ -34,6 +34,7 @@ export const topicLabels: Record<string, Text> = {
   seo: { es: "SEO y Google Ads", en: "SEO and Google Ads" },
   brand: { es: "Logo y marca", en: "Logo and brand" },
   start: { es: "¿Qué necesito para empezar?", en: "What do I need to start?" },
+  care: { es: "¿Y el mantenimiento?", en: "What about maintenance?" },
   who: { es: "¿Quiénes sois?", en: "Who are you?" },
   contact: { es: "Quiero hablar con vosotros", en: "I'd like to talk to you" },
 };
@@ -73,7 +74,7 @@ export const topics: Topic[] = [
       es: "Publicamos precios orientativos para que sepas por dónde empezar:\n• **Landing**: desde 199 €\n• **Business**: desde 499 €\n• **Tienda online**: desde 799 €\n• **Custom** (apps, plataformas, SaaS): presupuesto a medida\n\nSon cifras de partida, no un precio final: lo que necesites de verdad se presupuesta por escrito y conoces el coste antes de empezar. De formas de pago o descuentos no puedo decirte nada seguro; eso lo acordamos con vosotros directamente.",
       en: "We publish indicative prices so you know where to start:\n• **Landing**: from €199\n• **Business**: from €499\n• **Online shop**: from €799\n• **Custom** (apps, platforms, SaaS): quoted to measure\n\nThese are starting points, not a final price: what you actually need is quoted in writing and you know the cost before we begin. I can't promise anything about payment terms or discounts; we agree those with you directly.",
     },
-    next: ["shop", "time", "contact"],
+    next: ["shop", "care", "contact"],
     contact: true,
   },
   {
@@ -210,6 +211,19 @@ export const topics: Topic[] = [
       en: "Just tell us what you do and what you want to achieve. If you already have a logo, texts or photos, they help; if not, we'll help you prepare them. The first conversation is no strings attached.",
     },
     next: ["process", "contact"],
+    contact: true,
+  },
+  {
+    id: "care",
+    keys: {
+      es: ["mantenimiento", "mantener", "mantiene", "despues de publicar", "una vez publicada", "actualizacion", "copias de seguridad", "cuota", "mensual", "soporte"],
+      en: ["maintenance", "maintain", "after launch", "once it's live", "updates", "backups", "monthly", "support", "retainer"],
+    },
+    answer: {
+      es: "El mantenimiento es **opcional** y va **aparte** del precio de la web, con una **cuota mensual**: nos encargamos de actualizaciones, copias de seguridad, seguridad y pequeños cambios. Si prefieres llevarla tú, te la entregamos lista y te explicamos cómo. El importe depende de cada web y te lo indicamos en la propuesta.",
+      en: "Maintenance is **optional** and **separate** from the price of the site, as a **monthly fee**: we handle updates, backups, security and small changes. If you'd rather run it yourself, we hand it over ready and show you how. The amount depends on each site and is stated in the proposal.",
+    },
+    next: ["prices", "contact"],
     contact: true,
   },
   {

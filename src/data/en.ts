@@ -273,4 +273,8 @@ export const faqsEn: { q: string; a: string }[] = [
     q: "What do I need to get started?",
     a: "Just tell us what you do and what you want to achieve. If you already have a logo, copy or photos, we'll use them; if not, we'll help you prepare them.",
   },
+  {
+    q: "What happens once the site is live?",
+    a: "Maintenance is optional and separate from the price of the site, as a monthly fee: we take care of updates, backups, security and small changes. If you'd rather run it yourself, we hand it over ready and show you how.",
+  },
 ];

@@ -38,4 +38,8 @@ export const faqs: Faq[] = [
     q: "¿Qué necesito para empezar?",
     a: "Solo contarnos a qué te dedicas y qué quieres conseguir. Si ya tienes logotipo, textos o fotos, nos sirven; si no, te ayudamos a prepararlos.",
   },
+  {
+    q: "¿Y cuando la web ya está publicada?",
+    a: "El mantenimiento es opcional y va aparte del precio de la web, con una cuota mensual: nos encargamos de las actualizaciones, copias de seguridad, seguridad y pequeños cambios. Si prefieres llevarla tú, te la entregamos lista y te explicamos cómo hacerlo.",
+  },
 ];

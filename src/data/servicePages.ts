@@ -315,7 +315,7 @@ export const servicePages: ServicePage[] = [
       },
       {
         q: "¿Quién mantiene la aplicación después?",
-        a: "Podemos seguir encargándonos de las mejoras y el mantenimiento, o dejarla documentada para que la gestione tu equipo.",
+        a: "Podemos seguir encargándonos del mantenimiento con una cuota mensual aparte, o dejarla documentada para que la gestione tu equipo. Las mejoras nuevas se presupuestan por separado.",
       },
     ],
     related: ["diseno-web", "seo"],

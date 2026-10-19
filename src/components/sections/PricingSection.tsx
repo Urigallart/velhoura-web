@@ -11,12 +11,16 @@ const copy = {
     lines: ["Precios claros,", "*antes de empezar.*"],
     intro: "Cuatro puntos de partida para tu web. Pulsa en cualquiera para ver todo lo que incluye; sabes lo que vas a pagar antes de que empecemos a trabajar.",
     note: "Todos los precios son orientativos. Cada proyecto se presupuesta según alcance y plazos.",
+    careTitle: "Mantenimiento opcional",
+    care: "Una vez publicada, podemos encargarnos de las actualizaciones, copias de seguridad, seguridad y pequeños cambios por una cuota mensual aparte. Si prefieres llevarla tú, te la entregamos lista y explicada.",
   },
   en: {
     label: "Pricing",
     lines: ["Clear prices,", "*before we start.*"],
     intro: "Four starting points for your website. Tap any of them to see everything it includes; you know what you'll pay before we start working.",
     note: "All prices are indicative. Every project is quoted on scope and timing.",
+    careTitle: "Optional maintenance",
+    care: "Once it's live, we can take care of updates, backups, security and small changes for a separate monthly fee. If you'd rather run it yourself, we hand it over ready and explained.",
   },
 };
 
@@ -77,7 +81,10 @@ export function PricingSection({ locale = "es" }: { locale?: Locale }) {
         </Reveal>
 
         <Reveal delay={200}>
-          <p className="mt-8 text-center text-xs text-ink-mute">{t.note}</p>
+          <p className="mx-auto mt-8 max-w-[78ch] text-center text-[0.8125rem] leading-relaxed text-ink-soft">
+            <span className="font-medium text-ink">{t.careTitle}.</span> {t.care}
+          </p>
+          <p className="mt-2 text-center text-xs text-ink-mute">{t.note}</p>
         </Reveal>
       </div>
     </section>
