@@ -119,12 +119,8 @@ export function PricingCard({ plan }: { plan: Plan }) {
           onClick={openContactModal}
           arrow
           size="lg"
-          variant={featured ? "outline" : "solid"}
-          className={cn(
-            "mt-6 w-full",
-            featured &&
-              "border-paper-raise/25 text-paper-raise hover:text-night [&>span:first-child]:bg-paper-raise",
-          )}
+          variant={featured ? "outline-inverse" : "solid"}
+          className="mt-6 w-full"
         >
           {plan.cta}
         </ButtonAction>

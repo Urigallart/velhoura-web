@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { ButtonHTMLAttributes, ComponentProps, ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
-type Variant = "solid" | "outline" | "ghost";
+type Variant = "solid" | "outline" | "outline-inverse" | "ghost";
 type Size = "sm" | "md" | "lg";
 
 /**
@@ -22,6 +22,11 @@ const variants: Record<Variant, string> = {
   solid: "bg-ink text-paper-raise hover:bg-ember focus-visible:bg-ember",
   outline:
     "border border-line-strong text-ink hover:border-ink hover:bg-ink hover:text-paper-raise focus-visible:border-ink focus-visible:bg-ink focus-visible:text-paper-raise",
+  // For dark grounds (the featured pricing card). Its own variant because
+  // `cn` is a plain join: overriding `outline`'s hover colours from a call
+  // site would depend on stylesheet order, not on which class came last.
+  "outline-inverse":
+    "border border-paper-raise/25 text-paper-raise hover:border-paper-raise hover:bg-paper-raise hover:text-night focus-visible:border-paper-raise focus-visible:bg-paper-raise focus-visible:text-night",
   ghost: "text-ink-soft hover:text-ink",
 };
 
