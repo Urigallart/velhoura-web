@@ -141,17 +141,9 @@ export function GlobeSection() {
         </div>
 
         <div className="mt-10 grid items-center gap-x-10 gap-y-8 lg:mt-14 lg:grid-cols-12">
-          {/* The globe, on its stage of hairline rings. */}
+          {/* The globe, on its own — nothing around it. */}
           <Reveal delay={120} className="lg:col-span-7">
             <div className="relative mx-auto aspect-square w-full max-w-[760px]">
-              <span
-                aria-hidden="true"
-                className="absolute inset-0 animate-[spin_120s_linear_infinite] rounded-full border border-dashed border-line-strong/70"
-              />
-              <span
-                aria-hidden="true"
-                className="absolute inset-[7%] rounded-full border border-line"
-              />
               <StoryGlobeLoader
                 open={open}
                 onPin={toggle}
