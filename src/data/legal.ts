@@ -21,7 +21,7 @@ export const owner = {
   email: contact.email,
   /** Commercial name as it appears on the site. */
   brand: site.name,
-  website: "https://velhouraempyre-ashen.vercel.app",
+  website: site.url,
 };
 
 /** Date shown as "last updated" on every legal document. */

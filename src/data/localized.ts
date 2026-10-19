@@ -29,7 +29,7 @@ import {
 
 export function getSite(locale: Locale) {
   return locale === "en"
-    ? { ...site, tagline: siteEn.tagline, description: siteEn.description }
+    ? { ...site, tagline: siteEn.tagline, title: siteEn.title, description: siteEn.description }
     : site;
 }
 

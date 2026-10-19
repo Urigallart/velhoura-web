@@ -4,7 +4,7 @@ import { HomePage } from "@/components/pages/HomePage";
 export const metadata: Metadata = {
   alternates: {
     canonical: "/",
-    languages: { es: "/", en: "/en" },
+    languages: { es: "/", en: "/en", "x-default": "/" },
   },
 };
 

@@ -6,6 +6,7 @@ import { ContactModal } from "@/components/contact/ContactModal";
 import { AssistantChat } from "@/components/assistant/AssistantChat";
 import { CookieNotice } from "@/components/legal/CookieNotice";
 import { contact, site } from "@/data/site";
+import { maintenance, plans } from "@/data/plans";
 import { gateScript } from "@/components/intro/geometry";
 import { HtmlLang } from "@/i18n/HtmlLang";
 import "./globals.css";
@@ -30,7 +31,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: `${site.name} — ${site.tagline}`,
+    default: site.title,
     template: `%s — ${site.name}`,
   },
   description: site.description,
@@ -38,17 +39,28 @@ export const metadata: Metadata = {
   authors: [{ name: "Oriol Gallart" }, { name: "Ian Monfil" }],
   creator: site.name,
   publisher: site.name,
+  // Google ignores this tag; Bing and smaller engines still read it. The
+  // ranking work is done by titles, headings and body copy.
   keywords: [
-    "agencia digital Barcelona",
     "diseño web Barcelona",
-    "diseño web para pymes",
-    "WordPress",
-    "tienda online",
-    "SEO Barcelona",
-    "Google Ads",
-    "branding",
+    "agencia de diseño web Barcelona",
+    "agencia digital Barcelona",
+    "agencia de marketing digital Barcelona",
+    "páginas web para pymes",
+    "páginas web para autónomos",
+    "diseño de páginas web económicas",
+    "crear página web para mi negocio",
+    "diseño de tiendas online",
+    "tienda online Barcelona",
+    "desarrollo web a medida",
+    "WordPress Barcelona",
+    "posicionamiento SEO Barcelona",
+    "SEO local",
+    "Google Ads Barcelona",
     "diseño de logotipo",
-    "packaging",
+    "identidad de marca",
+    "branding Barcelona",
+    "mantenimiento web",
     "Velhoura",
   ],
   alternates: { canonical: "/" },
@@ -57,12 +69,12 @@ export const metadata: Metadata = {
     locale: "es_ES",
     url: site.url,
     siteName: site.name,
-    title: `${site.name} — ${site.tagline}`,
+    title: site.title,
     description: site.description,
   },
   twitter: {
     card: "summary_large_image",
-    title: `${site.name} — ${site.tagline}`,
+    title: site.title,
     description: site.description,
   },
   robots: {
@@ -84,13 +96,54 @@ export const viewport: Viewport = {
  * studio as a local professional service with named founders is what turns a search result
  * from a blue link into an entity the index can reason about.
  */
+const euros = (price: string) => Number(price.replace(/[^\d]/g, ""));
+
 const organizationLd = {
   "@context": "https://schema.org",
   "@type": "ProfessionalService",
+  "@id": `${site.url}/#organization`,
   name: site.name,
   url: site.url,
+  logo: `${site.url}/icon.png`,
+  image: `${site.url}/opengraph-image`,
   description: site.description,
+  slogan: site.tagline,
   email: contact.email,
+  priceRange: "€€",
+  // The published plans, so prices can show up alongside the result.
+  hasOfferCatalog: {
+    "@type": "OfferCatalog",
+    name: "Diseño y desarrollo web",
+    itemListElement: [
+      ...plans
+        .filter((p) => p.pricePrefix)
+        .map((p) => ({
+          "@type": "Offer",
+          name: `Página web ${p.name}`,
+          description: p.pitch,
+          priceSpecification: {
+            "@type": "PriceSpecification",
+            minPrice: euros(p.price),
+            priceCurrency: "EUR",
+            valueAddedTaxIncluded: false,
+          },
+          itemOffered: { "@type": "Service", name: `Diseño web — plan ${p.name}` },
+        })),
+      {
+        "@type": "Offer",
+        name: "Mantenimiento web",
+        description: maintenance.includes.es.join(". "),
+        priceSpecification: {
+          "@type": "UnitPriceSpecification",
+          minPrice: maintenance.from,
+          priceCurrency: "EUR",
+          unitText: "MON",
+          valueAddedTaxIncluded: false,
+        },
+        itemOffered: { "@type": "Service", name: "Mantenimiento web mensual" },
+      },
+    ],
+  },
   founder: [
     { "@type": "Person", name: "Oriol Gallart" },
     { "@type": "Person", name: "Ian Monfil" },
@@ -103,14 +156,30 @@ const organizationLd = {
   },
   knowsAbout: [
     "Diseño web",
+    "Desarrollo web",
     "WordPress",
     "Tiendas online",
+    "Ecommerce",
     "SEO",
+    "SEO local",
     "Google Ads",
     "Identidad de marca",
+    "Diseño de logotipos",
     "Diseño gráfico",
     "Packaging",
+    "Mantenimiento web",
   ],
+};
+
+/** The site itself, tied to the organisation above and to both languages. */
+const websiteLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": `${site.url}/#website`,
+  name: site.name,
+  url: site.url,
+  inLanguage: ["es-ES", "en"],
+  publisher: { "@id": `${site.url}/#organization` },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -144,6 +213,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           type="application/ld+json"
           // Static, author-controlled object — no user input reaches it.
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteLd) }}
         />
       </head>
 
