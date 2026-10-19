@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
+import { useEffect, useRef, useState } from "react";
 import { StoryGlobeLoader } from "@/components/3d/StoryGlobeLoader";
 import { MaskedTitle } from "@/components/ui/MaskedTitle";
 import { Reveal } from "@/components/ui/Reveal";
 import { useLocale } from "@/i18n/useLocale";
 import { openContactModal } from "@/lib/contactModal";
+import { cn } from "@/lib/utils";
 
 /**
  * "Velhoura, desde España." — the studio's globe, large, turned to Spain with
@@ -96,34 +96,34 @@ const copy = {
   },
 };
 
-const CARD_ID = "story-card";
+const CHAPTERS_ID = "story-chapters";
 
 export function GlobeSection() {
   const locale = useLocale();
   const t = copy[locale];
-  const [open, setOpen] = useState(false);
-  const [step, setStep] = useState(0);
-  const last = t.chapters.length - 1;
-  const chapter = t.chapters[step];
+  const [active, setActive] = useState(-1);
+  const refs = useRef<(HTMLElement | null)[]>([]);
 
-  const toggle = () => {
-    setOpen((v) => {
-      if (!v) setStep(0);
-      return !v;
-    });
-  };
-
+  // The chapter nearest the middle of the window is the one being read.
   useEffect(() => {
-    if (!open) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [open]);
+    const els = refs.current.filter(Boolean) as HTMLElement[];
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) setActive(els.indexOf(e.target as HTMLElement));
+        }
+      },
+      { rootMargin: "-45% 0px -45% 0px" },
+    );
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+
+  const toStart = () =>
+    refs.current[0]?.scrollIntoView({ behavior: "smooth", block: "center" });
 
   return (
-    <section id="story" className="band relative overflow-hidden border-t border-line">
+    <section id="story" className="band relative border-t border-line">
       <div className="shell">
         <div className="text-center">
           <Reveal y={10}>
@@ -145,16 +145,17 @@ export function GlobeSection() {
           </Reveal>
         </div>
 
-        <div className="mt-10 grid items-center gap-x-10 gap-y-8 lg:mt-14 lg:grid-cols-12">
-          {/* The globe, on its own — nothing around it. */}
-          <Reveal delay={120} className="lg:col-span-7">
-            <div className="relative mx-auto aspect-square w-full max-w-[760px]">
+        <div className="mt-10 grid gap-x-12 gap-y-6 lg:mt-14 lg:grid-cols-12">
+          {/* The globe stays put while the story scrolls past it. */}
+          <div className="lg:sticky lg:top-24 lg:col-span-6 lg:self-start">
+            <div className="relative mx-auto aspect-square w-full max-w-[640px]">
               <StoryGlobeLoader
-                open={open}
-                onPin={toggle}
+                open={active >= 0}
+                step={active}
+                onPin={toStart}
                 pinLabel={t.pinLabel}
                 pinAria={t.pinAria}
-                controls={CARD_ID}
+                controls={CHAPTERS_ID}
               />
               <p
                 aria-hidden="true"
@@ -163,145 +164,39 @@ export function GlobeSection() {
                 {t.drag}
               </p>
             </div>
-          </Reveal>
-
-          {/* The story. */}
-          <div className="lg:col-span-5">
-            <AnimatePresence mode="wait" initial={false}>
-              {open ? (
-                <motion.div
-                  key="card"
-                  id={CARD_ID}
-                  role="region"
-                  aria-label={t.cardAria}
-                  initial={{ opacity: 0, y: 18, rotate: 2 }}
-                  animate={{ opacity: 1, y: 0, rotate: -1.2 }}
-                  exit={{ opacity: 0, y: 8, rotate: 1 }}
-                  transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-                  className="relative rounded-md border border-line bg-paper-raise p-7 pb-6 shadow-[0_26px_60px_-34px_rgba(8,9,10,0.4)] sm:p-9 sm:pb-7"
-                >
-                  <button
-                    type="button"
-                    onClick={() => setOpen(false)}
-                    aria-label={t.close}
-                    className="absolute -left-3 -top-3 grid size-8 place-items-center rounded-full border border-line bg-paper-raise text-ink-soft transition-colors duration-300 hover:border-ink hover:text-ink"
-                  >
-                    <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" className="size-3">
-                      <path d="M3 3l10 10M13 3L3 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                    </svg>
-                  </button>
-
-                  {/* Postage stamp: the mark inside a perforated edge, with a
-                      postmark ring over its corner. */}
-                  <div aria-hidden="true" className="absolute right-6 top-6 sm:right-8 sm:top-8">
-                    <div
-                      className="relative grid size-[4.5rem] place-items-center bg-ember-wash p-2"
-                      style={{
-                        WebkitMask:
-                          "radial-gradient(circle 3px at 3px 3px, transparent 98%, #000) -3px -3px / 9px 9px",
-                        mask: "radial-gradient(circle 3px at 3px 3px, transparent 98%, #000) -3px -3px / 9px 9px",
-                      }}
-                    >
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src="/brand/logo-mark.png" alt="" width={305} height={256} className="h-9 w-auto opacity-80" />
-                    </div>
-                    <svg viewBox="0 0 80 80" className="absolute -bottom-3 -left-7 size-[4.75rem] -rotate-12 text-ink-mute/70">
-                      <circle cx="40" cy="40" r="35" fill="none" stroke="currentColor" strokeWidth="1.2" />
-                      <circle cx="40" cy="40" r="26" fill="none" stroke="currentColor" strokeWidth="0.8" />
-                      <path id="pm" d="M40 40 m-30 0 a30 30 0 1 1 60 0 a30 30 0 1 1 -60 0" fill="none" />
-                      <text fontSize="8.5" fontWeight="600" letterSpacing="1.6" fill="currentColor">
-                        <textPath href="#pm" startOffset="2">{`${t.stamp.toUpperCase()} · ES · ${String(step + 1).padStart(2, "0")}`}</textPath>
-                      </text>
-                    </svg>
-                  </div>
-
-                  <p className="text-[0.8125rem] font-medium text-ember">
-                    {t.postal} {step + 1}/{t.chapters.length}
-                  </p>
-
-                  <AnimatePresence mode="wait" initial={false}>
-                    <motion.div
-                      key={step}
-                      aria-live="polite"
-                      initial={{ opacity: 0, x: 12 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -12 }}
-                      transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-                      className="min-h-[14rem] pr-20 sm:min-h-[13rem] sm:pr-24"
-                    >
-                      <h3 className="t-h2 mt-3 text-balance">{chapter.title}</h3>
-                      <p className="t-body mt-4 text-[0.9375rem]">{chapter.body}</p>
-                      {step === last && (
-                        <button
-                          type="button"
-                          onClick={openContactModal}
-                          className="mt-5 inline-flex h-11 items-center gap-2 rounded-full bg-ink px-5 text-[0.9375rem] font-medium text-paper-raise transition-colors duration-300 hover:bg-ember"
-                        >
-                          {t.cta}
-                          <span aria-hidden="true">→</span>
-                        </button>
-                      )}
-                    </motion.div>
-                  </AnimatePresence>
-
-                  <div className="mt-5 flex items-end justify-between gap-4 border-t border-dashed border-line-strong pt-4">
-                    <p className="text-[1.375rem] italic leading-none text-ink-soft">{t.sign}</p>
-                    <div className="flex items-center gap-4 text-[0.9375rem] font-medium">
-                      <button
-                        type="button"
-                        onClick={() => setStep((s) => Math.max(0, s - 1))}
-                        disabled={step === 0}
-                        aria-label={t.prev}
-                        className="text-ink transition-colors duration-300 hover:text-ember disabled:opacity-30 disabled:hover:text-ink"
-                      >
-                        ←
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setStep((s) => Math.min(last, s + 1))}
-                        disabled={step === last}
-                        aria-label={t.next}
-                        className="text-ink transition-colors duration-300 hover:text-ember disabled:opacity-30 disabled:hover:text-ink"
-                      >
-                        {t.next} →
-                      </button>
-                    </div>
-                  </div>
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="hint"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 6 }}
-                  transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                  className="flex flex-col items-center gap-4 text-center lg:items-start lg:text-left"
-                >
-                  <button
-                    type="button"
-                    onClick={toggle}
-                    aria-expanded={open}
-                    aria-controls={CARD_ID}
-                    className="group flex items-center gap-4 text-left"
-                  >
-                    {/* A hand-drawn arrow pointing back at the pin. */}
-                    <svg viewBox="0 0 64 40" fill="none" aria-hidden="true" className="hidden h-10 w-16 shrink-0 text-ink-mute transition-colors duration-300 group-hover:text-ember lg:block">
-                      <path d="M62 30C46 36 26 32 12 14" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-                      <path d="M4 6l1 14 11-8" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                    <span className="block">
-                      <span className="block text-[clamp(1.5rem,2.6vw,2.125rem)] font-semibold leading-[1.05] tracking-[-0.03em]">
-                        {t.hint}
-                      </span>
-                      <span className="mt-2 inline-block border-b border-line-strong pb-0.5 text-[0.9375rem] text-ink-soft transition-colors duration-300 group-hover:border-ember group-hover:text-ember">
-                        {t.read} →
-                      </span>
-                    </span>
-                  </button>
-                </motion.div>
-              )}
-            </AnimatePresence>
           </div>
+
+          {/* The story: four statements, set large, lit one at a time. */}
+          <ol id={CHAPTERS_ID} className="lg:col-span-6 lg:col-start-7">
+            {t.chapters.map((c, i) => (
+              <li
+                key={c.title}
+                ref={(el) => {
+                  refs.current[i] = el;
+                }}
+                className={cn(
+                  "flex flex-col justify-center py-8 transition-opacity duration-500 lg:min-h-[62svh] lg:py-10",
+                  active === -1 || active === i ? "opacity-100" : "lg:opacity-[0.22]",
+                )}
+              >
+                <p className="text-[0.875rem] font-medium text-ember">{String(i + 1).padStart(2, "0")}</p>
+                <h3 className="mt-3 text-balance text-[clamp(2rem,4.4vw,3.5rem)] font-semibold leading-[1] tracking-[-0.04em]">
+                  {c.title}
+                </h3>
+                <p className="t-body mt-5 max-w-[44ch] text-[1.0625rem]">{c.body}</p>
+                {i === t.chapters.length - 1 && (
+                  <button
+                    type="button"
+                    onClick={openContactModal}
+                    className="mt-7 inline-flex h-12 items-center gap-2 self-start rounded-full bg-ink px-6 text-[0.9375rem] font-medium text-paper-raise transition-colors duration-300 hover:bg-ember"
+                  >
+                    {t.cta}
+                    <span aria-hidden="true">→</span>
+                  </button>
+                )}
+              </li>
+            ))}
+          </ol>
         </div>
       </div>
     </section>

@@ -38,8 +38,10 @@ type Tier = "mobile" | "tablet" | "desktop";
 type DragSample = { active: boolean; dx: number; dy: number };
 
 export type StoryGlobeProps = {
-  /** The story card is open: the pin stands a little taller. */
+  /** The story is being read: the pin stands a little taller. */
   open: boolean;
+  /** Chapter being read (-1 before the story starts): the globe travels to it. */
+  step: number;
   onPin: () => void;
   /** Text on the chip beside the pin. */
   pinLabel: string;
@@ -62,7 +64,21 @@ function latLonToVector(lat: number, lon: number, radius: number) {
 
 const wrapPi = (a: number) => Math.atan2(Math.sin(a), Math.cos(a));
 
-export function StoryGlobe({ open, onPin, pinLabel, pinAria, controls }: StoryGlobeProps) {
+/**
+ * Where the globe goes for each chapter, relative to its rest pose on Spain:
+ * a turn (yaw), a tilt (pitch) and how close the camera comes. One: wide, on
+ * Barcelona. Two: right in on the city. Three: pulled back and turned to the
+ * far side — the products live online, not in one place. Four: home again.
+ */
+const JOURNEY = [
+  { yaw: 0, pitch: 0, zoom: 1 },
+  { yaw: 0.04, pitch: 0.06, zoom: 1.9 },
+  { yaw: 2.5, pitch: -0.22, zoom: 0.88 },
+  { yaw: 0, pitch: 0, zoom: 1.08 },
+];
+const REST = JOURNEY[0];
+
+export function StoryGlobe({ open, step, onPin, pinLabel, pinAria, controls }: StoryGlobeProps) {
   const values = useHeroSceneValues();
   const [tier, setTier] = useState<Tier>("desktop");
   const [reducedMotion, setReducedMotion] = useState(false);
@@ -161,6 +177,7 @@ export function StoryGlobe({ open, onPin, pinLabel, pinAria, controls }: StoryGl
         <Globe
           values={values}
           open={open}
+          step={step}
           onPin={onPin}
           pinLabel={pinLabel}
           pinAria={pinAria}
@@ -178,6 +195,7 @@ export function StoryGlobe({ open, onPin, pinLabel, pinAria, controls }: StoryGl
 function Globe({
   values,
   open,
+  step,
   onPin,
   pinLabel,
   pinAria,
@@ -188,6 +206,7 @@ function Globe({
 }: {
   values: ReturnType<typeof useHeroSceneValues>;
   open: boolean;
+  step: number;
   onPin: () => void;
   pinLabel: string;
   pinAria: string;
@@ -204,6 +223,8 @@ function Globe({
   // Offsets from the resting pose (turned to Spain), and how long the hand
   // has been away.
   const offset = useRef({ yaw: 0, pitch: 0, idle: 0 });
+  // The chapter's pose, eased towards its target every frame.
+  const travel = useRef({ yaw: 0, pitch: 0, zoom: 1 });
 
   const dayMap = useMemo(() => {
     const texture = new THREE.TextureLoader().load("/textures/earth-daymap-2k.jpg");
@@ -271,7 +292,16 @@ function Globe({
       }
     }
     const sway = reducedMotion ? 0 : Math.sin(t * 0.45) * 0.035;
-    g.rotation.set(pin.pitch + o.pitch, pin.yaw + o.yaw + sway, 0, "XYZ");
+
+    const goal = step >= 0 ? (JOURNEY[Math.min(step, JOURNEY.length - 1)] ?? REST) : REST;
+    const tr = travel.current;
+    const kt = reducedMotion ? 1 : 1 - Math.exp(-delta * 2.4);
+    tr.yaw += (goal.yaw - tr.yaw) * kt;
+    tr.pitch += (goal.pitch - tr.pitch) * kt;
+    tr.zoom += (goal.zoom - tr.zoom) * kt;
+    state.camera.position.z = 6.3 / tr.zoom;
+
+    g.rotation.set(pin.pitch + o.pitch + tr.pitch, pin.yaw + o.yaw + tr.yaw + sway, 0, "XYZ");
 
     // The pin: a ring that spreads and fades from its base, a head that rises
     // a little while the story is open.
