@@ -275,7 +275,7 @@ export const servicePagesEn: Record<string, PageEn> = {
       },
       {
         q: "Who maintains the application afterwards?",
-        a: "We can keep handling improvements and maintenance, or leave it documented for your team to run.",
+        a: "We can keep handling maintenance for a separate monthly fee, or leave it documented for your team to run. New improvements are quoted separately.",
       },
     ],
   },
