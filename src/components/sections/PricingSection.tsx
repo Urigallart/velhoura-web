@@ -2,6 +2,7 @@ import { PricingGrid } from "@/components/pricing/PricingGrid";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { getPlans } from "@/data/localized";
+import { nfcCopy, nfcOffer } from "@/data/nfc";
 import type { Locale } from "@/i18n/locale";
 
 const copy = {
@@ -51,6 +52,29 @@ export function PricingSection({ locale = "es" }: { locale?: Locale }) {
         <div data-pricing-grid className="mt-12 md:mt-14">
           <PricingGrid plans={plans} />
         </div>
+
+        <Reveal delay={160}>
+          <a
+            href="#resenas"
+            className="group mt-6 flex flex-col gap-3 rounded-2xl border border-line bg-ember-wash px-6 py-5 transition-colors duration-300 hover:border-ember sm:flex-row sm:items-center sm:justify-between"
+          >
+            <span className="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:gap-5">
+              <span className="w-fit rounded-full bg-ember px-3 py-1 text-[0.75rem] font-semibold text-paper-raise">
+                {nfcCopy.badge[locale]}
+              </span>
+              <span>
+                <span className="block text-[1.0625rem] font-semibold tracking-[-0.01em]">
+                  {nfcCopy.bannerTitle[locale]}
+                </span>
+                <span className="block text-sm text-ink-soft">{nfcCopy.bannerText[locale]}</span>
+              </span>
+            </span>
+            <span className="flex items-center gap-4 text-[0.9375rem] font-medium">
+              {nfcOffer.price && <span className="text-[1.25rem] font-semibold">{nfcCopy.pricePrefix[locale]} {nfcOffer.price}</span>}
+              <span className="transition-transform duration-300 group-hover:translate-x-1">{nfcCopy.bannerLink[locale]} →</span>
+            </span>
+          </a>
+        </Reveal>
 
         <Reveal delay={200}>
           <p className="mt-8 text-center text-xs text-ink-mute">{t.note}</p>
