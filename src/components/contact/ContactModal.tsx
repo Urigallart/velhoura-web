@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { ButtonAction } from "@/components/ui/Button";
 import { onOpenContactModal, type ContactPrefill } from "@/lib/contactModal";
+import { sendContact } from "@/lib/sendContact";
 import { useLocale } from "@/i18n/useLocale";
 import { ProjectQuiz, type QuizSubmission } from "./ProjectQuiz";
 import { PrivacyConsent } from "./PrivacyConsent";
@@ -192,21 +193,9 @@ export function ContactModal() {
     setStatus("submitting");
     setErrorMessage(null);
 
-    // `company` (honeypot) and `elapsed` are the anti-spam pair, see above.
-    const payload = { ...fields, elapsed: Date.now() - openedAt.current };
-
+    // `company` (honeypot) and the elapsed time are the anti-spam pair, see above.
     try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      if (!res.ok) {
-        const body = await res.json().catch(() => null);
-        throw new Error(body?.error ?? t.sendError);
-      }
-
+      await sendContact(fields, openedAt.current, t.sendError);
       setStatus("sent");
     } catch (err) {
       setStatus("error");

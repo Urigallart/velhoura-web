@@ -40,14 +40,14 @@ export type QuizAnswers = Record<string, string[]>;
 const has = (a: QuizAnswers, q: string, ...ids: string[]) =>
   (a[q] ?? []).some((v) => ids.includes(v));
 
-const o = (id: string, es: string, en: string, hint?: [string, string]): QuizOption => ({
+export const o = (id: string, es: string, en: string, hint?: [string, string]): QuizOption => ({
   id,
   label: { es, en },
   ...(hint ? { hint: { es: hint[0], en: hint[1] } } : null),
 });
 
 /** An "I don't know / none" option that can't be combined with the others. */
-const only = (id: string, es: string, en: string): QuizOption => ({
+export const only = (id: string, es: string, en: string): QuizOption => ({
   ...o(id, es, en),
   exclusive: true,
 });
@@ -394,8 +394,11 @@ export const quiz: QuizQuestion[] = [
 ];
 
 /** The questions that apply given the answers so far, in order. */
-export function activeQuestions(answers: QuizAnswers): QuizQuestion[] {
-  return quiz.filter((q) => !q.when || q.when(answers));
+export function activeQuestions(
+  answers: QuizAnswers,
+  questions: QuizQuestion[] = quiz,
+): QuizQuestion[] {
+  return questions.filter((q) => !q.when || q.when(answers));
 }
 
 /**
@@ -403,8 +406,11 @@ export function activeQuestions(answers: QuizAnswers): QuizQuestion[] {
  * questions after the visitor goes back and changes their sector — so the
  * email never contains answers from a path they abandoned.
  */
-export function pruneAnswers(answers: QuizAnswers): QuizAnswers {
-  const live = new Set(activeQuestions(answers).map((q) => q.id));
+export function pruneAnswers(
+  answers: QuizAnswers,
+  questions: QuizQuestion[] = quiz,
+): QuizAnswers {
+  const live = new Set(activeQuestions(answers, questions).map((q) => q.id));
   return Object.fromEntries(Object.entries(answers).filter(([id]) => live.has(id)));
 }
 
@@ -412,8 +418,9 @@ export function pruneAnswers(answers: QuizAnswers): QuizAnswers {
 export function summarize(
   answers: QuizAnswers,
   locale: Locale,
+  questions: QuizQuestion[] = quiz,
 ): { question: string; answer: string }[] {
-  return activeQuestions(answers)
+  return activeQuestions(answers, questions)
     .filter((q) => (answers[q.id] ?? []).length > 0)
     .map((q) => ({
       question: q.title[locale],

@@ -162,7 +162,13 @@ export const detailCopy = {
     seeMore: "Ver qué incluye",
     close: "Cerrar",
     cta: "Quiero este plan",
-    message: (name: string, price: string) => `Me interesa el plan ${name} (${price}).`,
+    chosen: "Plan elegido",
+    formIntro: (name: string) => `Plan ${name}`,
+    sendError: "No se pudo enviar el formulario.",
+    sentLabel: "Enviado",
+    sentTitle: "Solicitud recibida.",
+    sentBody: (name: string) =>
+      `Gracias. Revisamos lo que nos has contado sobre tu proyecto ${name} y te enviamos un presupuesto al correo que nos has dejado, normalmente en uno o dos días.`,
   },
   en: {
     idealFor: "Ideal for",
@@ -172,6 +178,12 @@ export const detailCopy = {
     seeMore: "See what's included",
     close: "Close",
     cta: "I want this plan",
-    message: (name: string, price: string) => `I'm interested in the ${name} plan (${price}).`,
+    chosen: "Chosen plan",
+    formIntro: (name: string) => `${name} plan`,
+    sendError: "The form could not be sent.",
+    sentLabel: "Sent",
+    sentTitle: "Request received.",
+    sentBody: (name: string) =>
+      `Thank you. We'll go through what you've told us about your ${name} project and send a quote to the email you left, usually within a day or two.`,
   },
 };
