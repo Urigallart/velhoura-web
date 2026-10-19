@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { COOKIE_NOTICE_KEY, legalUpdated, owner, processors, retention } from "@/data/legal";
+import { maintenancePrice } from "@/data/plans";
 
 /**
  * The four legal documents: aviso legal, privacidad, cookies, términos.
@@ -478,7 +479,8 @@ export const docs: Record<"notice" | "privacy" | "cookies" | "terms", LegalDoc> 
             entrega, salvo que el presupuesto indique otro plazo. Las nuevas
             funcionalidades se presupuestan aparte. El mantenimiento continuado
             (actualizaciones, copias de seguridad, seguridad y pequeños cambios) es
-            opcional y se contrata aparte mediante una cuota mensual, con las
+            opcional y se contrata aparte mediante una cuota mensual, desde{" "}
+            {maintenancePrice("es")} (IVA no incluido), con el importe y las
             condiciones que se indiquen en su propuesta.
           </p>
         ),

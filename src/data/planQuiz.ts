@@ -1,4 +1,5 @@
 import type { Locale } from "@/i18n/locale";
+import { maintenancePrice } from "./plans";
 import { activeQuestions, pruneAnswers, type QuizAnswers, type QuizOption, type QuizQuestion } from "./quiz";
 
 /**
@@ -105,8 +106,8 @@ const care: QuizQuestion = {
     en: "It doesn't add to the price; it tells us how to hand it over.",
   },
   note: {
-    es: "Si quieres que nos encarguemos, el mantenimiento es una cuota mensual aparte, fuera de esta estimación.",
-    en: "If you'd like us to handle it, maintenance is a separate monthly fee, outside this estimate.",
+    es: `Si quieres que nos encarguemos, el mantenimiento va aparte, desde ${maintenancePrice("es")}, fuera de esta estimación.`,
+    en: `If you'd like us to handle it, maintenance is billed separately, from ${maintenancePrice("en")}, outside this estimate.`,
   },
   options: [
     p("me", "Yo mismo, con unas instrucciones", "Me, with some instructions"),

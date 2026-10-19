@@ -1,4 +1,4 @@
-import { plans } from "./plans";
+import { maintenancePrice, plans } from "./plans";
 
 /**
  * Questions a business owner asks before hiring a studio. Every answer is
@@ -40,6 +40,6 @@ export const faqs: Faq[] = [
   },
   {
     q: "¿Y cuando la web ya está publicada?",
-    a: "El mantenimiento es opcional y va aparte del precio de la web, con una cuota mensual: nos encargamos de las actualizaciones, copias de seguridad, seguridad y pequeños cambios. Si prefieres llevarla tú, te la entregamos lista y te explicamos cómo hacerlo.",
+    a: `El mantenimiento es opcional y va aparte del precio de la web, desde ${maintenancePrice("es")} según el tamaño de la web: nos encargamos de las actualizaciones, copias de seguridad, de vigilar que siga en línea, de pequeños cambios de textos e imágenes y del soporte por email. Si prefieres llevarla tú, te la entregamos lista y te explicamos cómo hacerlo.`,
   },
 ];

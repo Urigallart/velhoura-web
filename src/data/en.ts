@@ -4,6 +4,8 @@
  * once, in the Spanish files, and only the words live here.
  */
 
+import { maintenancePrice } from "./plans";
+
 export const siteEn = {
   tagline: "Digital agency in Barcelona",
   description:
@@ -275,6 +277,6 @@ export const faqsEn: { q: string; a: string }[] = [
   },
   {
     q: "What happens once the site is live?",
-    a: "Maintenance is optional and separate from the price of the site, as a monthly fee: we take care of updates, backups, security and small changes. If you'd rather run it yourself, we hand it over ready and show you how.",
+    a: `Maintenance is optional and separate from the price of the site, from ${maintenancePrice("en")} depending on its size: we take care of updates, backups, keeping it online, small text and image changes and email support. If you'd rather run it yourself, we hand it over ready and show you how.`,
   },
 ];
