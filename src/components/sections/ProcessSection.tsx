@@ -53,7 +53,7 @@ export function ProcessSection() {
   });
 
   return (
-    <section id="process" className="band border-t border-line">
+    <section id="process" className="band">
       <div className="shell">
         <SectionHeading
           index="05"

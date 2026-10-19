@@ -110,7 +110,7 @@ export function ProductCard({
           </div>
         </motion.div>
 
-        <span className="absolute left-5 top-5 z-20 rounded-full border border-line bg-paper-raise/85 px-3 py-1 font-mono text-[0.625rem] tracking-[0.14em] text-ink-soft uppercase backdrop-blur-sm">
+        <span className="absolute left-5 top-5 z-20 rounded-full border border-line bg-paper-raise/85 px-3 py-1 font-sans text-[0.8125rem] text-ink-soft backdrop-blur-sm">
           {product.category}
         </span>
 
@@ -149,7 +149,7 @@ function StatusPill({ status }: { status: Product["status"] }) {
   const building = status === "BUILDING";
 
   return (
-    <span className="absolute right-5 top-5 z-20 inline-flex items-center gap-2 rounded-full border border-line bg-paper-raise/85 px-3 py-1 font-mono text-[0.625rem] tracking-[0.14em] text-ink-soft uppercase backdrop-blur-sm">
+    <span className="absolute right-5 top-5 z-20 inline-flex items-center gap-2 rounded-full border border-line bg-paper-raise/85 px-3 py-1 font-sans text-[0.8125rem] text-ink-soft backdrop-blur-sm">
       <span aria-hidden="true" className="relative flex size-1.5">
         {/* A live product gets a heartbeat; the others are simply marked. */}
         {live && (

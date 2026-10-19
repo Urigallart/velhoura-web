@@ -364,7 +364,7 @@ export function Navbar() {
                               <span className="block text-[0.875rem] font-medium tracking-[-0.01em] text-ink">
                                 {p.name}
                               </span>
-                              <span className="mt-0.5 block font-mono text-[10px] tracking-[0.12em] text-ink-mute uppercase">
+                              <span className="mt-0.5 block font-sans text-[0.8125rem] text-ink-mute">
                                 {p.tag}
                               </span>
                             </Link>
@@ -396,7 +396,7 @@ export function Navbar() {
                 <Link
                   href={servicesIndexPath(locale)}
                   onClick={() => setServicesOpen(false)}
-                  className="font-mono text-[11px] font-semibold tracking-[0.14em] text-ember uppercase"
+                  className="font-sans text-[0.8125rem] font-semibold text-ember"
                 >
                   {t.all}
                 </Link>
@@ -459,7 +459,7 @@ export function Navbar() {
                                   className="flex items-center justify-between py-2 text-[0.9375rem] text-ink-soft"
                                 >
                                   {p.name}
-                                  <span className="font-mono text-[10px] tracking-[0.12em] text-ink-mute uppercase">
+                                  <span className="font-sans text-[0.8125rem] text-ink-mute">
                                     {p.tag}
                                   </span>
                                 </Link>
@@ -481,7 +481,7 @@ export function Navbar() {
                               <Link
                                 href={servicesIndexPath(locale)}
                                 onClick={() => setMenuOpen(false)}
-                                className="block py-2 font-mono text-[11px] font-semibold tracking-[0.14em] text-ember uppercase"
+                                className="block py-2 font-sans text-[0.8125rem] font-semibold text-ember"
                               >
                                 {t.all}
                               </Link>

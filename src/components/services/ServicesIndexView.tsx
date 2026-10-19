@@ -81,7 +81,7 @@ export function ServicesIndexView({ locale }: { locale: Locale }) {
           <section
             key={area.id}
             id={area.id}
-            className={`band border-b border-line ${ai % 2 ? "bg-paper-off" : ""}`}
+            className={`band ${ai % 2 ? "bg-paper-off" : ""}`}
           >
             <div className="shell">
               <div className="grid gap-y-6 md:grid-cols-12 md:gap-x-10">

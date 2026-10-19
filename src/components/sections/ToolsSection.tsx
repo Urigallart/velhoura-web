@@ -33,7 +33,7 @@ const copy = {
 export function ToolsSection({ locale = "es" }: { locale?: Locale }) {
   const t = copy[locale];
   return (
-    <section className="band border-t border-line bg-paper-off">
+    <section className="band bg-paper-off">
       <div className="shell">
         <SectionHeading label={t.label} lines={t.lines} subtitle={t.subtitle} />
       </div>
@@ -87,7 +87,7 @@ function ToolTile({ tool, duplicate }: { tool: Tool; duplicate?: boolean }) {
         <span
           role="img"
           aria-label={tool.name}
-          className="grid size-9 place-items-center rounded-[10px] bg-ink font-mono text-[11px] font-semibold tracking-tight text-paper"
+          className="grid size-9 place-items-center rounded-[10px] bg-ink font-sans text-[0.8125rem] font-semibold tracking-tight text-paper"
         >
           {tool.mono}
         </span>

@@ -53,7 +53,6 @@ export default async function LegalPage({
               <Reveal y={10}>
                 <p className="t-label flex items-center gap-3">
                   <span className="text-ember">§</span>
-                  <span aria-hidden="true" className="h-px w-7 bg-line-strong" />
                   Legal
                 </p>
               </Reveal>

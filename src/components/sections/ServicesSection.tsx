@@ -34,7 +34,7 @@ export function ServicesSection({ locale = "es" }: { locale?: Locale }) {
   const t = copy[locale];
   const services = getServices(locale);
   return (
-    <section id="services" className="band border-t border-line bg-paper-off">
+    <section id="services" className="band bg-paper-off">
       <div className="shell">
         <div className="grid gap-y-10 md:grid-cols-12 md:gap-x-10">
           <div className="md:col-span-7">
@@ -93,7 +93,7 @@ export function ServicesSection({ locale = "es" }: { locale?: Locale }) {
                           )}
                         </h4>
                         {item.from && (
-                          <span className="shrink-0 font-mono text-xs text-ink-mute">
+                          <span className="shrink-0 font-sans text-xs text-ink-mute">
                             {item.from}
                           </span>
                         )}

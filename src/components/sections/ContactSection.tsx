@@ -37,7 +37,7 @@ export function ContactSection() {
   return (
     <section
       id="contact"
-      className="band grain relative isolate overflow-hidden border-t border-line"
+      className="band grain relative isolate overflow-hidden"
     >
       {/* Ground: an ember bloom low in the frame, so the page ends warm. */}
       <div
@@ -71,7 +71,7 @@ export function ContactSection() {
 
               <a
                 href={`mailto:${contact.email}`}
-                className="group font-mono text-sm text-ink-soft transition-colors duration-300 hover:text-ink"
+                className="group font-sans text-sm text-ink-soft transition-colors duration-300 hover:text-ink"
               >
                 <span className="u-draw">{contact.email}</span>
               </a>

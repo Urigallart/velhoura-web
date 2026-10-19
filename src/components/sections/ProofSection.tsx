@@ -12,7 +12,7 @@ export function ProofSection({ locale = "es" }: { locale?: Locale }) {
   if (!hasProof) return null;
 
   return (
-    <section id="clients" className="band border-t border-line">
+    <section id="clients" className="band">
       <div className="shell">
         <SectionHeading
           label={locale === "en" ? "Clients" : "Clientes"}

@@ -28,7 +28,7 @@ export function FaqSection({ locale = "es" }: { locale?: Locale }) {
   };
 
   return (
-    <section id="faq" className="band border-t border-line bg-paper-off">
+    <section id="faq" className="band bg-paper-off">
       <div className="shell">
         <div className="grid gap-y-10 md:grid-cols-12 md:gap-x-10">
           <div className="md:col-span-5">

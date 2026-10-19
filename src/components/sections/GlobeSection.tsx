@@ -123,7 +123,7 @@ export function GlobeSection() {
     refs.current[0]?.scrollIntoView({ behavior: "smooth", block: "center" });
 
   return (
-    <section id="story" className="band relative border-t border-line">
+    <section id="story" className="band relative">
       <div className="shell">
         <div className="text-center">
 <MaskedTitle

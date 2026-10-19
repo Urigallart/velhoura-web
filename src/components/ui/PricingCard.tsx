@@ -7,13 +7,21 @@ import { useLocale } from "@/i18n/useLocale";
 import { cn } from "@/lib/utils";
 
 /**
+ * One colour per plan, loud on purpose: the price section is where the page
+ * stops being quiet. Text stays ink on all four so every card reads cleanly.
+ */
+const tones: Record<string, string> = {
+  landing: "bg-[#dcf56a]",
+  business: "bg-[#ff7d5c]",
+  ecommerce: "bg-[#9ccfff]",
+  custom: "bg-[#c7a8ff]",
+};
+
+/**
  * A plan as a summary card: what it is, what it costs, and the way in. The
  * full list of what's included opens in a dialog (`PricingGrid`) — clicking
  * anywhere on the card, or its "see what's included" link, opens it — so all
  * four plans fit on one screen.
- *
- * The featured plan inverts to ink instead of shouting in colour: on a page
- * with one accent, the loudest thing available is the absence of the ground.
  */
 export function PricingCard({
   plan,
@@ -37,47 +45,30 @@ export function PricingCard({
       onClick={onDetails}
       data-plan-card
       className={cn(
-        "group relative flex h-full cursor-pointer flex-col rounded-2xl border p-6 sm:p-7",
-        "transition-[transform,box-shadow,border-color] duration-500 ease-[var(--e-out)]",
-        "hover:-translate-y-1.5",
-        featured
-          ? "border-night bg-night text-paper-raise shadow-[0_34px_74px_-34px_rgba(8,9,10,0.55)]"
-          : "border-line bg-paper-raise hover:border-line-strong hover:shadow-[0_26px_58px_-32px_rgba(8,9,10,0.26)]",
+        "group relative flex h-full cursor-pointer flex-col rounded-3xl p-6 text-ink sm:p-7",
+        "transition-[transform,box-shadow] duration-500 ease-[var(--e-out)]",
+        "hover:-translate-y-1.5 hover:shadow-[0_30px_60px_-30px_rgba(8,9,10,0.4)]",
+        tones[plan.id] ?? "bg-paper-sunk",
       )}
     >
       {featured && (
-        <span className="absolute -top-3 left-6 rounded-full bg-ember px-3 py-1 font-mono text-[0.625rem] tracking-[0.14em] text-paper-raise uppercase sm:left-7">
+        <span className="absolute -top-3 left-6 rounded-full bg-ink px-3.5 py-1 text-[0.8125rem] font-semibold text-paper-raise sm:left-7">
           {locale === "en" ? "Recommended" : "Recomendado"}
         </span>
       )}
 
-      <p className={cn("t-label t-num", featured && "!text-paper-raise/45")}>Plan {plan.index}</p>
+      <h3 className="text-[1.75rem] font-semibold leading-none tracking-[-0.04em]">{plan.name}</h3>
 
-      <h3 className={cn("t-h3 mt-2.5 text-[1.375rem]", featured ? "text-paper-raise" : "text-ink")}>
-        {plan.name}
-      </h3>
+      <p className="mt-3 flex-1 text-[0.9375rem] leading-relaxed text-ink/75">{plan.pitch}</p>
 
-      <p
-        className={cn(
-          "mt-2.5 flex-1 text-[0.9375rem] leading-relaxed",
-          featured ? "text-paper-raise/65" : "text-ink-soft",
-        )}
-      >
-        {plan.pitch}
-      </p>
-
-      <div className={cn("my-6 h-px", featured ? "bg-night-line" : "bg-line")} />
-
-      <div>
-        <p className={cn("t-label", featured && "!text-paper-raise/45", !plan.pricePrefix && "invisible")}>
-          {plan.pricePrefix ?? "·"}
+      <div className="mt-7">
+        <p className="flex items-baseline gap-2">
+          {plan.pricePrefix && <span className="text-[0.9375rem] font-medium text-ink/70">{plan.pricePrefix}</span>}
+          <span className="t-num text-[clamp(2.25rem,3.4vw,3rem)] font-semibold leading-none tracking-[-0.05em]">
+            {plan.price}
+          </span>
         </p>
-        <p className={cn("t-h2 t-num mt-1", featured ? "text-paper-raise" : "text-ink")}>{plan.price}</p>
-        {plan.priceNote && (
-          <p className={cn("mt-1.5 text-xs", featured ? "text-paper-raise/45" : "text-ink-mute")}>
-            {plan.priceNote}
-          </p>
-        )}
+        {plan.priceNote && <p className="mt-2 text-[0.8125rem] text-ink/60">{plan.priceNote}</p>}
       </div>
 
       <ButtonAction
@@ -87,7 +78,7 @@ export function PricingCard({
         }}
         arrow
         size="lg"
-        variant={featured ? "outline-inverse" : "solid"}
+        variant="solid"
         className="mt-6 w-full"
       >
         {plan.cta}
@@ -99,12 +90,7 @@ export function PricingCard({
           e.stopPropagation();
           onDetails();
         }}
-        className={cn(
-          "mt-3 inline-flex items-center justify-center gap-1.5 self-center text-[0.8125rem] font-medium underline underline-offset-4 transition-colors duration-300",
-          featured
-            ? "text-paper-raise/75 decoration-paper-raise/30 hover:text-paper-raise"
-            : "text-ink-soft decoration-line-strong hover:text-ink hover:decoration-ink",
-        )}
+        className="mt-3 inline-flex items-center justify-center gap-1.5 self-center text-[0.875rem] font-medium underline decoration-ink/30 underline-offset-4 transition-colors duration-300 hover:decoration-ink"
       >
         {t.seeMore}
         <span aria-hidden="true">+</span>

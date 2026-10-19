@@ -28,7 +28,7 @@ export function AboutSection({ locale = "es" }: { locale?: Locale }) {
   const t = copy[locale];
   const team = getTeam(locale);
   return (
-    <section id="about" className="band border-t border-line bg-paper-off">
+    <section id="about" className="band bg-paper-off">
       <div className="shell">
         <div className="grid gap-y-10 md:grid-cols-12 md:gap-x-10">
           <div className="md:col-span-6">
@@ -62,7 +62,7 @@ export function AboutSection({ locale = "es" }: { locale?: Locale }) {
 
                 {/* The monogram stands in until there is a portrait to use. */}
                 <div className="flex size-16 items-center justify-center rounded-full border border-line bg-paper-sunk transition-colors duration-500 group-hover:border-line-strong">
-                  <span className="font-mono text-lg font-medium tracking-tight text-ink-soft">
+                  <span className="font-sans text-lg font-medium tracking-tight text-ink-soft">
                     {member.monogram}
                   </span>
                 </div>

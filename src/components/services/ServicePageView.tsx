@@ -190,7 +190,7 @@ export function ServicePageView({
       </section>
 
       {/* Includes + ideal for */}
-      <section id="incluye" className="band border-t border-line bg-paper-off">
+      <section id="incluye" className="band bg-paper-off">
         <div className="shell grid gap-y-14 md:grid-cols-12 md:gap-x-10">
           <div className="md:col-span-7">
             <SectionHeading label={t.includesLabel} lines={t.includesLines} />
@@ -225,7 +225,7 @@ export function ServicePageView({
       </section>
 
       {/* Process */}
-      <section className="band border-t border-line">
+      <section className="band">
         <div className="shell">
           <SectionHeading label={t.processLabel} lines={t.processLines} />
           <ol className="mt-14 grid gap-5 md:mt-20 md:grid-cols-2 lg:grid-cols-4">
@@ -258,7 +258,7 @@ export function ServicePageView({
       </section>
 
       {/* FAQ */}
-      <section className="band border-b border-line">
+      <section className="band">
         <div className="shell grid gap-y-10 md:grid-cols-12 md:gap-x-10">
           <div className="md:col-span-5">
             <SectionHeading label={t.faqLabel} lines={t.faqLines} />
@@ -317,7 +317,7 @@ export function ServicePageView({
       )}
 
       {/* Close */}
-      <section id="empezar" className="band border-t border-line">
+      <section id="empezar" className="band">
         <div className="shell text-center">
           <MaskedTitle
             split="word"
