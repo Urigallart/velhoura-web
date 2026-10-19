@@ -5,15 +5,15 @@ import { getSite } from "@/data/localized";
 const site = getSite("en");
 
 export const metadata: Metadata = {
-  title: { absolute: `${site.name} — ${site.tagline}` },
+  title: { absolute: site.title },
   description: site.description,
   alternates: {
     canonical: "/en",
-    languages: { es: "/", en: "/en" },
+    languages: { es: "/", en: "/en", "x-default": "/" },
   },
   openGraph: {
     locale: "en_GB",
-    title: `${site.name} — ${site.tagline}`,
+    title: site.title,
     description: site.description,
   },
 };

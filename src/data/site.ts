@@ -6,20 +6,27 @@ export const site = {
   name: "Velhoura",
   /** What the studio is and where, in the words a search result shows. */
   tagline: "Agencia digital en Barcelona",
+  /**
+   * The home page's <title>. Leads with what people type into Google
+   * ("diseño web Barcelona"), not with the brand, which nobody searches yet.
+   */
+  title: "Diseño web y marketing digital en Barcelona — Velhoura",
+  /** Search-result snippet: kept under ~155 characters so Google shows it whole. */
   description:
-    "Velhoura es una agencia digital de Barcelona para pymes: identidad de marca, diseño web, tiendas online, SEO y Google Ads, hechos por un mismo equipo de principio a fin.",
+    "Agencia digital en Barcelona: páginas web desde 199 €, tiendas online, SEO, Google Ads y diseño de marca para pymes y autónomos. Presupuesto sin compromiso.",
 
   /**
-   * ⚠ CHECK BEFORE LAUNCH. This is the studio's canonical origin and it feeds
-   * `metadataBase`, the sitemap, robots.txt and every Open Graph URL.
+   * The studio's canonical origin. It feeds `metadataBase`, canonical links,
+   * the sitemap, robots.txt and every Open Graph URL, so it must be the
+   * address this site is actually served from — pointing it anywhere else
+   * tells Google this site is a copy of that one.
    *
-   * It currently collides with the eyewear brand in `data/products.ts`, which
-   * also points at velhoura.com — so the "Visitar Velhoura" button on that
-   * product page links back to this same site. One of the two needs its own
-   * domain; the studio site is the one to move if the shop is already live
-   * there.
+   * velhoura.com is NOT this site (it's the eyewear shop in
+   * `data/products.ts`). When the studio gets its own domain, set
+   * NEXT_PUBLIC_SITE_URL in Vercel (e.g. "https://velhoura.studio") and
+   * redeploy; nothing else needs to change.
    */
-  url: "https://velhoura.com",
+  url: (process.env.NEXT_PUBLIC_SITE_URL || "https://velhouraempyre-ashen.vercel.app").replace(/\/$/, ""),
 } as const;
 
 export const nav = [

@@ -19,7 +19,7 @@ export const faqs: Faq[] = [
     a: "Tres áreas que se complementan: marca (logotipo, identidad visual, diseño gráfico y packaging), web (diseño web, WordPress, tiendas online y desarrollo a medida) y captación (posicionamiento SEO y campañas de Google Ads). Puedes contratar una sola o todas.",
   },
   {
-    q: "¿Cuánto cuesta una web?",
+    q: "¿Cuánto cuesta una página web?",
     a: `Publicamos precios orientativos para que sepas por dónde empezar: ${webPrices}. Los proyectos a medida se presupuestan según lo que necesites, y siempre conoces el precio antes de que empecemos.`,
   },
   {
@@ -37,6 +37,14 @@ export const faqs: Faq[] = [
   {
     q: "¿Qué necesito para empezar?",
     a: "Solo contarnos a qué te dedicas y qué quieres conseguir. Si ya tienes logotipo, textos o fotos, nos sirven; si no, te ayudamos a prepararlos.",
+  },
+  {
+    q: "¿Hacéis páginas web para autónomos y pequeños negocios?",
+    a: "Sí, es la mayor parte de nuestro trabajo. Para un autónomo o un negocio pequeño solemos empezar por una landing o una web de pocas páginas, bien hecha y adaptada a móvil, que se puede ampliar más adelante cuando el negocio lo pida.",
+  },
+  {
+    q: "¿Me ayudáis a aparecer en Google?",
+    a: "Sí. Todas nuestras webs salen con el SEO técnico hecho: velocidad, estructura y textos pensados para que Google entienda a qué te dedicas. Si quieres ir más allá, trabajamos el posicionamiento SEO local en Barcelona y campañas de Google Ads para aparecer cuando te buscan.",
   },
   {
     q: "¿Y cuando la web ya está publicada?",
