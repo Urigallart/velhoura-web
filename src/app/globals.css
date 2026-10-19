@@ -1,58 +1,105 @@
 @import "tailwindcss";
 
-/* ============================================================
+/* ═══════════════════════════════════════════════════════════════════════
    VELHOURA — DESIGN SYSTEM
-   Light, premium, technical. Ink on paper with one signal accent.
-   ============================================================ */
+
+   Light, premium, technical. Ink on paper with one signal accent, set in
+   Geist. Colour is rationed: the signal appears roughly once per screen,
+   and never twice for the same reason.
+
+   Everything animates on the compositor only (opacity / transform /
+   clip-path / filter). No layout-affecting property is ever transitioned.
+
+   The token NAMES are the ones the components use; the values are the
+   studio's. Repainting the whole site is a matter of editing this block —
+   nothing downstream hardcodes a colour.
+   ═══════════════════════════════════════════════════════════════════════ */
 
 :root {
-  /* Surfaces */
+  /* ── Surfaces ────────────────────────────────────────────────────────
+     `paper` is the ground and cards sit on `paper-raise`; `paper-off` is
+     the alternate section ground that gives a long page its rhythm. */
   --paper: #ffffff;
+  --paper-raise: #ffffff;
   --paper-off: #fafaf9;
   --paper-sunk: #f4f4f2;
   --line: #e7e7e4;
   --line-strong: #d6d6d2;
 
-  /* Ink */
+  /* Inverted surfaces (Vision band, featured plan) */
+  --night: #08090a;
+  --night-raise: #14161a;
+  --night-line: rgba(255, 255, 255, 0.15);
+
+  /* ── Ink ─────────────────────────────────────────────────────────── */
   --ink: #08090a;
   --ink-soft: #3d4045;
   --ink-mute: #797d84;
   --ink-faint: #a6aab0;
 
-  /* Signal — used sparingly. Velhoura's single accent. */
-  --signal: #0b46ff;
-  --signal-deep: #0730b8;
-  --signal-wash: #eef2ff;
+  /* ── Signal — Velhoura's single accent, used sparingly. ───────────── */
+  --ember: #0b46ff;
+  --ember-deep: #0730b8;
+  --ember-wash: #eef2ff;
 
-  /* Motion language */
-  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-swift: cubic-bezier(0.22, 0.61, 0.36, 1);
+  /* Status only. */
+  --patina: #10b981;
 
-  /* Rhythm */
+  /* ── Motion language ──────────────────────────────────────────────
+     Three curves, used consistently:
+       out    — anything entering or settling (the house curve)
+       io     — anything that leaves and returns (tabs, menus)
+       spring — anything that should feel physical (pills, magnets) */
+  --e-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --e-io: cubic-bezier(0.65, 0, 0.35, 1);
+  --e-spring: linear(
+    0, 0.006, 0.025 2.8%, 0.101 6.1%, 0.539 18.9%, 0.721 25.3%, 0.849 31.5%,
+    0.937 38.1%, 0.968 41.8%, 0.991 45.7%, 1.006 50.1%, 1.015 55%, 1.017 63.9%,
+    1.001
+  );
+
+  /* ── Rhythm ──────────────────────────────────────────────────────── */
   --shell: 1240px;
   --gutter: 24px;
+  /* Floating pill: its own height plus the gap it sits below the top edge. */
+  --nav-h: 72px;
 }
 
 @theme inline {
   --color-paper: var(--paper);
+  --color-paper-raise: var(--paper-raise);
   --color-paper-off: var(--paper-off);
   --color-paper-sunk: var(--paper-sunk);
   --color-line: var(--line);
   --color-line-strong: var(--line-strong);
+
+  --color-night: var(--night);
+  --color-night-raise: var(--night-raise);
+  --color-night-line: var(--night-line);
+
   --color-ink: var(--ink);
   --color-ink-soft: var(--ink-soft);
   --color-ink-mute: var(--ink-mute);
   --color-ink-faint: var(--ink-faint);
-  --color-signal: var(--signal);
-  --color-signal-deep: var(--signal-deep);
-  --color-signal-wash: var(--signal-wash);
 
+  --color-ember: var(--ember);
+  --color-ember-deep: var(--ember-deep);
+  --color-ember-wash: var(--ember-wash);
+  --color-patina: var(--patina);
+
+  /* Display and text are the same family: the scale does the work, not a
+     second typeface. */
+  --font-display: var(--font-geist-sans), ui-sans-serif, system-ui,
+    -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system,
     "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", Menlo, monospace;
 
-  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out: var(--e-out);
+  --ease-spring: var(--e-spring);
 }
+
+/* ══ Base ═══════════════════════════════════════════════════════════ */
 
 @layer base {
   * {
@@ -61,6 +108,8 @@
 
   html {
     scroll-behavior: smooth;
+    /* Anchored sections must clear the fixed navbar. */
+    scroll-padding-top: calc(var(--nav-h) + 16px);
     -webkit-text-size-adjust: 100%;
   }
 
@@ -71,6 +120,7 @@
     font-synthesis-weight: none;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     overflow-x: clip;
   }
 
@@ -80,14 +130,32 @@
   }
 
   :focus-visible {
-    outline: 2px solid var(--signal);
+    outline: 2px solid var(--ember);
     outline-offset: 3px;
     border-radius: 2px;
   }
+
+  /* Native form controls inherit the type stack rather than the OS one. */
+  input,
+  textarea,
+  select,
+  button {
+    font: inherit;
+    color: inherit;
+  }
+
+  @media (pointer: fine) {
+    html {
+      scrollbar-color: var(--line-strong) var(--paper);
+      scrollbar-width: thin;
+    }
+  }
 }
 
+/* ══ Components ═════════════════════════════════════════════════════ */
+
 @layer components {
-  /* Page shell -------------------------------------------------- */
+  /* ── Page shell ─────────────────────────────────────────────────── */
   .shell {
     width: 100%;
     max-width: var(--shell);
@@ -97,12 +165,13 @@
 
   @media (min-width: 768px) {
     .shell {
-      padding-inline: 40px;
+      padding-inline: 44px;
     }
   }
 
-  /* Type scale — tight, optical, Apple-adjacent ------------------ */
+  /* ── Type scale — tight, optical, Apple-adjacent ─────────────────── */
   .t-display {
+    font-family: var(--font-display);
     font-size: clamp(2.75rem, 11vw, 8.5rem);
     line-height: 0.92;
     letter-spacing: -0.045em;
@@ -110,6 +179,7 @@
   }
 
   .t-h1 {
+    font-family: var(--font-display);
     font-size: clamp(2.1rem, 6.2vw, 4.5rem);
     line-height: 1.03;
     letter-spacing: -0.035em;
@@ -117,6 +187,7 @@
   }
 
   .t-h2 {
+    font-family: var(--font-display);
     font-size: clamp(1.65rem, 3.6vw, 2.75rem);
     line-height: 1.1;
     letter-spacing: -0.03em;
@@ -124,10 +195,19 @@
   }
 
   .t-h3 {
+    font-family: var(--font-sans);
     font-size: clamp(1.15rem, 1.8vw, 1.5rem);
     line-height: 1.25;
     letter-spacing: -0.02em;
     font-weight: 550;
+  }
+
+  /* Emphasis marker. `MaskedTitle` wraps `*asterisked*` words in this, and
+     in a one-family sans system the right amount of emphasis is none — the
+     scale and the signal accent already carry the hierarchy. Kept as a hook
+     so the copy's markers stay meaningful if a display italic ever lands. */
+  .t-em {
+    font-style: normal;
   }
 
   .t-lead {
@@ -143,97 +223,191 @@
     color: var(--ink-soft);
   }
 
-  /* Eyebrow / index label --------------------------------------- */
+  /* Technical annotation. Every eyebrow, index, unit and status. */
   .t-label {
     font-family: var(--font-mono);
     font-size: 0.6875rem;
+    line-height: 1.4;
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--ink-mute);
     font-weight: 500;
   }
 
-  /* Hairline rules ---------------------------------------------- */
+  /* Tabular numbers wherever a figure can change (counters, prices). */
+  .t-num {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ── Rules & rhythm ─────────────────────────────────────────────── */
   .rule {
     height: 1px;
     background: var(--line);
   }
 
-  /* Section rhythm ---------------------------------------------- */
   .band {
-    padding-block: clamp(88px, 13vw, 180px);
+    padding-block: clamp(92px, 13vw, 184px);
   }
 
   .band-tight {
-    padding-block: clamp(64px, 9vw, 120px);
+    padding-block: clamp(66px, 9vw, 124px);
+  }
+
+  /* ── Form control ───────────────────────────────────────────────── */
+  .field {
+    width: 100%;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    border-radius: 10px;
+    padding: 0.8rem 0.95rem;
+    font-size: 0.9375rem;
+    color: var(--ink);
+    outline: none;
+    transition:
+      border-color 0.35s var(--e-out),
+      background-color 0.35s var(--e-out),
+      box-shadow 0.35s var(--e-out);
+  }
+
+  .field::placeholder {
+    color: var(--ink-faint);
+  }
+
+  .field:focus {
+    border-color: var(--ink-soft);
+    background: var(--paper-raise);
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--ember) 12%, transparent);
   }
 }
 
+/* ══ Utilities ══════════════════════════════════════════════════════ */
+
 @layer utilities {
-  /* Reveal-on-scroll primitive. Driven by IntersectionObserver,
-     animated purely on the compositor (opacity + transform). */
-  .reveal {
+  /* ── Reveal system ──────────────────────────────────────────────────
+     One shared IntersectionObserver (see `lib/observe.ts`) flips
+     `data-shown` on any element carrying `data-reveal`. The variant is
+     the attribute's value, so a reveal costs one attribute and zero
+     per-element JavaScript.
+
+       --rd  reveal delay
+       --ry  rise distance                                             */
+  [data-reveal] {
     opacity: 0;
-    transform: translate3d(0, var(--reveal-y, 22px), 0);
     transition:
-      opacity 0.9s var(--ease-out-expo) var(--reveal-delay, 0ms),
-      transform 0.9s var(--ease-out-expo) var(--reveal-delay, 0ms);
+      opacity 0.85s var(--e-out) var(--rd, 0ms),
+      transform 1.05s var(--e-out) var(--rd, 0ms),
+      clip-path 1.1s var(--e-out) var(--rd, 0ms),
+      filter 1.1s var(--e-out) var(--rd, 0ms);
     will-change: opacity, transform;
   }
 
-  .reveal[data-shown="true"] {
+  [data-reveal="rise"] {
+    transform: translate3d(0, var(--ry, 26px), 0);
+  }
+
+  [data-reveal="lift"] {
+    transform: translate3d(0, var(--ry, 40px), 0) scale(0.985);
+  }
+
+  [data-reveal="wipe"] {
+    clip-path: inset(0 0 100% 0);
+    transform: translate3d(0, 14px, 0);
+  }
+
+  [data-reveal="blur"] {
+    filter: blur(10px);
+    transform: translate3d(0, 12px, 0);
+  }
+
+  [data-reveal][data-shown="true"] {
     opacity: 1;
-    transform: translate3d(0, 0, 0);
+    transform: none;
+    clip-path: inset(0 0 0 0);
+    filter: none;
     will-change: auto;
   }
 
-  /* Mask-based line-by-line title reveal */
-  .line-mask {
+  /* ── Masked type ────────────────────────────────────────────────────
+     Each line (or word) sits in its own overflow-hidden box and rises
+     from beneath it. The padding/negative-margin pair keeps descenders
+     off the mask without changing the element's outer box. */
+  .lm {
     display: block;
     overflow: hidden;
-    /* Descenders would otherwise be clipped by the mask. */
-    padding-bottom: 0.09em;
+    padding-bottom: 0.14em;
+    margin-bottom: -0.14em;
   }
 
-  .line-mask > span {
+  .lm > span {
     display: block;
-    transform: translate3d(0, 105%, 0);
-    transition: transform 1.05s var(--ease-out-expo) var(--reveal-delay, 0ms);
+    transform: translate3d(0, 108%, 0);
+    transition: transform 1.15s var(--e-out) var(--rd, 0ms);
   }
 
-  [data-shown="true"] .line-mask > span,
-  .line-mask[data-shown="true"] > span {
+  .wm {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: bottom;
+    padding-bottom: 0.14em;
+    margin-bottom: -0.14em;
+  }
+
+  .wm > span {
+    display: inline-block;
+    transform: translate3d(0, 108%, 0);
+    transition: transform 1.15s var(--e-out) var(--rd, 0ms);
+  }
+
+  [data-shown="true"] .lm > span,
+  [data-shown="true"] .wm > span {
     transform: translate3d(0, 0, 0);
   }
 
-  /* Velocity streak — the motorsport cue, kept to a hairline */
-  .streak {
+  /* ── Underline that draws from the left ─────────────────────────── */
+  .u-draw {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    background-size: 0% 1px;
+    transition: background-size 0.55s var(--e-out);
+  }
+
+  .group:hover .u-draw,
+  .u-draw:hover,
+  .u-draw:focus-visible {
+    background-size: 100% 1px;
+  }
+
+  /* ── Film grain ──────────────────────────────────────────────────────
+     Real fractal noise rather than a dot lattice: it survives scaling,
+     costs one cached data-URI, and is what stops large flat areas of
+     bone from banding. */
+  .grain::after {
+    content: "";
     position: absolute;
-    height: 1px;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      color-mix(in oklab, var(--signal) 55%, transparent),
-      transparent
-    );
+    inset: 0;
+    pointer-events: none;
+    /* Barely there: on a white ground this is a paper texture, not a tint. */
+    opacity: 0.12;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
   }
 
-  .grain {
-    background-image: radial-gradient(
-      circle at 1px 1px,
-      color-mix(in oklab, var(--ink) 7%, transparent) 1px,
-      transparent 0
-    );
-    background-size: 22px 22px;
+  /* On an ink ground `multiply` has nothing to darken, so the inverted
+     bands blend the same noise the other way. */
+  .grain-invert::after {
+    mix-blend-mode: overlay;
+    opacity: 0.18;
   }
 
-  /* Entrance animations for above-the-fold content.
-     Deliberately CSS rather than JS: they need no rAF, survive a background
-     tab, and resolve to their final state even if JS never runs. */
+  /* ── Above-the-fold entrances ───────────────────────────────────────
+     CSS, not JS: they paint from the server HTML, survive a background
+     tab, need no hydration, and resolve to their final state even if
+     JavaScript never arrives. */
   @keyframes v-rise {
     from {
       opacity: 0;
-      transform: translate3d(0, 26px, 0);
+      transform: translate3d(0, 28px, 0);
     }
     to {
       opacity: 1;
@@ -243,34 +417,76 @@
 
   @keyframes v-unmask {
     from {
-      transform: translate3d(0, 105%, 0);
+      transform: translate3d(0, 108%, 0);
     }
     to {
       transform: none;
     }
   }
 
+  @keyframes v-draw {
+    from {
+      stroke-dashoffset: var(--len, 1200);
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes v-fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: var(--o, 1);
+    }
+  }
+
+  @keyframes v-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes v-spin-back {
+    to {
+      transform: rotate(-360deg);
+    }
+  }
+
+  @keyframes v-breathe {
+    0%,
+    100% {
+      opacity: 0.2;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.6;
+      transform: scale(1.6);
+    }
+  }
+
   @keyframes v-cue {
     0% {
-      transform: translate3d(0, -100%, 0);
+      transform: translate3d(0, -110%, 0);
     }
     100% {
-      transform: translate3d(0, 260%, 0);
+      transform: translate3d(0, 280%, 0);
     }
   }
 
   .anim-rise {
-    animation: v-rise 1s var(--ease-out-expo) both;
+    animation: v-rise 1s var(--e-out) both;
     animation-delay: var(--d, 0ms);
   }
 
   .anim-unmask {
-    animation: v-unmask 1.15s var(--ease-out-expo) both;
+    animation: v-unmask 1.2s var(--e-out) both;
     animation-delay: var(--d, 0ms);
   }
 
   .anim-cue {
-    animation: v-cue 2.1s var(--ease-out-expo) infinite;
+    animation: v-cue 2.4s var(--e-out) infinite;
   }
 
   .no-scrollbar::-webkit-scrollbar {
@@ -282,8 +498,10 @@
   }
 }
 
-/* Respect the user's motion preference — everything resolves to
-   its final state instantly, nothing is left invisible. */
+/* ══ Motion preference ══════════════════════════════════════════════
+   Nothing is left invisible or mid-transform: every animated element
+   resolves to its finished state immediately. */
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -294,15 +512,133 @@
   *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
+    animation-delay: 0ms !important;
     transition-duration: 0.001ms !important;
+    transition-delay: 0ms !important;
   }
 
-  .reveal {
+  [data-reveal] {
     opacity: 1;
     transform: none;
+    clip-path: none;
+    filter: none;
   }
 
-  .line-mask > span {
+  .lm > span,
+  .wm > span {
     transform: none;
+  }
+}
+
+/* ══ Intro — office → laptop → page ════════════════════════════════
+   `data-intro` is set before first paint by the gate script in the root
+   layout: `play` while the zoom runs, `done` once it lands, `skip` when it
+   should not run. Unset (no JS, other routes) means the page, directly. */
+
+html:not([data-intro="play"]):not([data-intro="done"]) .intro-runway {
+  display: none;
+}
+
+html[data-intro="play"] .intro-hero,
+html[data-intro="done"] .intro-hero {
+  margin-top: calc(-1 * var(--intro-vh, 100svh));
+}
+
+/* The real hero waits under the stage until the copy on the glass has
+   grown to exactly its size — then they swap in one frame. */
+html[data-intro="play"] .intro-hero {
+  visibility: hidden;
+}
+
+/* The navigation belongs to the page, not to the office: it arrives with
+   the page. */
+.site-nav {
+  transition: opacity 0.5s var(--e-out);
+}
+
+/* During the intro the header follows the camera: present while the page
+   still fills most of the window, gone once the room is back in shot. */
+html[data-intro="play"] .site-nav {
+  opacity: var(--intro-nav, 0);
+  transition: none;
+}
+
+html[data-intro="play"]:not([data-intro-nav="on"]) .site-nav {
+  pointer-events: none;
+}
+
+/* The intro's cards: beside the lid on wide windows, in a row under the
+   laptop otherwise. The geometry decides and writes `data-intro-cards`. */
+html[data-intro-cards="sides"] .intro-cards-row,
+html:not([data-intro-cards="sides"]) .intro-cards-sides {
+  display: none;
+}
+
+/* The intro's scroll cue: the chevron dips, as if pointing the way in. */
+@keyframes v-nudge {
+  0%,
+  100% {
+    transform: translate3d(0, -1px, 0);
+  }
+  50% {
+    transform: translate3d(0, 2px, 0);
+  }
+}
+
+.anim-nudge {
+  animation: v-nudge 1.8s var(--e-io) infinite;
+}
+
+/* ══ Tools strip ═════════════════════════════════════════════════════
+   An endless run of logos: the list is rendered twice and the track moves
+   by exactly half its width, so the loop has no seam. Hover or focus pauses
+   it; the edges fade rather than cut. */
+
+.marquee {
+  overflow: hidden;
+  padding-block: 12px;
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 8%,
+    #000 92%,
+    transparent
+  );
+}
+
+.marquee-track {
+  display: flex;
+  gap: 24px;
+  width: max-content;
+  padding-inline: 12px;
+  animation: v-marquee 48s linear infinite;
+}
+
+.marquee:hover .marquee-track,
+.marquee:focus-within .marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes v-marquee {
+  to {
+    transform: translate3d(calc(-50% - 12px), 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee {
+    mask-image: none;
+  }
+
+  .marquee-track {
+    animation: none;
+    width: auto;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding-inline: var(--gutter);
+  }
+
+  .marquee-item[aria-hidden="true"] {
+    display: none;
   }
 }

@@ -11,6 +11,50 @@ import {
   PreviewLanding,
 } from "@/components/visual/SitePreviews";
 import { cn } from "@/lib/utils";
+import { useLocale } from "@/i18n/useLocale";
+
+/** English words for the examples; the previews themselves stay as built. */
+const showcasesEn: Record<string, Pick<Showcase, "tier" | "sector" | "blurb" | "scope">> = {
+  landing: {
+    tier: "Landing",
+    sector: "Botanical skincare · fictional brand",
+    blurb: "One page. One product. Editorial type, plenty of space and a single call to action.",
+    scope: ["One page", "Visual identity", "Entrance animation", "Basic SEO"],
+  },
+  business: {
+    tier: "Business",
+    sector: "Industrial engineering · fictional brand",
+    blurb: "Multi-page company website: services, sectors, projects and proposal requests.",
+    scope: ["6 pages", "Content manager", "Forms", "Technical SEO"],
+  },
+  ecommerce: {
+    tier: "Online Store",
+    sector: "Homeware · fictional brand",
+    blurb: "A complete direct-to-consumer store: catalogue, cart, Stripe checkout and order management.",
+    scope: ["Product catalogue", "Cart and checkout", "Stripe payments", "Order panel"],
+  },
+  custom: {
+    tier: "Custom",
+    sector: "Logistics SaaS · fictional brand",
+    blurb: "A platform with real-time data, roles, a dashboard and API integrations.",
+    scope: ["Web application", "Database", "API", "Real-time dashboard"],
+  },
+};
+
+const copy = {
+  es: {
+    label: "Ejemplos",
+    lines: ["Qué significa", "*cada plan.*"],
+    subtitle: "Cuatro ejemplos construidos para mostrar el alcance de cada nivel. Las marcas son ficticias.",
+    tablist: "Ejemplos por plan",
+  },
+  en: {
+    label: "Examples",
+    lines: ["What each plan", "*looks like.*"],
+    subtitle: "Four examples built to show the scope of each tier. The brands are fictional.",
+    tablist: "Examples by plan",
+  },
+};
 
 type Showcase = {
   id: string;
@@ -29,7 +73,7 @@ type Showcase = {
  * Desktop gets a tabbed viewer with a crossfade; mobile stacks the three
  * previews so there is nothing to discover behind a control.
  */
-const showcases: Showcase[] = [
+const showcasesBase: Showcase[] = [
   {
     id: "landing",
     tier: "Landing",
@@ -73,6 +117,12 @@ const showcases: Showcase[] = [
 ];
 
 export function ShowcaseSection() {
+  const locale = useLocale();
+  const t = copy[locale];
+  const showcases =
+    locale === "en"
+      ? showcasesBase.map((s) => ({ ...s, ...showcasesEn[s.id] }))
+      : showcasesBase;
   const [active, setActive] = useState(0);
   const reduced = useReducedMotion();
   const current = showcases[active];
@@ -81,9 +131,10 @@ export function ShowcaseSection() {
     <section className="band-tight border-t border-line bg-paper-off">
       <div className="shell">
         <SectionHeading
-          label="05 — Examples"
-          lines={["Qué significa", "cada plan."]}
-          subtitle="Cuatro ejemplos construidos para mostrar el alcance de cada nivel. Las marcas son ficticias."
+          index="03"
+          label={t.label}
+          lines={t.lines}
+          subtitle={t.subtitle}
         />
 
         {/* ── Desktop: tabbed viewer ─────────────────────────────── */}
@@ -91,8 +142,8 @@ export function ShowcaseSection() {
           <Reveal>
             <div
               role="tablist"
-              aria-label="Ejemplos por plan"
-              className="flex gap-1 rounded-full border border-line bg-paper p-1"
+              aria-label={t.tablist}
+              className="flex gap-1 rounded-full border border-line bg-paper-raise p-1"
               style={{ width: "fit-content" }}
             >
               {showcases.map((s, i) => (
@@ -106,7 +157,7 @@ export function ShowcaseSection() {
                   onClick={() => setActive(i)}
                   className={cn(
                     "relative rounded-full px-5 py-2 text-sm font-medium transition-colors duration-300",
-                    active === i ? "text-paper" : "text-ink-soft hover:text-ink",
+                    active === i ? "text-paper-raise" : "text-ink-soft hover:text-ink",
                   )}
                 >
                   {active === i && (
@@ -157,7 +208,7 @@ export function ShowcaseSection() {
                     exit={reduced ? undefined : { opacity: 0, y: -8 }}
                     transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
                   >
-                    <p className="t-label">{current.tier}</p>
+                    <p className="t-label !text-ember">{current.tier}</p>
                     <h3 className="t-h2 mt-3">{current.brand}</h3>
                     <p className="mt-2 text-sm text-ink-mute">
                       {current.sector}
@@ -168,12 +219,12 @@ export function ShowcaseSection() {
                       {current.scope.map((item) => (
                         <li
                           key={item}
-                          className="flex items-center justify-between border-b border-line bg-paper px-4 py-3 text-sm text-ink-soft last:border-b-0"
+                          className="flex items-center justify-between border-b border-line bg-paper-raise px-4 py-3 text-sm text-ink-soft last:border-b-0"
                         >
                           {item}
                           <span
                             aria-hidden="true"
-                            className="size-1.5 rounded-full bg-signal/60"
+                            className="size-1.5 rounded-full bg-line-strong"
                           />
                         </li>
                       ))}
@@ -189,7 +240,7 @@ export function ShowcaseSection() {
         <div className="mt-12 space-y-10 md:hidden">
           {showcases.map((s, i) => (
             <Reveal key={s.id} delay={i * 80}>
-              <p className="t-label">{s.tier}</p>
+              <p className="t-label !text-ember">{s.tier}</p>
               <h3 className="t-h3 mt-2">{s.brand}</h3>
               <p className="mt-1 text-xs text-ink-mute">{s.sector}</p>
               <div className="mt-4">
@@ -207,14 +258,14 @@ export function ShowcaseSection() {
 /** Neutral browser chrome so the previews read as real sites, not as UI cards. */
 function BrowserFrame({ children }: { children: ReactNode }) {
   return (
-    <div className="overflow-hidden rounded-xl border border-line bg-paper shadow-[0_30px_70px_-40px_rgba(8,9,10,0.4)]">
+    <div className="overflow-hidden rounded-xl border border-line bg-paper-raise shadow-[0_34px_74px_-40px_rgba(8,9,10,0.42)]">
       <div className="flex items-center gap-2 border-b border-line bg-paper-sunk px-4 py-2.5">
         <span className="flex gap-1.5" aria-hidden="true">
           <span className="size-2 rounded-full bg-line-strong" />
           <span className="size-2 rounded-full bg-line-strong" />
           <span className="size-2 rounded-full bg-line-strong" />
         </span>
-        <span className="mx-auto rounded-md bg-paper px-3 py-0.5 font-mono text-[0.625rem] text-ink-faint">
+        <span className="mx-auto rounded-md bg-paper-raise px-3 py-0.5 font-mono text-[0.625rem] text-ink-faint">
           ejemplo.velhoura.com
         </span>
       </div>

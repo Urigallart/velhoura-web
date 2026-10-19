@@ -1,6 +1,6 @@
 /**
- * Web development plans (second line of business).
- * Edit here — PricingCard renders whatever this array contains.
+ * Web development plans (the studio's second line of business).
+ * Edit here — `PricingCard` renders whatever this array contains.
  */
 
 export type Plan = {
@@ -9,6 +9,12 @@ export type Plan = {
   name: string;
   pitch: string;
   features: string[];
+  /**
+   * Split from the figure so the two can be set differently: the qualifier
+   * stays small and mono, the number gets the display scale. A price that
+   * reads as one run-on string is a price nobody scans.
+   */
+  pricePrefix?: string;
   price: string;
   priceNote?: string;
   cta: string;
@@ -19,7 +25,7 @@ export type Plan = {
 export const plans: Plan[] = [
   {
     id: "landing",
-    index: "PLAN 01",
+    index: "01",
     name: "Landing",
     pitch:
       "Para profesionales, proyectos y negocios que necesitan una presencia digital sencilla y potente.",
@@ -31,13 +37,14 @@ export const plans: Plan[] = [
       "Formulario de contacto",
       "Optimización de velocidad",
     ],
-    price: "Desde 199 €",
+    pricePrefix: "Desde",
+    price: "199 €",
     priceNote: "Precio orientativo",
     cta: "Quiero mi web",
   },
   {
     id: "business",
-    index: "PLAN 02",
+    index: "02",
     name: "Business",
     pitch: "Para empresas que necesitan una web más completa.",
     features: [
@@ -50,14 +57,15 @@ export const plans: Plan[] = [
       "Integraciones",
       "Panel / gestión de contenido",
     ],
-    price: "Desde 499 €",
+    pricePrefix: "Desde",
+    price: "499 €",
     priceNote: "Precio orientativo",
     cta: "Quiero mi web",
     featured: true,
   },
   {
     id: "ecommerce",
-    index: "PLAN 03",
+    index: "03",
     name: "Tienda Online",
     pitch: "Para negocios que quieren vender online con una tienda propia.",
     features: [
@@ -68,13 +76,14 @@ export const plans: Plan[] = [
       "Panel de administración",
       "Envíos y descuentos",
     ],
-    price: "Desde 799 €",
+    pricePrefix: "Desde",
+    price: "799 €",
     priceNote: "Precio orientativo",
     cta: "Quiero mi tienda",
   },
   {
     id: "custom",
-    index: "PLAN 04",
+    index: "04",
     name: "Custom",
     pitch: "Para proyectos que necesitan algo completamente personalizado.",
     features: [
@@ -87,6 +96,7 @@ export const plans: Plan[] = [
       "Funcionalidades específicas",
     ],
     price: "Hablemos",
+    priceNote: "Presupuesto a medida",
     cta: "Contactar",
   },
 ];

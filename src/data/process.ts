@@ -1,4 +1,4 @@
-/** The five steps from idea to product. Rendered as a scroll-linked track. */
+/** How a client project runs, start to finish. Rendered as a scroll-linked track. */
 
 export type ProcessStep = {
   index: string;
@@ -9,27 +9,22 @@ export type ProcessStep = {
 export const processSteps: ProcessStep[] = [
   {
     index: "01",
-    title: "Idea",
-    body: "Encontramos una oportunidad o tenemos una idea.",
+    title: "Escuchamos",
+    body: "Hablamos de tu negocio, tus clientes y lo que quieres conseguir. Antes de proponer nada, entendemos dónde estás.",
   },
   {
     index: "02",
-    title: "Design",
-    body: "Diseñamos la experiencia y la identidad del producto.",
+    title: "Proponemos",
+    body: "Te enviamos un plan por escrito: qué haremos, en qué orden y cuánto cuesta. Sin letra pequeña.",
   },
   {
     index: "03",
-    title: "Build",
-    body: "Desarrollamos la aplicación, web o plataforma.",
+    title: "Construimos",
+    body: "Diseñamos y desarrollamos por etapas. Ves cada avance y lo revisamos juntos antes de seguir.",
   },
   {
     index: "04",
-    title: "Launch",
-    body: "Lanzamos el producto al público.",
-  },
-  {
-    index: "05",
-    title: "Grow",
-    body: "Analizamos, mejoramos y hacemos crecer el producto.",
+    title: "Lanzamos y mejoramos",
+    body: "Publicamos, medimos cómo responde la gente y ajustamos lo necesario para que siga dando resultado.",
   },
 ];

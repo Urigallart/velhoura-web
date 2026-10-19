@@ -1,143 +1,158 @@
 import { HeroBackdrop } from "@/components/visual/HeroBackdrop";
+import { Armature } from "@/components/visual/Armature";
 import { HeroSceneLoader } from "@/components/3d/HeroSceneLoader";
 import { ButtonLink } from "@/components/ui/Button";
+import type { Locale } from "@/i18n/locale";
+
+const copy = {
+  es: {
+    badge: "Agencia digital · Barcelona",
+    lines: ["Creamos tu marca.", "Construimos tu web.", "Te traemos clientes"],
+    lead: "Ayudamos a pymes de Barcelona a crecer en internet: una marca que se recuerda, una web que convierte visitas en contactos y campañas que te ponen delante de quien ya te está buscando. Un solo equipo, de principio a fin.",
+    primary: "Cuéntanos tu negocio",
+    secondary: "Ver servicios",
+    small: "Precios orientativos publicados. Primera conversación sin compromiso.",
+  },
+  en: {
+    badge: "Digital agency · Barcelona",
+    lines: ["We shape your brand.", "We build your site.", "We bring you clients"],
+    lead: "We help Barcelona businesses grow online: a brand people remember, a website that turns visits into enquiries and campaigns that put you in front of people already looking for you. One team, start to finish.",
+    primary: "Tell us about your business",
+    secondary: "See services",
+    small: "Indicative prices published. First conversation, no strings attached.",
+  },
+};
 
 /**
  * First screen.
  *
+ * One centred column: badge, claim, one paragraph, two calls to action, and a
+ * line of small print that answers the question the buttons raise. Everything
+ * a visitor needs to decide is on one axis, so there is no second place for
+ * the eye to go and no competition for the claim.
+ *
+ * The globe and the instrument around it sit *below* that stack rather than
+ * beside it, cropped by the fold. That is deliberate: the fold is the only
+ * free invitation to scroll a page ever gets, and a shape cut in half by it
+ * spends it better than an arrow asking politely.
+ *
  * The entrance is pure CSS on purpose. Everything above the fold paints from
  * the server HTML and resolves on its own timeline — no hydration, no rAF, no
  * blank hero if JavaScript is slow, throttled in a background tab, or absent.
- * The only client-side piece here is the backdrop's pointer parallax, which is
- * decoration and can afford to arrive late.
  */
-export function Hero() {
+export function Hero({
+  scene = true,
+  locale = "es",
+}: {
+  /** The globe stage. Off for the copy shown on the intro's laptop glass. */
+  scene?: boolean;
+  locale?: Locale;
+} = {}) {
+  const t = copy[locale];
   return (
-    <section className="relative isolate flex min-h-[100svh] flex-col justify-center overflow-hidden pt-28 pb-20 sm:pt-32">
+    <section className="relative isolate overflow-hidden pt-32 pb-16 sm:pt-36 sm:pb-24">
       <HeroBackdrop />
-      <HeroSceneLoader />
 
-      {/*
-        `pointer-events-none` here, not just visual layout: block-level
-        elements (this h1/p/div stack) claim their full container width for
-        hit-testing even where the visible glyphs are left-aligned and the
-        rest is empty space — and this shell sits later in the DOM than
-        `HeroSceneLoader`, so it always wins that hit-test. Without this, the
-        3D layer's drag-to-rotate hotspot (which spans most of the right side
-        of the hero) would be blocked everywhere those invisible boxes reach,
-        leaving only a thin strip clear of them actually draggable. Re-enabled
-        just on the CTAs below, the only real interactive content in here.
-      */}
-      <div className="shell relative pointer-events-none">
-        {/*
-          Legibility guarantee for the text column against the 3D layer
-          behind it. The centerpiece is intentionally large and roams close
-          to center via pointer tilt and drift — rather than trying to keep
-          its ever-changing footprint out of the text's bounding box (the
-          headline alone spans up to ~90% of the viewport width at desktop
-          sizes, leaving no reliable gap to dodge into), this soft, edgeless
-          scrim blurs and lightens whatever sits behind the text specifically.
-          It has no visible edge (feathered via mask-image) and reads as
-          atmosphere, not a panel — the 3D piece stays fully vivid in the
-          open space around and beyond it.
-        */}
-        <div
-          aria-hidden="true"
-          className={[
-            "pointer-events-none absolute rounded-[3rem] bg-paper/58 backdrop-blur-2xl",
-            // Mobile-first and deliberately generous: the text column stacks
-            // taller here (three-line paragraph, stacked buttons), so the
-            // scrim needs more vertical reach and a bigger fully-opaque core
-            // to keep every line clear of the object passing behind it.
-            "-inset-x-10 -inset-y-14",
-            "[mask-image:radial-gradient(ellipse_82%_90%_at_32%_46%,black_56%,transparent_94%)]",
-            // Tablet/desktop: verified clear with the tighter original
-            // coverage, so pull back in to let more of the object show.
-            "sm:-inset-x-12 sm:-inset-y-10",
-            "sm:[mask-image:radial-gradient(ellipse_72%_78%_at_28%_42%,black_45%,transparent_82%)]",
-          ].join(" ")}
-        />
-
-        {/* Wordmark */}
+      <div className="shell relative text-center">
+        {/* Badge — says what the studio is before the claim says what it does. */}
         <p
-          className="anim-rise font-mono text-[0.6875rem] font-medium tracking-[0.42em] text-ink-mute uppercase sm:text-xs"
-          style={{ "--d": "80ms" } as React.CSSProperties}
+          className="anim-rise inline-flex items-center gap-2.5 rounded-full border border-line bg-paper/70 py-1.5 pl-2.5 pr-4 backdrop-blur-sm"
+          style={{ "--d": "60ms" } as React.CSSProperties}
         >
-          Velhoura
+          <span
+            aria-hidden="true"
+            className="size-1.5 shrink-0 rounded-full bg-ember"
+          />
+          <span className="t-label !tracking-[0.12em]">{t.badge}</span>
         </p>
 
-        <div
-          className="anim-rise mt-5 h-px w-full max-w-[220px] bg-line-strong sm:mt-6"
-          style={{ "--d": "160ms" } as React.CSSProperties}
-        />
-
-        {/* Display line — each line rises from behind its own mask. */}
-        <h1 className="t-display mt-8 max-w-[15ch] text-balance sm:mt-10">
-          <span className="sr-only">We build what&rsquo;s next.</span>
+        {/* Claim: what we make, what we build, what it gets you. Each line
+            rises from behind its own mask; the last one is the outcome, set
+            a step quieter, and its full stop is the one piece of colour
+            above the fold. Sized for three lines rather than two, so no line
+            ever wraps inside its mask. */}
+        <h1 className="mx-auto mt-7 max-w-[22ch] text-balance font-semibold leading-[0.95] tracking-[-0.045em] text-[clamp(1.75rem,7.4vw,6rem)] sm:mt-9">
+          <span className="sr-only">{`${t.lines.join(" ")}.`}</span>
           <span aria-hidden="true" className="block">
-            <span className="block overflow-hidden pb-[0.09em]">
-              <span
-                className="anim-unmask block"
-                style={{ "--d": "220ms" } as React.CSSProperties}
-              >
-                We build
+            {t.lines.map((text, i) => ({
+              text,
+              d: 200 + i * 100,
+              last: i === t.lines.length - 1,
+            })).map((line) => (
+              <span key={line.text} className="lm">
+                <span
+                  className={line.last ? "anim-unmask text-ink-mute" : "anim-unmask"}
+                  style={{ "--d": `${line.d}ms` } as React.CSSProperties}
+                >
+                  {line.text}
+                  {line.last && <span className="text-ember">.</span>}
+                </span>
               </span>
-            </span>
-            <span className="block overflow-hidden pb-[0.09em]">
-              <span
-                className="anim-unmask block"
-                style={{ "--d": "320ms" } as React.CSSProperties}
-              >
-                what&rsquo;s next<span className="text-signal">.</span>
-              </span>
-            </span>
+            ))}
           </span>
         </h1>
 
         <p
-          className="anim-rise t-lead mt-8 max-w-[46ch] text-pretty sm:mt-10"
-          style={{ "--d": "560ms" } as React.CSSProperties}
+          className="anim-rise t-lead mx-auto mt-7 max-w-[48ch] text-pretty"
+          style={{ "--d": "540ms" } as React.CSSProperties}
         >
-          Creamos productos digitales propios, desde la primera idea hasta una
-          startup real.
+          {t.lead}
         </p>
 
         <div
-          className="anim-rise pointer-events-auto mt-10 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4"
-          style={{ "--d": "660ms" } as React.CSSProperties}
+          className="anim-rise mx-auto mt-9 flex max-w-sm flex-col items-center justify-center gap-3 sm:max-w-none sm:flex-row sm:gap-4"
+          style={{ "--d": "640ms" } as React.CSSProperties}
         >
-          <ButtonLink href="#products" size="lg" arrow>
-            Explorar nuestros productos
-          </ButtonLink>
-          <ButtonLink href="#services" variant="outline" size="lg" arrow>
-            Crear mi web
-          </ButtonLink>
+          <div className="w-full sm:w-auto">
+            <ButtonLink
+              href="#contact"
+              size="lg"
+              arrow
+              className="w-full sm:w-auto"
+            >
+              {t.primary}
+            </ButtonLink>
+          </div>
+          <div className="w-full sm:w-auto">
+            <ButtonLink
+              href="#services"
+              variant="outline"
+              size="lg"
+              arrow
+              className="w-full sm:w-auto"
+            >
+              {t.secondary}
+            </ButtonLink>
+          </div>
         </div>
+
+        <p
+          className="anim-rise mt-5 text-xs text-ink-mute"
+          style={{ "--d": "720ms" } as React.CSSProperties}
+        >
+          {t.small}
+        </p>
       </div>
 
-      {/* Scroll cue — desktop only; on a phone the thumb already knows.
-          `pointer-events-none`: purely decorative (no interactive content),
-          and being `.shell`-width it would otherwise block the drag hotspot
-          across its own invisible full-width box — see the note above. */}
+      {/*
+        The stage sits in normal flow directly under the copy, which puts its
+        top third above the fold on a laptop and the rest one flick away. No
+        translate and no fixed height: the fold does the cropping, so there is
+        nothing to re-tune per breakpoint and nothing permanently clipped once
+        the reader scrolls.
+      */}
       <div
-        className="anim-rise shell pointer-events-none absolute inset-x-0 bottom-8 hidden items-end justify-between md:flex"
-        style={{ "--d": "1100ms" } as React.CSSProperties}
+        className="anim-rise relative mx-auto mt-12 w-full max-w-[360px] px-6 sm:mt-14 sm:max-w-[440px] lg:max-w-[520px]"
+        style={{ "--d": "400ms" } as React.CSSProperties}
       >
-        <div className="flex items-center gap-3">
-          <span
-            aria-hidden="true"
-            className="relative block h-10 w-px overflow-hidden bg-line-strong"
-          >
-            <span className="anim-cue absolute inset-x-0 top-0 block h-4 bg-ink" />
-          </span>
-          <span className="t-label">Scroll</span>
+        <div className="relative aspect-square w-full">
+          {scene && (
+            <>
+              <Armature />
+              <HeroSceneLoader />
+            </>
+          )}
         </div>
-
-        <p className="t-label max-w-[24ch] text-right leading-relaxed">
-          Product studio
-          <br />
-          Small team. Big products.
-        </p>
       </div>
     </section>
   );

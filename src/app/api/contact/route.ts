@@ -1,23 +1,87 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
-import { contact } from "@/data/site";
+import { contact, site } from "@/data/site";
 
 /**
- * Sends the contact modal's submission to `contact.email` (see
- * `data/site.ts`) via Resend.
+ * Sends the contact modal's submission to `contact.email` via Resend.
  *
- * Requires `RESEND_API_KEY` as an environment variable — get one free at
- * resend.com, add it in Vercel under Project Settings → Environment
- * Variables (and in `.env.local` for local dev). Without it this route
- * returns a clear 500 rather than failing silently.
+ * Requires `RESEND_API_KEY` — get one free at resend.com, add it in Vercel
+ * under Project Settings → Environment Variables (and in `.env.local` for
+ * local dev). Without it this route returns a clear 500 rather than failing
+ * silently.
  *
- * Sends from Resend's shared `onboarding@resend.dev` address, which works
- * immediately with no setup. Once `contact.email`'s domain is verified in
- * Resend, switch `from` below to something like `Velhoura <hello@velhoura.com>`
- * for a branded sender.
+ * Sends from Resend's shared `onboarding@resend.dev` address, which works with
+ * no setup. Once the domain is verified in Resend, switch `from` below to
+ * something like `Velhoura <hola@velhoura.com>` for a branded sender.
+ *
+ * ── What this route defends against ──────────────────────────────────────
+ * A public endpoint that turns an HTTP request into an email is an open relay
+ * pointed at your own inbox. Before it will send, a submission has to clear
+ * four gates that cost a real visitor nothing:
+ *
+ *   1. a honeypot field no human can see or focus;
+ *   2. a minimum time on the form — nobody reads and answers four fields in
+ *      under three seconds;
+ *   3. length caps, so a single request cannot paste a novel into your inbox;
+ *   4. a per-IP rate limit.
+ *
+ * The rate limiter is in-process on purpose: it is one Map, it needs no Redis
+ * and no vendor, and on a serverless deployment its worst case — a cold
+ * instance starting with an empty window — is exactly the behaviour you would
+ * get with no limiter at all. If this ever needs to be strict rather than
+ * merely effective, swap the two helpers below for a shared store.
  */
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const LIMITS = {
+  name: 120,
+  email: 200,
+  projectType: 60,
+  message: 4000,
+  /** Milliseconds a genuine visitor needs to fill the form. */
+  minElapsed: 3000,
+  /** Requests allowed per IP per window. */
+  perWindow: 4,
+  windowMs: 10 * 60 * 1000,
+};
+
+const hits = new Map<string, number[]>();
+
+function rateLimited(ip: string): boolean {
+  const now = Date.now();
+  const recent = (hits.get(ip) ?? []).filter((t) => now - t < LIMITS.windowMs);
+
+  if (recent.length >= LIMITS.perWindow) {
+    hits.set(ip, recent);
+    return true;
+  }
+
+  recent.push(now);
+  hits.set(ip, recent);
+
+  // Opportunistic sweep so the Map cannot grow without bound on a long-lived
+  // instance. Cheap: it only runs on the requests that get through.
+  if (hits.size > 500) {
+    for (const [key, stamps] of hits) {
+      if (stamps.every((t) => now - t >= LIMITS.windowMs)) hits.delete(key);
+    }
+  }
+
+  return false;
+}
+
+/** Behind a proxy the socket address is the proxy's, so trust the forwarded
+ *  chain's first entry, which is the one the edge itself appended. */
+function clientIp(request: Request): string {
+  const forwarded = request.headers.get("x-forwarded-for");
+  if (forwarded) return forwarded.split(",")[0].trim();
+  return request.headers.get("x-real-ip") ?? "unknown";
+}
+
+function field(value: unknown, max: number): string {
+  return typeof value === "string" ? value.trim().slice(0, max) : "";
+}
 
 export async function POST(request: Request) {
   const apiKey = process.env.RESEND_API_KEY;
@@ -28,12 +92,30 @@ export async function POST(request: Request) {
     );
   }
 
+  if (rateLimited(clientIp(request))) {
+    return NextResponse.json(
+      { error: "Demasiados mensajes seguidos. Inténtalo en unos minutos." },
+      { status: 429 },
+    );
+  }
+
   const body = await request.json().catch(() => null);
-  const name = typeof body?.name === "string" ? body.name.trim() : "";
-  const email = typeof body?.email === "string" ? body.email.trim() : "";
-  const projectType =
-    typeof body?.projectType === "string" ? body.projectType.trim() : "";
-  const message = typeof body?.message === "string" ? body.message.trim() : "";
+
+  // Silent drops: a bot is told the same thing a success looks like, so it has
+  // nothing to tune against. A human can never reach either branch.
+  if (field(body?.company, 200)) return NextResponse.json({ ok: true });
+  if (
+    typeof body?.elapsed === "number" &&
+    body.elapsed >= 0 &&
+    body.elapsed < LIMITS.minElapsed
+  ) {
+    return NextResponse.json({ ok: true });
+  }
+
+  const name = field(body?.name, LIMITS.name);
+  const email = field(body?.email, LIMITS.email);
+  const projectType = field(body?.projectType, LIMITS.projectType);
+  const message = field(body?.message, LIMITS.message);
 
   if (!name || !email || !message || !EMAIL_RE.test(email)) {
     return NextResponse.json(
@@ -45,7 +127,7 @@ export async function POST(request: Request) {
   const resend = new Resend(apiKey);
 
   const { error } = await resend.emails.send({
-    from: "Velhoura <onboarding@resend.dev>",
+    from: `${site.name} <onboarding@resend.dev>`,
     to: contact.email,
     replyTo: email,
     subject: `Nuevo mensaje — ${name}${projectType ? ` (${projectType})` : ""}`,

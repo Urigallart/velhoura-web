@@ -1,17 +1,32 @@
 import type { MetadataRoute } from "next";
-import { products } from "@/data/products";
+import { getProducts, getServicePages, servicePath } from "@/data/localized";
 import { site } from "@/data/site";
 
+/**
+ * Every page in both languages, each entry listing its counterpart so search
+ * engines serve the right one to each reader.
+ */
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
+  const u = (path: string) => `${site.url}${path === "/" ? "" : path}`;
 
-  return [
-    { url: site.url, lastModified: now, changeFrequency: "monthly", priority: 1 },
-    ...products.map((p) => ({
-      url: `${site.url}/products/${p.slug}`,
+  const pair = (es: string, en: string, priority: number) =>
+    [es, en].map((path) => ({
+      url: u(path),
       lastModified: now,
       changeFrequency: "monthly" as const,
-      priority: 0.8,
-    })),
+      priority,
+      alternates: { languages: { es: u(es), en: u(en) } },
+    }));
+
+  return [
+    ...pair("/", "/en", 1),
+    ...pair("/servicios", "/en/services", 0.9),
+    ...getServicePages("es").flatMap((p) =>
+      pair(servicePath("es", p.esSlug), servicePath("en", p.esSlug), 0.9),
+    ),
+    ...getProducts("es").flatMap((p) =>
+      pair(`/products/${p.slug}`, `/en/products/${p.slug}`, 0.8),
+    ),
   ];
 }

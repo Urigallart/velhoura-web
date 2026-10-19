@@ -1,42 +1,43 @@
 "use client";
 
 import { useEffect, useRef, type ReactNode } from "react";
+import { observe } from "@/lib/observe";
 import { cn } from "@/lib/utils";
 
 /**
- * Deliberately a small closed union rather than `ElementType`: this project
- * also loads `@react-three/fiber`, which globally augments `JSX.IntrinsicElements`
- * with every three.js element. That augmentation is ambient (applies to the
- * whole app, not just files that import R3F) and is large enough that
- * TypeScript's `JSX.LibraryManagedAttributes` resolution for a bare
- * `ElementType`-typed, ref-forwarding polymorphic component collapses to
- * `never`. Every current call site renders a block-level container anyway,
- * so this union costs nothing in practice.
+ * Deliberately a small closed union rather than `ElementType`: every call site
+ * renders a block-level container, and the union keeps the component's surface
+ * honest without dragging polymorphic-ref typing into the build.
  */
-type RevealTag = "div" | "span" | "li" | "article" | "section";
+type Tag = "div" | "span" | "li" | "article" | "section" | "figure";
+
+/** Matches the `[data-reveal="…"]` variants declared in `globals.css`. */
+export type RevealVariant = "rise" | "lift" | "wipe" | "blur" | "fade";
 
 type RevealProps = {
   children: ReactNode;
-  /** Stagger in ms. */
+  /** Stagger, in ms. */
   delay?: number;
-  /** Travel distance in px. 0 gives a pure fade. */
+  /** Travel distance for `rise` / `lift`, in px. */
   y?: number;
+  variant?: RevealVariant;
   className?: string;
-  as?: RevealTag;
-  /** Fire once and disconnect (default) or re-run on re-entry. */
+  as?: Tag;
+  /** Reveal once and stop watching (default), or re-run on re-entry. */
   once?: boolean;
 };
 
 /**
- * Scroll reveal built on a single IntersectionObserver per element and a CSS
- * transition — no per-frame JS, no layout-affecting properties, so it stays on
- * the compositor. `prefers-reduced-motion` is handled in globals.css, where the
- * element resolves to its visible state immediately.
+ * Scroll reveal. All motion is CSS; this component only registers the element
+ * with the page's single shared IntersectionObserver (`lib/observe.ts`) and
+ * lets the attribute flip do the rest. `prefers-reduced-motion` is handled in
+ * `globals.css`, where the element resolves to its visible state immediately.
  */
 export function Reveal({
   children,
   delay = 0,
-  y = 22,
+  y,
+  variant = "rise",
   className,
   as: Tag = "div",
   once = true,
@@ -46,41 +47,24 @@ export function Reveal({
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-
-    // Anything already on screen at mount shows without waiting for a scroll.
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            entry.target.setAttribute("data-shown", "true");
-            if (once) observer.unobserve(entry.target);
-          } else if (!once) {
-            entry.target.setAttribute("data-shown", "false");
-          }
-        }
-      },
-      { rootMargin: "0px 0px -12% 0px", threshold: 0.01 },
-    );
-
-    observer.observe(el);
-    return () => observer.disconnect();
+    return observe(el, { once });
   }, [once]);
 
   return (
     <Tag
-      // A dynamic `Tag: RevealTag` can't be narrowed to one concrete
-      // element, so TS asks for a ref assignable to every tag's specific
-      // ref type at once. All five accept a plain HTMLElement ref at
-      // runtime — only generic Element APIs (IntersectionObserver,
-      // data-attributes) are ever used on it — so this cast is safe.
+      // A dynamic `Tag` can't be narrowed to one concrete element, so TS asks
+      // for a ref assignable to every tag's ref type at once. All of them
+      // accept a plain HTMLElement at runtime and only generic Element APIs
+      // (IntersectionObserver, data attributes) are ever used on it.
       // eslint-disable-next-line @typescript-eslint/no-explicit-any -- see comment above
       ref={ref as any}
+      data-reveal={variant}
       data-shown="false"
-      className={cn("reveal", className)}
+      className={cn(className)}
       style={
         {
-          "--reveal-delay": `${delay}ms`,
-          "--reveal-y": `${y}px`,
+          "--rd": `${delay}ms`,
+          ...(y !== undefined ? { "--ry": `${y}px` } : null),
         } as React.CSSProperties
       }
     >

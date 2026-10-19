@@ -7,31 +7,34 @@ import { Environment, Lightformer } from "@react-three/drei";
 import { VelhouraObject } from "./VelhouraObject";
 import type { DragSample } from "./VelhouraObject";
 import { Particles } from "./Particles";
-import { attachStudioInDev, useHeroSceneValues } from "./theatre";
+import { useHeroSceneValues } from "./scene-config";
 
 type Tier = "mobile" | "tablet" | "desktop";
 
 /**
  * The Hero's 3D layer.
  *
- * Mounted only on the client (see `HeroSceneLoader`), positioned to bleed off
- * the right side of the frame and masked so it never renders under the text
- * column — see the wrapping classes in `HeroSceneLoader`. This component owns
- * the Canvas, lighting, responsive tuning, the entrance timing, and the
- * drag-to-rotate hotspot (a plain DOM overlay, not R3F raycasting — see
- * `dragHotspotClass` below for why).
+ * Mounted only on the client (see `HeroSceneLoader`) and — this is the change
+ * that matters — confined to the hero's square *stage*, concentric with the
+ * SVG armature drawn around it (`visual/Armature.tsx`). Previously the canvas
+ * spanned the whole hero and the globe was pushed right with a camera offset,
+ * which put it behind the headline and forced a large blurred scrim to keep
+ * the text legible. With the globe boxed into its own column, that scrim is
+ * gone: the layout does the work instead of a blur.
+ *
+ * This component owns the Canvas, lighting, responsive tuning, the entrance
+ * timing, the drag-to-rotate hotspot, and pausing the render loop whenever the
+ * hero is off screen.
  */
 export function VelhouraScene() {
   const values = useHeroSceneValues();
   const [tier, setTier] = useState<Tier>("desktop");
   const [reducedMotion, setReducedMotion] = useState(false);
   const [finePointer, setFinePointer] = useState(false);
+  const [onScreen, setOnScreen] = useState(true);
+  const hostRef = useRef<HTMLDivElement>(null);
   const drag = useRef<DragSample>({ active: false, dx: 0, dy: 0 });
   const lastPoint = useRef({ x: 0, y: 0 });
-
-  useEffect(() => {
-    attachStudioInDev();
-  }, []);
 
   useEffect(() => {
     const widthMq = window.matchMedia("(max-width: 767px)");
@@ -40,7 +43,9 @@ export function VelhouraScene() {
     const pointerMq = window.matchMedia("(pointer: fine)");
 
     const sync = () => {
-      setTier(widthMq.matches ? "mobile" : tabletMq.matches ? "tablet" : "desktop");
+      setTier(
+        widthMq.matches ? "mobile" : tabletMq.matches ? "tablet" : "desktop",
+      );
       setReducedMotion(motionMq.matches);
       setFinePointer(pointerMq.matches);
     };
@@ -59,35 +64,39 @@ export function VelhouraScene() {
     };
   }, []);
 
+  /**
+   * A WebGL context that keeps rendering while scrolled past is the most
+   * expensive thing on this page and nobody can see it. The loop is parked
+   * the moment the stage leaves the viewport and restarts on the way back —
+   * on a laptop that is the difference between a warm fan and a quiet one.
+   */
+  useEffect(() => {
+    const el = hostRef.current;
+    if (!el) return;
+
+    const io = new IntersectionObserver(
+      ([entry]) => setOnScreen(entry.isIntersecting),
+      { rootMargin: "160px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   const particleCount = useMemo(() => {
     if (reducedMotion) return 0;
     const base = values.particleCount;
-    if (tier === "mobile") return Math.round(base * 0.35);
-    if (tier === "tablet") return Math.round(base * 0.65);
+    if (tier === "mobile") return Math.round(base * 0.4);
+    if (tier === "tablet") return Math.round(base * 0.7);
     return base;
   }, [values.particleCount, tier, reducedMotion]);
 
   const dpr: [number, number] = tier === "mobile" ? [1, 1.5] : [1, 2];
   const detail = tier === "desktop" ? "high" : "low";
-  // Biased right of dead-center (never fully centered, so it doesn't sit
-  // exactly behind the wordmark) but much closer to it than an off-to-the-
-  // side placement — the scrim behind the text is what keeps legibility
-  // intact, not distance from the object. Mobile sits further out than the
-  // other tiers: the text scrim there is a large, deliberately generous
-  // ellipse (tall stacked copy needs the reach — see Hero.tsx), and at a
-  // small offset the planet used to render almost entirely underneath it,
-  // barely visible. Pushed further out, it clears that blur instead of
-  // hiding behind it.
-  const cameraX = tier === "mobile" ? 0.95 : tier === "tablet" ? 0.7 : 1.0;
 
   // Drag handlers live on a plain DOM overlay rather than R3F's own pointer
-  // events on the Earth mesh: the Canvas stays `pointer-events: none` across
-  // the whole hero (so it never steals clicks from the CTAs — a CSS mask
-  // hides paint, not hit-testing, so the canvas element still spans the full
-  // section underneath). This overlay is a separate, deliberately generous
-  // hotspot sized to the globe's roaming area per tier, positioned clear of
-  // the text column and buttons at every breakpoint, and it alone gets
-  // `pointer-events: auto`.
+  // events on the Earth mesh: the Canvas stays `pointer-events: none` (a CSS
+  // mask hides paint, not hit-testing), and this overlay — exactly the stage
+  // box, nothing more — is the one region that opts back in.
   const onPointerDown = (e: ReactPointerEvent<HTMLDivElement>) => {
     drag.current.active = true;
     lastPoint.current = { x: e.clientX, y: e.clientY };
@@ -109,9 +118,8 @@ export function VelhouraScene() {
   };
 
   // Reads and resets `drag.current` in one step. Defined here, where the ref
-  // was constructed, rather than in `VelhouraObject` — this project's lint
-  // rules (react-hooks/immutability) forbid mutating a ref's contents from a
-  // component that only received it as a prop.
+  // was constructed: this project's lint rules forbid mutating a ref's
+  // contents from a component that only received it as a prop.
   const consumeDrag = (): DragSample => {
     const d = drag.current;
     const sample: DragSample = { active: d.active, dx: d.dx, dy: d.dy };
@@ -121,13 +129,11 @@ export function VelhouraScene() {
   };
 
   return (
-    <>
+    <div ref={hostRef} className="absolute inset-0">
       {/*
-        Fine-pointer only. On a touch device this hotspot would sit right
-        where a visitor's thumb naturally starts a scroll — `touch-action:
-        none` (needed so a drag isn't also read as a page scroll) would then
-        swallow that scroll gesture entirely wherever it began inside the
-        hotspot's box, which is large. Drag-to-rotate is a cursor nicety;
+        Fine-pointer only. On a touch device `touch-action: none` (needed so a
+        drag isn't also read as a page scroll) would swallow scrolls that
+        begin anywhere inside this box. Drag-to-rotate is a cursor nicety;
         losing it on touch costs nothing, keeping the page scrollable there
         does not.
       */}
@@ -138,79 +144,84 @@ export function VelhouraScene() {
           onPointerMove={onPointerMove}
           onPointerUp={endDrag}
           onPointerCancel={endDrag}
-          className={[
-            // `pointer-events-auto` is load-bearing: the ancestor wrapper in
-            // `HeroSceneLoader` sets `pointer-events: none` so the rest of
-            // the hero stays click-through, and that value inherits by
-            // default — this is the one region of the layer that opts back in.
-            "absolute touch-none cursor-grab pointer-events-auto active:cursor-grabbing",
-            dragHotspotClass(tier),
-          ].join(" ")}
+          className="absolute inset-[14%] z-20 cursor-grab touch-none rounded-full active:cursor-grabbing"
         />
       )}
 
       <Canvas
         dpr={dpr}
         gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
-        camera={{ position: [cameraX, 0.3, 6.4], fov: 32 }}
-        frameloop={reducedMotion ? "demand" : "always"}
+        // Centred in the stage and pulled back far enough that the planet sits
+        // comfortably inside the armature's inner rule rather than crowding it.
+        camera={{ position: [0, 0, 10], fov: 32 }}
+        frameloop={reducedMotion || !onScreen ? "demand" : "always"}
         // Overrides Canvas's own default inline style (position: relative,
-        // pointerEvents: auto) rather than fighting it with `!important`
-        // classes. `pointerEvents: none` matters even though the layer is
-        // masked to invisible over the text — a mask hides paint, not hit
-        // testing, so without this the canvas would still intercept clicks
-        // wherever it overlaps the CTAs.
+        // pointerEvents: auto) rather than fighting it with `!important`.
         style={{ position: "absolute", inset: 0, pointerEvents: "none" }}
       >
         <Lighting fullEnvironment={tier !== "mobile"} />
 
-        <group position={[cameraX * 0.75, 0, 0]}>
-          <SceneContent
-            values={values}
-            consumeDrag={consumeDrag}
-            detail={detail}
-            reducedMotion={reducedMotion}
-            particleCount={particleCount}
-          />
-        </group>
+        <SceneContent
+          values={values}
+          consumeDrag={consumeDrag}
+          detail={detail}
+          reducedMotion={reducedMotion}
+          particleCount={particleCount}
+        />
       </Canvas>
-    </>
+    </div>
   );
 }
 
 /**
- * The hotspot's box per tier — generous, and deliberately kept clear of the
- * text column (wordmark through the CTA row all live in the left portion of
- * the hero at every breakpoint) rather than trying to track the globe's
- * roamed position pixel-for-pixel.
+ * Studio lighting: a white key from upper right and a signal-blue bounce from
+ * lower left. The intensities are higher than they look because the camera now
+ * sits further back to frame the planet inside the armature — same rig, longer
+ * throw.
  */
-function dragHotspotClass(tier: Tier): string {
-  if (tier === "mobile") return "right-0 bottom-0 h-[55%] w-[62%]";
-  if (tier === "tablet") return "right-0 inset-y-0 w-[56%]";
-  return "right-0 inset-y-0 w-[58%]";
-}
-
 function Lighting({ fullEnvironment }: { fullEnvironment: boolean }) {
   return (
     <>
-      <ambientLight intensity={0.55} />
-      <directionalLight position={[3.5, 4, 3]} intensity={1.4} color="#ffffff" />
-      <pointLight position={[-3, -1.5, 2]} intensity={2.2} color="#3b5bff" distance={9} decay={2} />
+      <ambientLight intensity={1.05} />
+      <directionalLight position={[3.5, 4, 3]} intensity={2.6} color="#ffffff" />
+      <pointLight
+        position={[-3, -1.5, 2]}
+        intensity={2}
+        color="#3b5bff"
+        distance={11}
+        decay={2}
+      />
 
       {/*
-        Procedural studio reflections for the physical materials — no HDR
-        file fetched, so this never blocks or delays the initial paint.
-        Skipped on mobile: baking it costs a 6-face cube-camera render pass,
-        the single most GPU-expensive thing this scene does, and the direct
-        lights above are enough for the materials to still read correctly
-        without it — just with a flatter highlight instead of full studio
-        reflections.
+        Procedural studio reflections for the physical materials — no HDR file
+        fetched, so this never blocks the initial paint. Skipped on mobile:
+        baking it costs a six-face cube-camera render pass, the single most
+        GPU-expensive thing this scene does, and the direct lights above are
+        enough for the materials to read correctly without it.
       */}
       {fullEnvironment && (
         <Environment resolution={128}>
-          <Lightformer form="rect" intensity={2} position={[3, 2, 4]} scale={[3, 3, 1]} color="#ffffff" />
-          <Lightformer form="rect" intensity={1.2} position={[-3, -1, 3]} scale={[2, 4, 1]} color="#8fa3ff" />
-          <Lightformer form="ring" intensity={1} position={[0, 3, -3]} scale={5} color="#ffffff" />
+          <Lightformer
+            form="rect"
+            intensity={2}
+            position={[3, 2, 4]}
+            scale={[3, 3, 1]}
+            color="#ffffff"
+          />
+          <Lightformer
+            form="rect"
+            intensity={1.1}
+            position={[-3, -1, 3]}
+            scale={[2, 4, 1]}
+            color="#8fa3ff"
+          />
+          <Lightformer
+            form="ring"
+            intensity={0.9}
+            position={[0, 3, -3]}
+            scale={5}
+            color="#ffffff"
+          />
         </Environment>
       )}
     </>
@@ -242,13 +253,17 @@ function SceneContent({
     const t = Math.min(Math.max(elapsed / values.introDuration, 0), 1);
 
     // easeOutCubic — a fast start that settles gently, no overshoot.
-    const eased = 1 - Math.pow(1 - t, 3);
-    setIntro(eased);
+    setIntro(1 - Math.pow(1 - t, 3));
   });
 
   return (
     <>
-      <VelhouraObject values={values} intro={intro} consumeDrag={consumeDrag} detail={detail} />
+      <VelhouraObject
+        values={values}
+        intro={intro}
+        consumeDrag={consumeDrag}
+        detail={detail}
+      />
       <Particles count={particleCount} intro={intro} />
     </>
   );

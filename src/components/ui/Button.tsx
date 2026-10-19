@@ -5,31 +5,53 @@ import { cn } from "@/lib/utils";
 type Variant = "solid" | "outline" | "ghost";
 type Size = "sm" | "md" | "lg";
 
-const base =
-  "group relative inline-flex items-center justify-center gap-2 rounded-full font-medium " +
-  "whitespace-nowrap transition-[transform,background-color,color,border-color,box-shadow] " +
-  "duration-300 ease-[var(--ease-expo)] active:scale-[0.985] will-change-transform";
+/**
+ * One button, three registers.
+ *
+ * The hover is a colour change and nothing else: buttons stay exactly where
+ * they are, so a pointer never has to chase a target.
+ */
+
+const base = [
+  "group relative isolate inline-flex items-center justify-center gap-2",
+  "overflow-hidden rounded-full font-medium whitespace-nowrap",
+  "transition-[color,background-color,border-color] duration-300 ease-[var(--e-out)]",
+].join(" ");
 
 const variants: Record<Variant, string> = {
-  solid:
-    "bg-ink text-paper hover:bg-signal shadow-[0_1px_2px_rgba(8,9,10,0.16)] hover:shadow-[0_8px_24px_-6px_color-mix(in_oklab,var(--signal)_45%,transparent)]",
+  solid: "bg-ink text-paper-raise hover:bg-ember focus-visible:bg-ember",
   outline:
-    "border border-line-strong text-ink bg-paper/60 backdrop-blur-sm hover:border-ink hover:bg-paper",
+    "border border-line-strong text-ink hover:border-ink hover:bg-ink hover:text-paper-raise focus-visible:border-ink focus-visible:bg-ink focus-visible:text-paper-raise",
   ghost: "text-ink-soft hover:text-ink",
 };
 
 const sizes: Record<Size, string> = {
   sm: "h-9 px-4 text-[0.8125rem]",
   md: "h-11 px-5 text-[0.9375rem]",
-  lg: "h-[52px] px-7 text-[0.9375rem]",
+  lg: "h-[54px] px-7 text-[0.9375rem]",
 };
+
+function Inner({
+  children,
+  arrow,
+}: {
+  children: ReactNode;
+  arrow: boolean;
+}) {
+  return (
+    <>
+      <span className="relative">{children}</span>
+      {arrow && <Arrow />}
+    </>
+  );
+}
 
 type ButtonLinkProps = {
   href: string;
   children: ReactNode;
   variant?: Variant;
   size?: Size;
-  /** Renders a chevron that slides forward on hover. */
+  /** Renders an arrow after the label. */
   arrow?: boolean;
   className?: string;
 } & Omit<ComponentProps<typeof Link>, "href" | "children" | "className">;
@@ -43,25 +65,16 @@ export function ButtonLink({
   className,
   ...rest
 }: ButtonLinkProps) {
-  const external = href.startsWith("http");
-
+  const classes = cn(base, variants[variant], sizes[size], className);
   const content = (
-    <>
-      <span>{children}</span>
-      {arrow && <Arrow />}
-    </>
+    <Inner arrow={arrow}>
+      {children}
+    </Inner>
   );
 
-  const classes = cn(base, variants[variant], sizes[size], className);
-
-  if (external) {
+  if (href.startsWith("http")) {
     return (
-      <a
-        href={href}
-        target="_blank"
-        rel="noreferrer noopener"
-        className={classes}
-      >
+      <a href={href} target="_blank" rel="noreferrer noopener" className={classes}>
         {content}
       </a>
     );
@@ -84,7 +97,7 @@ type ButtonActionProps = {
 
 /**
  * Same look as `ButtonLink`, but a real `<button>` for actions that don't
- * navigate — opening the contact modal, for instance.
+ * navigate — opening the contact modal, submitting a form.
  */
 export function ButtonAction({
   children,
@@ -101,24 +114,31 @@ export function ButtonAction({
       className={cn(base, variants[variant], sizes[size], className)}
       {...rest}
     >
-      <span>{children}</span>
-      {arrow && <Arrow />}
+      <Inner arrow={arrow}>
+        {children}
+      </Inner>
     </button>
   );
 }
 
-/** Arrow that accelerates forward on hover — the site's core microinteraction. */
+/**
+ * The arrow that follows a button or link label. It stays still: the
+ * control's hover is a colour change only.
+ */
 export function Arrow({ className }: { className?: string }) {
   return (
-    <svg
-      viewBox="0 0 16 16"
-      fill="none"
+    <span
       aria-hidden="true"
-      className={cn(
-        "size-3.5 shrink-0 transition-transform duration-300 ease-[var(--ease-expo)] group-hover:translate-x-1",
-        className,
-      )}
+      className={cn("relative block size-3.5 shrink-0 overflow-hidden", className)}
     >
+      <Chevron className="absolute inset-0" />
+    </span>
+  );
+}
+
+function Chevron({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 16 16" fill="none" className={cn("size-full", className)}>
       <path
         d="M2.5 8h11m0 0L9 3.5M13.5 8L9 12.5"
         stroke="currentColor"
@@ -140,16 +160,25 @@ export function ArrowLink({
   children: ReactNode;
   className?: string;
 }) {
+  const external = href.startsWith("http");
+  const cls = cn(
+    "group inline-flex items-center gap-1.5 text-[0.9375rem] font-medium text-ink",
+    "transition-colors duration-300 hover:text-ember",
+    className,
+  );
+
+  if (external) {
+    return (
+      <a href={href} target="_blank" rel="noreferrer noopener" className={cls}>
+        <span className="u-draw">{children}</span>
+        <Arrow />
+      </a>
+    );
+  }
+
   return (
-    <Link
-      href={href}
-      className={cn(
-        "group inline-flex items-center gap-1.5 text-[0.9375rem] font-medium text-ink",
-        "transition-colors duration-300 hover:text-signal",
-        className,
-      )}
-    >
-      {children}
+    <Link href={href} className={cls}>
+      <span className="u-draw">{children}</span>
       <Arrow />
     </Link>
   );

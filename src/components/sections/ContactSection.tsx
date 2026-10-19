@@ -3,78 +3,140 @@
 import { ButtonAction } from "@/components/ui/Button";
 import { MaskedTitle } from "@/components/ui/MaskedTitle";
 import { Reveal } from "@/components/ui/Reveal";
-import { contact } from "@/data/site";
+import { activeSocials, contact } from "@/data/site";
 import { openContactModal } from "@/lib/contactModal";
+import { getArea } from "@/data/localized";
+import { useLocale } from "@/i18n/useLocale";
+
+const copy = {
+  es: {
+    label: "Contacto",
+    lines: ["Cuéntanos", "*tu negocio.*"],
+    lead: "Explícanos a qué te dedicas y qué te gustaría conseguir. Te respondemos nosotros mismos con una primera propuesta, sin compromiso.",
+    cta: "Pedir propuesta",
+  },
+  en: {
+    label: "Contact",
+    lines: ["Tell us about", "*your business.*"],
+    lead: "Tell us what you do and what you'd like to achieve. We'll reply ourselves with a first proposal, no strings attached.",
+    cta: "Request a proposal",
+  },
+};
 
 /**
- * The close. "Start a project" opens the contact modal (mounted once in the
- * root layout — see `ContactModal`); the email address and socials stay as
- * plain links for anyone who'd rather write directly.
+ * The close: one clear ask, and every direct channel the studio actually has.
+ * Phone and WhatsApp appear only once they are filled in `data/site.ts`.
+ *
+ * The button opens the contact modal (mounted once in the root layout); the
+ * email address stays a plain `mailto:` for anyone who would rather write
+ * directly, because a form is a preference, not a requirement.
  */
 export function ContactSection() {
+  const locale = useLocale();
+  const t = copy[locale];
   return (
     <section
       id="contact"
-      className="relative isolate overflow-hidden border-t border-line band"
+      className="band grain relative isolate overflow-hidden border-t border-line"
     >
-      {/* Ground: faint grid fading upward, with one signal streak across it. */}
+      {/* Ground: an ember bloom low in the frame, so the page ends warm. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 opacity-[0.55] [mask-image:radial-gradient(ellipse_at_50%_120%,black,transparent_70%)]"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-[70%]"
       >
-        <div className="grain absolute inset-0" />
-        <span className="streak absolute left-0 top-[64%] w-full" />
+        <div className="absolute left-1/2 bottom-[-30%] h-[60vh] w-[90vw] -translate-x-1/2 rounded-[50%] blur-[110px] bg-[radial-gradient(ellipse_at_center,color-mix(in_oklab,var(--ember)_14%,transparent),transparent_70%)]" />
       </div>
 
       <div className="shell relative">
         <div className="mx-auto max-w-3xl text-center">
           <Reveal y={12}>
-            <p className="t-label">08 — Contact</p>
+            <p className="t-label flex items-center justify-center gap-3">
+              <span className="text-ember">10</span>
+              <span aria-hidden="true" className="h-px w-7 bg-line-strong" />
+              {t.label}
+            </p>
           </Reveal>
 
           <MaskedTitle
-            lines= {["Have an idea?", "Let's build it."]}
-            className="t-h1 mt-7 text-balance"
-            stagger={100}
+            lines={t.lines}
+            className="t-h1 mt-8 text-balance"
+            stagger={110}
           />
 
           <Reveal delay={240}>
-            <p className="t-lead mx-auto mt-7 max-w-[44ch] text-pretty">
-              Ya sea nuestro próximo producto o tu próxima web, estamos
-              preparados para construirlo.
+            <p className="t-lead mx-auto mt-8 max-w-[46ch] text-pretty">
+              {t.lead}
             </p>
           </Reveal>
 
           <Reveal delay={340}>
-            <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-              <ButtonAction size="lg" arrow onClick={openContactModal}>
-                Start a project
-              </ButtonAction>
+            <div className="mt-11 flex flex-col items-center gap-5 sm:flex-row sm:justify-center sm:gap-7">
+              <>
+                <ButtonAction size="lg" arrow onClick={openContactModal}>
+                  {t.cta}
+                </ButtonAction>
+              </>
 
               <a
                 href={`mailto:${contact.email}`}
-                className="font-mono text-sm text-ink-soft transition-colors duration-300 hover:text-ink"
+                className="group font-mono text-sm text-ink-soft transition-colors duration-300 hover:text-ink"
               >
-                {contact.email}
+                <span className="u-draw">{contact.email}</span>
               </a>
             </div>
           </Reveal>
 
-          <Reveal delay={440}>
-            <ul className="mt-14 flex items-center justify-center gap-8">
-              {contact.socials.map((s) => (
-                <li key={s.label}>
-                  <a
-                    href={s.href}
-                    className="group inline-flex flex-col items-center gap-1 text-sm text-ink-soft transition-colors duration-300 hover:text-ink"
-                  >
-                    {s.label}
-                    <span className="block h-px w-0 bg-ink transition-[width] duration-500 ease-[var(--ease-expo)] group-hover:w-full" />
-                  </a>
-                </li>
-              ))}
-            </ul>
+          {(contact.phone || contact.whatsapp) && (
+            <Reveal delay={400}>
+              <ul className="mt-8 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm">
+                {contact.phone && (
+                  <li>
+                    <a
+                      href={`tel:${contact.phone.replace(/\s/g, "")}`}
+                      className="group text-ink-soft transition-colors duration-300 hover:text-ink"
+                    >
+                      <span className="u-draw">{contact.phone}</span>
+                    </a>
+                  </li>
+                )}
+                {contact.whatsapp && (
+                  <li>
+                    <a
+                      href={`https://wa.me/${contact.whatsapp}`}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      className="group text-ink-soft transition-colors duration-300 hover:text-ink"
+                    >
+                      <span className="u-draw">WhatsApp</span>
+                    </a>
+                  </li>
+                )}
+              </ul>
+            </Reveal>
+          )}
+
+          <Reveal delay={420}>
+            <p className="t-label mt-8">{getArea(locale, contact.area)}</p>
           </Reveal>
+
+          {activeSocials.length > 0 && (
+            <Reveal delay={440}>
+              <ul className="mt-14 flex items-center justify-center gap-8">
+                {activeSocials.map((s) => (
+                  <li key={s.label}>
+                    <a
+                      href={s.href}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      className="group inline-flex text-sm text-ink-soft transition-colors duration-300 hover:text-ink"
+                    >
+                      <span className="u-draw">{s.label}</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </Reveal>
+          )}
         </div>
       </div>
     </section>

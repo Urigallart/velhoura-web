@@ -117,6 +117,25 @@ export const products: Product[] = [
     accent: "#dc2626",
     image: "/products/zhestar.jpg",
   },
+  {
+    slug: "simon-design",
+    name: "Simon Design",
+    summary:
+      "Web editorial para un equipo de diseño: cifras, historias, filosofía, premios y equipo.",
+    description:
+      "Simon Design es una web editorial para un equipo de diseño de producto, luz y energía. Una portada con un mensaje claro y cifras de un vistazo, una sección de historias del estudio, la filosofía de trabajo, los premios recibidos y las personas del equipo, con una tipografía y un ritmo pensados para leerse con calma.",
+    category: "WEB",
+    status: "LIVE",
+    year: "2026",
+    highlights: [
+      "Portada editorial con cifras",
+      "Historias del estudio",
+      "Filosofía, premios y equipo",
+    ],
+    href: "https://simondesign.vercel.app/",
+    accent: "#0ea5e9",
+    image: "/products/simon-design.jpg",
+  },
 ];
 
 export function getProduct(slug: string): Product | undefined {

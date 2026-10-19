@@ -71,7 +71,7 @@ export default async function LegalPage({
         <div className="grid gap-y-10 md:grid-cols-12 md:gap-x-10">
           <div className="md:col-span-4">
             <Reveal y={10}>
-              <p className="t-label">Legal</p>
+              <p className="t-label flex items-center gap-3"><span className="text-ember">§</span><span aria-hidden="true" className="h-px w-7 bg-line-strong" />Legal</p>
             </Reveal>
 
             <nav className="mt-6 space-y-3" aria-label="Documentos legales">
@@ -95,8 +95,8 @@ export default async function LegalPage({
             </Reveal>
 
             <Reveal delay={220}>
-              <div className="mt-10 rounded-xl border border-line bg-paper-off p-6 sm:p-8">
-                <p className="t-label">Pendiente de redacción</p>
+              <div className="mt-10 rounded-2xl border border-line bg-paper-off p-6 sm:p-8">
+                <p className="t-label !text-ember">Pendiente de redacción</p>
                 <p className="t-body mt-3 max-w-[56ch]">
                   Este documento es un marcador de posición. El texto definitivo
                   debe redactarse con los datos reales de Velhoura (titular,
@@ -107,7 +107,7 @@ export default async function LegalPage({
                   Para cualquier consulta mientras tanto:{" "}
                   <a
                     href={`mailto:${contact.email}`}
-                    className="text-ink underline underline-offset-4 transition-colors hover:text-signal"
+                    className="text-ink underline underline-offset-4 transition-colors hover:text-ember"
                   >
                     {contact.email}
                   </a>

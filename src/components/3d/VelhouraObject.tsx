@@ -4,7 +4,7 @@ import { useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Float } from "@react-three/drei";
 import * as THREE from "three";
-import type { HeroSceneValues } from "./theatre";
+import type { HeroSceneValues } from "./scene-config";
 
 /** One frame's worth of drag input, already consumed (`dx`/`dy` are the
  *  delta since the last call, not a running total). */
