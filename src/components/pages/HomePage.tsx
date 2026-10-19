@@ -6,6 +6,7 @@ import { ShowcaseSection } from "@/components/sections/ShowcaseSection";
 import { PricingSection } from "@/components/sections/PricingSection";
 import { ProcessSection } from "@/components/sections/ProcessSection";
 import { ToolsSection } from "@/components/sections/ToolsSection";
+import { GlobeSection } from "@/components/sections/GlobeSection";
 import { VisionSection } from "@/components/sections/VisionSection";
 import { DifferentiationSection } from "@/components/sections/DifferentiationSection";
 import { AboutSection } from "@/components/sections/AboutSection";
@@ -31,9 +32,10 @@ export function HomePage({ locale }: { locale: Locale }) {
     <>
       <IntroZoom
         hero={<Hero locale={locale} />}
-        screen={<Hero scene={false} locale={locale} />}
+        screen={<Hero locale={locale} />}
       />
       <ToolsSection locale={locale} />
+      <GlobeSection />
       <WorkSection />
       <ServicesSection locale={locale} />
       <ShowcaseSection />

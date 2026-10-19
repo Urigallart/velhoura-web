@@ -1,6 +1,4 @@
 import { HeroBackdrop } from "@/components/visual/HeroBackdrop";
-import { Armature } from "@/components/visual/Armature";
-import { HeroSceneLoader } from "@/components/3d/HeroSceneLoader";
 import { ButtonLink } from "@/components/ui/Button";
 import type { Locale } from "@/i18n/locale";
 
@@ -31,23 +29,14 @@ const copy = {
  * a visitor needs to decide is on one axis, so there is no second place for
  * the eye to go and no competition for the claim.
  *
- * The globe and the instrument around it sit *below* that stack rather than
- * beside it, cropped by the fold. That is deliberate: the fold is the only
- * free invitation to scroll a page ever gets, and a shape cut in half by it
- * spends it better than an arrow asking politely.
+ * The globe has its own section just below (see `GlobeSection`): large enough
+ * to carry the studio's story, which it could not do boxed into the hero.
  *
  * The entrance is pure CSS on purpose. Everything above the fold paints from
  * the server HTML and resolves on its own timeline — no hydration, no rAF, no
  * blank hero if JavaScript is slow, throttled in a background tab, or absent.
  */
-export function Hero({
-  scene = true,
-  locale = "es",
-}: {
-  /** The globe stage. Off for the copy shown on the intro's laptop glass. */
-  scene?: boolean;
-  locale?: Locale;
-} = {}) {
+export function Hero({ locale = "es" }: { locale?: Locale } = {}) {
   const t = copy[locale];
   return (
     <section className="relative isolate overflow-hidden pt-32 pb-16 sm:pt-36 sm:pb-24">
@@ -132,27 +121,6 @@ export function Hero({
         >
           {t.small}
         </p>
-      </div>
-
-      {/*
-        The stage sits in normal flow directly under the copy, which puts its
-        top third above the fold on a laptop and the rest one flick away. No
-        translate and no fixed height: the fold does the cropping, so there is
-        nothing to re-tune per breakpoint and nothing permanently clipped once
-        the reader scrolls.
-      */}
-      <div
-        className="anim-rise relative mx-auto mt-12 w-full max-w-[360px] px-6 sm:mt-14 sm:max-w-[440px] lg:max-w-[520px]"
-        style={{ "--d": "400ms" } as React.CSSProperties}
-      >
-        <div className="relative aspect-square w-full">
-          {scene && (
-            <>
-              <Armature />
-              <HeroSceneLoader />
-            </>
-          )}
-        </div>
       </div>
     </section>
   );
