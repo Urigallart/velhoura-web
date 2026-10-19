@@ -57,7 +57,7 @@ export function Hero({
             aria-hidden="true"
             className="size-1.5 shrink-0 rounded-full bg-ember"
           />
-          <span className="t-label !tracking-[0.12em]">{t.badge}</span>
+          <span className="t-label !font-sans !tracking-[0.1em] !text-[0.75rem]">{t.badge}</span>
         </p>
 
         {/* Claim: what we make, what we build, what it gets you. Each line
