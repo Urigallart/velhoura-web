@@ -539,7 +539,7 @@ function LanguageSwitch({
       role="group"
       aria-label={label}
       className={cn(
-        "items-center rounded-full bg-paper-sunk p-0.5 font-mono text-[11px] font-semibold tracking-[0.08em]",
+        "items-center rounded-full bg-paper-sunk p-0.5 font-sans text-[11px] font-semibold tracking-[0.08em]",
         className?.includes("hidden") ? "" : "flex",
         className,
       )}
