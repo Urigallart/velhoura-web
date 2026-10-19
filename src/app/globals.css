@@ -544,6 +544,14 @@ html[data-intro="done"] .intro-hero {
   margin-top: calc(-1 * var(--intro-vh, 100svh));
 }
 
+/* Once the page has taken over, the stage goes: the copy of the hero on its
+   glass sits exactly under the real one, and the real hero is transparent,
+   so leaving the stage visible shows every letter twice. Scrolling back up
+   returns to "play" and brings the stage back. */
+html[data-intro="done"] .intro-stage {
+  visibility: hidden;
+}
+
 /* The real hero waits under the stage until the copy on the glass has
    grown to exactly its size — then they swap in one frame. */
 html[data-intro="play"] .intro-hero {
