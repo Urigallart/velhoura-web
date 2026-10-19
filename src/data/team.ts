@@ -24,7 +24,7 @@ export const team: Member[] = [
     id: "founder-02",
     name: "Ian Monfil",
     role: "Fullstack Developer",
-    bio: "De reparar hardware a construir producto: sistemas y redes primero, después desarrollo web fullstack, con prácticas en Worldline trabajando con React y Next.js en producción. Cofundador de Velhoura.",
+    bio: "De reparar hardware a construir producto: sistemas y redes primero, después desarrollo fullstack con React y Next.js en producción en Worldline. Actualmente cursando Ingeniería Informática en Tecnocampus mientras cofunda y desarrolla Velhoura.",
     monogram: "IM",
     href: "https://portfolio-delta-mauve-61.vercel.app/",
   },
