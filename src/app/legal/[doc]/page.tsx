@@ -3,35 +3,14 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Reveal } from "@/components/ui/Reveal";
 import { MaskedTitle } from "@/components/ui/MaskedTitle";
-import { contact, legalLinks } from "@/data/site";
+import { legalLinks } from "@/data/site";
+import { docs } from "@/components/legal/docs";
+import { cn } from "@/lib/utils";
 
 /**
- * Legal pages.
- *
- * ⚠ SCAFFOLD ONLY. The routes exist so the footer links resolve and so the
- * real texts have somewhere to live — the bodies below are placeholders and
- * are NOT valid legal documents. Replace each `body` with text reviewed by
- * whoever advises Velhoura before the site goes live.
+ * Legal pages: aviso legal, privacidad, cookies, términos. The texts live in
+ * `components/legal/docs.tsx`; the owner's identity in `data/legal.ts`.
  */
-
-const docs = {
-  privacy: {
-    title: "Privacy Policy",
-    intro: "Cómo tratamos los datos personales de quien visita esta web.",
-  },
-  cookies: {
-    title: "Cookie Policy",
-    intro: "Qué cookies utiliza esta web y con qué finalidad.",
-  },
-  notice: {
-    title: "Legal Notice",
-    intro: "Datos identificativos del titular de este sitio web.",
-  },
-  terms: {
-    title: "Terms & Conditions",
-    intro: "Condiciones de uso del sitio y de los servicios contratados.",
-  },
-} as const;
 
 type Doc = keyof typeof docs;
 type Params = { doc: string };
@@ -52,7 +31,7 @@ export async function generateMetadata({
   return {
     title: entry.title,
     description: entry.intro,
-    robots: { index: false, follow: true },
+    alternates: { canonical: `/legal/${doc}` },
   };
 }
 
@@ -70,21 +49,31 @@ export default async function LegalPage({
       <div className="shell">
         <div className="grid gap-y-10 md:grid-cols-12 md:gap-x-10">
           <div className="md:col-span-4">
-            <Reveal y={10}>
-              <p className="t-label flex items-center gap-3"><span className="text-ember">§</span><span aria-hidden="true" className="h-px w-7 bg-line-strong" />Legal</p>
-            </Reveal>
+            <div className="md:sticky md:top-28">
+              <Reveal y={10}>
+                <p className="t-label flex items-center gap-3">
+                  <span className="text-ember">§</span>
+                  <span aria-hidden="true" className="h-px w-7 bg-line-strong" />
+                  Legal
+                </p>
+              </Reveal>
 
-            <nav className="mt-6 space-y-3" aria-label="Documentos legales">
-              {legalLinks.map((l) => (
-                <Link
-                  key={l.href}
-                  href={l.href}
-                  className="block text-sm text-ink-soft transition-colors duration-300 hover:text-ink"
-                >
-                  {l.label}
-                </Link>
-              ))}
-            </nav>
+              <nav className="mt-6 space-y-3" aria-label="Documentos legales">
+                {legalLinks.map((l) => (
+                  <Link
+                    key={l.href}
+                    href={l.href}
+                    aria-current={l.href === `/legal/${doc}` ? "page" : undefined}
+                    className={cn(
+                      "block text-sm transition-colors duration-300 hover:text-ink",
+                      l.href === `/legal/${doc}` ? "font-medium text-ink" : "text-ink-soft",
+                    )}
+                  >
+                    {l.label.es}
+                  </Link>
+                ))}
+              </nav>
+            </div>
           </div>
 
           <div className="md:col-span-8">
@@ -94,26 +83,22 @@ export default async function LegalPage({
               <p className="t-lead mt-6 max-w-[52ch]">{entry.intro}</p>
             </Reveal>
 
-            <Reveal delay={220}>
-              <div className="mt-10 rounded-2xl border border-line bg-paper-off p-6 sm:p-8">
-                <p className="t-label !text-ember">Pendiente de redacción</p>
-                <p className="t-body mt-3 max-w-[56ch]">
-                  Este documento es un marcador de posición. El texto definitivo
-                  debe redactarse con los datos reales de Velhoura (titular,
-                  domicilio, responsable del tratamiento, base jurídica y
-                  proveedores) y revisarse antes de publicar el sitio.
-                </p>
-                <p className="t-body mt-4 text-sm">
-                  Para cualquier consulta mientras tanto:{" "}
-                  <a
-                    href={`mailto:${contact.email}`}
-                    className="text-ink underline underline-offset-4 transition-colors hover:text-ember"
-                  >
-                    {contact.email}
-                  </a>
-                </p>
-              </div>
-            </Reveal>
+            {/* Plain content, not revealed: a legal text should be readable
+                the moment the page loads, all of it. */}
+            <div
+              className={cn(
+                "mt-12 max-w-[68ch] space-y-10 text-[0.9375rem] leading-relaxed text-ink-soft",
+                "[&_p+p]:mt-4 [&_ul]:mt-4 [&_ul]:list-disc [&_ul]:space-y-2 [&_ul]:pl-5",
+                "[&_strong]:font-medium [&_strong]:text-ink",
+              )}
+            >
+              {entry.sections.map((s) => (
+                <section key={s.heading}>
+                  <h2 className="t-h3 mb-4 text-[1.25rem] text-ink">{s.heading}</h2>
+                  {s.body}
+                </section>
+              ))}
+            </div>
           </div>
         </div>
       </div>

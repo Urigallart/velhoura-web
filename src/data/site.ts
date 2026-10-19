@@ -59,9 +59,14 @@ export const contact = {
 /** Only the channels that actually exist. */
 export const activeSocials = contact.socials.filter((s) => s.href.length > 0);
 
+/**
+ * The documents exist in Spanish only — the binding version under Spanish
+ * law — so both languages link to the same pages, labelled in their own
+ * language.
+ */
 export const legalLinks = [
-  { label: "Privacy Policy", href: "/legal/privacy" },
-  { label: "Cookie Policy", href: "/legal/cookies" },
-  { label: "Legal Notice", href: "/legal/notice" },
-  { label: "Terms & Conditions", href: "/legal/terms" },
+  { label: { es: "Aviso legal", en: "Legal notice" }, href: "/legal/notice" },
+  { label: { es: "Privacidad", en: "Privacy" }, href: "/legal/privacy" },
+  { label: { es: "Cookies", en: "Cookies" }, href: "/legal/cookies" },
+  { label: { es: "Términos y condiciones", en: "Terms & conditions" }, href: "/legal/terms" },
 ] as const;

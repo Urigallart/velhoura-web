@@ -6,6 +6,7 @@ import { ButtonAction } from "@/components/ui/Button";
 import { onOpenContactModal, type ContactPrefill } from "@/lib/contactModal";
 import { useLocale } from "@/i18n/useLocale";
 import { ProjectQuiz, type QuizSubmission } from "./ProjectQuiz";
+import { PrivacyConsent } from "./PrivacyConsent";
 
 type Status = "idle" | "submitting" | "sent" | "error";
 
@@ -179,6 +180,7 @@ export function ContactModal() {
       projectType: String(form.get("projectType") ?? ""),
       message: String(form.get("message") ?? ""),
       company: String(form.get("company") ?? ""),
+      consent: form.get("consent") === "on",
     });
   }
 
@@ -358,6 +360,8 @@ export function ContactModal() {
                       />
                     </label>
                   </div>
+
+                  <PrivacyConsent locale={locale} />
 
                   {status === "error" && (
                     <p role="alert" className="text-sm text-ember-deep">

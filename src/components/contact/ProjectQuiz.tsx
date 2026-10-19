@@ -12,6 +12,7 @@ import {
 } from "@/data/quiz";
 import type { Locale } from "@/i18n/locale";
 import { cn } from "@/lib/utils";
+import { PrivacyConsent } from "./PrivacyConsent";
 
 const copy = {
   es: {
@@ -61,6 +62,8 @@ export type QuizSubmission = {
   message: string;
   /** Honeypot — see `ContactModal`. */
   company: string;
+  /** The privacy checkbox; the form can't submit without it. */
+  consent: boolean;
   answers: { question: string; answer: string }[];
   /** First answer to "what would you like to build", for the email subject. */
   projectType: string;
@@ -170,6 +173,7 @@ export function ProjectQuiz({
       phone: String(form.get("phone") ?? ""),
       message: String(form.get("message") ?? ""),
       company: String(form.get("company") ?? ""),
+      consent: form.get("consent") === "on",
       answers: summary,
       projectType: needs?.answer ?? "",
     });
@@ -268,6 +272,8 @@ export function ProjectQuiz({
                   <input name="company" type="text" tabIndex={-1} autoComplete="off" />
                 </label>
               </div>
+
+              <PrivacyConsent locale={locale} />
 
               {errorMessage && (
                 <p role="alert" className="text-sm text-ember-deep">

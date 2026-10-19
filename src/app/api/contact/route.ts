@@ -140,6 +140,15 @@ export async function POST(request: Request) {
   // in the answers, so there the comment box is optional.
   const hasContent = isQuiz ? answers.length > 0 : Boolean(message);
 
+  // Both forms carry a required privacy checkbox (RGPD art. 13). The browser
+  // enforces it; this keeps a hand-built request from skipping it.
+  if (body?.consent !== true) {
+    return NextResponse.json(
+      { error: "Tienes que aceptar la política de privacidad para enviar el formulario." },
+      { status: 400 },
+    );
+  }
+
   if (!name || !email || !hasContent || !EMAIL_RE.test(email)) {
     return NextResponse.json(
       { error: "Faltan campos obligatorios o el email no es válido." },
@@ -156,6 +165,8 @@ export async function POST(request: Request) {
     `Email: ${email}`,
     phone && `Teléfono: ${phone}`,
     !isQuiz && projectType && `Tipo de proyecto: ${projectType}`,
+    // Kept with the message as the record of when consent was given.
+    `Acepta la política de privacidad: sí (${new Date().toISOString()})`,
   ].filter((line): line is string => Boolean(line));
 
   const content = isQuiz

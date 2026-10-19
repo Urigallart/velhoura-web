@@ -117,7 +117,7 @@ export function Footer() {
                   href={l.href}
                   className="group inline-flex text-xs text-ink-mute transition-colors duration-300 hover:text-ink"
                 >
-                  <span className="u-draw">{l.label}</span>
+                  <span className="u-draw">{l.label[locale]}</span>
                 </Link>
               </li>
             ))}
