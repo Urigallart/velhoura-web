@@ -8,7 +8,7 @@ import { Reveal } from "@/components/ui/Reveal";
 import { ButtonAction } from "@/components/ui/Button";
 import type { Plan } from "@/data/plans";
 import { detailCopy, getPlanDetail } from "@/data/planDetails";
-import { getPlanQuiz } from "@/data/planQuiz";
+import { estimatePlan, formatEstimate, getPlanQuiz } from "@/data/planQuiz";
 import { useLocale } from "@/i18n/useLocale";
 import type { Locale } from "@/i18n/locale";
 import { sendContact } from "@/lib/sendContact";
@@ -118,7 +118,11 @@ function PlanDialog({
           ...s,
           kind: "quiz",
           // The plan heads the answers so the email says what was asked for.
-          answers: [{ question: t.chosen, answer: `${plan.name} — ${priceLabel(plan)}` }, ...s.answers],
+          answers: [
+            { question: t.chosen, answer: `${plan.name} — ${priceLabel(plan)}` },
+            ...(s.estimate ? [{ question: t.estimateShown, answer: s.estimate }] : []),
+            ...s.answers,
+          ],
         },
         formShownAt.current,
         t.sendError,
@@ -174,6 +178,10 @@ function PlanDialog({
                 key={plan.id}
                 locale={locale}
                 questions={getPlanQuiz(plan.id)}
+                estimate={(a) => {
+                  const e = estimatePlan(plan.id, a);
+                  return e && formatEstimate(e, locale);
+                }}
                 projectType={t.formIntro(plan.name)}
                 eyebrow={`${t.formIntro(plan.name)} · ${priceLabel(plan)}`}
                 submitting={submitting}

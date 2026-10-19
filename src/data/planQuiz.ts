@@ -1,60 +1,188 @@
-import { o, only, quiz, type QuizQuestion } from "./quiz";
+import type { Locale } from "@/i18n/locale";
+import { activeQuestions, pruneAnswers, type QuizAnswers, type QuizOption, type QuizQuestion } from "./quiz";
 
 /**
- * The short form behind each pricing card. Someone who clicks "Quiero mi
- * tienda" has already said what they want, so instead of the full project
- * questionnaire (which starts with "what would you like to build?") they get
- * four questions that only make sense for that plan, then their details.
+ * The form behind each pricing card, and the price estimate it produces.
  *
+ * Someone who clicks "Quiero mi tienda" has already said what they want, so
+ * instead of the full project questionnaire (which starts with "what would
+ * you like to build?") they get questions that only make sense for that plan.
  * Same shape as `quiz.ts`, rendered by the same `ProjectQuiz` component.
+ *
+ * ── The estimate ──────────────────────────────────────────────────────────
+ * Each plan has a `base` (its "Desde" price) and each option may carry a
+ * `cost`: a fixed number or a [min, max] range in euros, added on top. The
+ * visitor sees the running total as a range as they answer.
+ *
+ * THESE FIGURES ARE THE STUDIO'S TO SET. Adjust `base` and any `cost` below;
+ * nothing else needs to change. Options with no cost are included in the
+ * plan's base price. VAT and third-party costs (domain, hosting, licences)
+ * are never part of the estimate, and the form says so.
  */
 
-const timing = quiz.find((q) => q.id === "timing")!;
-const budget = quiz.find((q) => q.id === "budget")!;
+type Cost = number | [number, number];
+
+/** An option, optionally priced. */
+const p = (id: string, es: string, en: string, cost?: Cost, hint?: [string, string]): QuizOption => ({
+  id,
+  label: { es, en },
+  ...(cost !== undefined ? { cost } : null),
+  ...(hint ? { hint: { es: hint[0], en: hint[1] } } : null),
+});
+
+/** A "none of these" option that clears the others in a multi-choice question. */
+const none = (id: string, es: string, en: string): QuizOption => ({ ...p(id, es, en), exclusive: true });
+
+const pickAll = { es: "Puedes elegir varias.", en: "Pick as many as you like." };
+
+/* ── Shared questions ──────────────────────────────────────────────────── */
+
+const content = (partial: Cost, full: Cost): QuizQuestion => ({
+  id: "content",
+  title: { es: "¿Tienes ya los textos?", en: "Do you already have the copy?" },
+  help: {
+    es: "Si no, los redactamos nosotros a partir de una conversación contigo.",
+    en: "If not, we write them ourselves after a conversation with you.",
+  },
+  options: [
+    p("ready", "Sí, los tengo todos", "Yes, I have all of it"),
+    p("partial", "Tengo una parte", "I have some of it", partial),
+    p("none", "No, necesito que los escribáis", "No, I need you to write them", full),
+  ],
+});
+
+const images = (stock: Cost, custom: Cost): QuizQuestion => ({
+  id: "images",
+  title: { es: "¿Y las imágenes?", en: "And the images?" },
+  help: {
+    es: "Fotos, ilustraciones o gráficos que aparecerán en la web.",
+    en: "Photos, illustrations or graphics that will appear on the site.",
+  },
+  options: [
+    p("own", "Tengo fotos propias", "I have my own photos"),
+    p("stock", "Buscadlas vosotros (bancos de imágenes)", "Find them for me (stock images)", stock),
+    p("custom", "Quiero ilustraciones o gráficos a medida", "I want custom illustrations or graphics", custom),
+  ],
+});
+
+const brand = (logo: Cost, identity: Cost): QuizQuestion => ({
+  id: "brand",
+  title: { es: "¿Tienes logo e identidad de marca?", en: "Do you have a logo and brand identity?" },
+  help: {
+    es: "Colores, tipografías y logo. Si ya los tienes, la web los sigue.",
+    en: "Colours, typefaces and logo. If you have them, the site follows them.",
+  },
+  options: [
+    p("yes", "Sí, ya los tengo", "Yes, I have them"),
+    p("logo", "Necesito un logo sencillo", "I need a simple logo", logo),
+    p("identity", "Necesito una identidad completa", "I need a full identity", identity, [
+      "Logo, paleta, tipografías y guía de uso",
+      "Logo, palette, typefaces and usage guide",
+    ]),
+  ],
+});
+
+const timing = (urgent: Cost): QuizQuestion => ({
+  id: "timing",
+  title: { es: "¿Para cuándo lo necesitas?", en: "When do you need it?" },
+  help: {
+    es: "Con un plazo muy corto reorganizamos el calendario para llegar.",
+    en: "With a very tight deadline we rearrange our schedule to make it.",
+  },
+  options: [
+    p("urgent", "Urgente, en menos de 2 semanas", "Urgent, in under 2 weeks", urgent),
+    p("month", "En un mes, más o menos", "In about a month"),
+    p("later", "En dos o tres meses", "In two or three months"),
+    p("exploring", "Sin prisa, estoy mirando opciones", "No rush, I'm exploring options"),
+  ],
+});
+
+const care: QuizQuestion = {
+  id: "care",
+  title: { es: "Una vez publicada, ¿quién se encarga?", en: "Once it's live, who looks after it?" },
+  help: {
+    es: "No suma al precio de la web; nos ayuda a saber cómo dejártela preparada.",
+    en: "It doesn't add to the price; it tells us how to hand it over.",
+  },
+  note: {
+    es: "El mantenimiento mensual, si lo quieres, se presupuesta aparte.",
+    en: "Monthly maintenance, if you want it, is quoted separately.",
+  },
+  options: [
+    p("me", "Yo mismo, con unas instrucciones", "Me, with some instructions"),
+    p("you", "Prefiero que lo llevéis vosotros", "I'd rather you handled it"),
+    p("unsure", "Todavía no lo sé", "I don't know yet"),
+  ],
+};
+
+/* ── Landing ───────────────────────────────────────────────────────────── */
 
 const landing: QuizQuestion[] = [
   {
-    id: "landingPurpose",
+    id: "purpose",
     title: { es: "¿Para qué es la landing?", en: "What is the landing page for?" },
     help: {
       es: "Una página que presenta un negocio y una que lanza una campaña se construyen distinto.",
       en: "A page that introduces a business and one that launches a campaign are built differently.",
     },
     options: [
-      o("present", "Presentar mi negocio o mis servicios", "Introduce my business or services"),
-      o("launch", "Lanzar un producto o servicio nuevo", "Launch a new product or service"),
-      o("event", "Un evento o una campaña concreta", "An event or a specific campaign"),
-      o("validate", "Validar una idea antes de invertir más", "Test an idea before investing more"),
+      p("present", "Presentar mi negocio o mis servicios", "Introduce my business or services"),
+      p("launch", "Lanzar un producto o servicio nuevo", "Launch a new product or service"),
+      p("event", "Un evento o una campaña concreta", "An event or a specific campaign"),
+      p("validate", "Validar una idea antes de invertir más", "Test an idea before investing more"),
     ],
   },
   {
-    id: "landingContent",
-    title: { es: "¿Tienes ya los textos y las imágenes?", en: "Do you already have the copy and images?" },
+    id: "length",
+    title: { es: "¿Cuánto contenido tendrá?", en: "How much content will it have?" },
     help: {
-      es: "Si no, te ayudamos a prepararlos. Solo queremos saber de dónde partimos.",
-      en: "If not, we'll help you put them together. We just want to know where we're starting.",
+      es: "Cada sección es un bloque: presentación, servicios, opiniones, preguntas, contacto…",
+      en: "Each section is a block: intro, services, reviews, FAQ, contact…",
     },
     options: [
-      o("ready", "Sí, lo tengo todo", "Yes, I have everything"),
-      o("partial", "Tengo una parte", "I have some of it"),
-      o("none", "No, necesito ayuda con eso", "No, I need help with that"),
+      p("short", "Corta, 3 o 4 secciones", "Short, 3 or 4 sections"),
+      p("medium", "Media, de 5 a 7 secciones", "Medium, 5 to 7 sections", [80, 120]),
+      p("long", "Larga, 8 secciones o más", "Long, 8 sections or more", [160, 240]),
     ],
   },
+  content([40, 80], [100, 180]),
+  images([20, 40], [120, 220]),
+  {
+    id: "extras",
+    title: { es: "¿Necesitas algo más además del formulario?", en: "Anything else besides the contact form?" },
+    help: pickAll,
+    multi: true,
+    options: [
+      p("booking", "Reservas o citas", "Bookings or appointments", [60, 100]),
+      p("newsletter", "Captar emails para newsletter", "Collect emails for a newsletter", [40, 60]),
+      p("whatsapp", "Botón de WhatsApp", "WhatsApp button", 20),
+      p("languages", "Varios idiomas", "Several languages", [80, 140]),
+      p("analytics", "Analítica y píxel para anuncios", "Analytics and an ad pixel", [30, 50]),
+      none("nothing", "Nada más, con lo básico me vale", "Nothing else, the basics are fine"),
+    ],
+  },
+  brand([80, 150], [250, 400]),
   {
     id: "domain",
     title: { es: "¿Tienes dominio?", en: "Do you have a domain?" },
     help: {
-      es: "El dominio es la dirección de tu web, tipo tunegocio.com.",
-      en: "The domain is your site's address, like yourbusiness.com.",
+      es: "El dominio es la dirección de tu web, tipo tunegocio.com. Si no, te ayudamos a elegirlo.",
+      en: "The domain is your site's address, like yourbusiness.com. If not, we'll help you pick one.",
+    },
+    note: {
+      es: "El dominio y el alojamiento se pagan aparte, normalmente unos pocos euros al mes.",
+      en: "Domain and hosting are paid separately, usually a few euros a month.",
     },
     options: [
-      o("yes", "Sí, ya lo tengo", "Yes, I already have one"),
-      o("no", "No, necesito uno", "No, I need one"),
-      o("unsure", "No estoy seguro", "I'm not sure"),
+      p("yes", "Sí, ya lo tengo", "Yes, I already have one"),
+      p("no", "No, necesito uno", "No, I need one"),
+      p("unsure", "No estoy seguro", "I'm not sure"),
     ],
   },
-  timing,
+  timing([60, 120]),
 ];
+
+/* ── Business ──────────────────────────────────────────────────────────── */
 
 const business: QuizQuestion[] = [
   {
@@ -65,67 +193,129 @@ const business: QuizQuestion[] = [
       en: "For example: home, services, about, contact… A rough idea is enough.",
     },
     options: [
-      o("3-5", "Entre 3 y 5", "3 to 5"),
-      o("6-10", "Entre 6 y 10", "6 to 10"),
-      o("10+", "Más de 10", "More than 10"),
-      o("unknown", "No lo sé, ayudadme a decidirlo", "Not sure, help me decide"),
+      p("3-5", "Entre 3 y 5", "3 to 5"),
+      p("6-10", "Entre 6 y 10", "6 to 10", [200, 320]),
+      p("10+", "Más de 10", "More than 10", [450, 700]),
+      p("unknown", "No lo sé, ayudadme a decidirlo", "Not sure, help me decide", [0, 320]),
     ],
   },
   {
-    id: "businessFeatures",
+    id: "features",
     title: { es: "¿Qué tiene que poder hacer la web?", en: "What should the website be able to do?" },
-    help: { es: "Puedes elegir varias.", en: "Pick as many as you like." },
+    help: {
+      es: "Puedes elegir varias. Los formularios de contacto y presupuesto ya van incluidos.",
+      en: "Pick as many as you like. Contact and quote forms are already included.",
+    },
     multi: true,
     options: [
-      o("leads", "Recibir contactos y peticiones de presupuesto", "Receive enquiries and quote requests"),
-      o("booking", "Reservas o citas online", "Online bookings or appointments"),
-      o("blog", "Blog o noticias que actualice yo", "A blog or news I update myself"),
-      o("portfolio", "Mostrar proyectos o trabajos", "Show projects or past work"),
-      o("languages", "Varios idiomas", "Several languages"),
+      p("booking", "Reservas o citas online", "Online bookings or appointments", [120, 200]),
+      p("blog", "Blog o noticias que actualice yo", "A blog or news I update myself", [80, 150]),
+      p("portfolio", "Mostrar proyectos o trabajos", "Show projects or past work", [60, 120]),
+      p("languages", "Varios idiomas", "Several languages", [150, 260]),
+      p("members", "Área privada para clientes", "A private client area", [300, 500]),
+      none("basic", "Nada de esto, solo informar y captar contactos", "None of these, just inform and get enquiries"),
+    ],
+  },
+  {
+    id: "integrations",
+    title: { es: "¿Hay que conectarla con alguna herramienta?", en: "Does it need to connect to any tools?" },
+    help: pickAll,
+    multi: true,
+    options: [
+      p("crm", "Un CRM (HubSpot, Pipedrive…)", "A CRM (HubSpot, Pipedrive…)", [80, 150]),
+      p("newsletter", "Email marketing (Mailchimp, Brevo…)", "Email marketing (Mailchimp, Brevo…)", [40, 80]),
+      p("calendar", "Calendario (Calendly, Google Calendar)", "Calendar (Calendly, Google Calendar)", [30, 60]),
+      p("reviews", "Mapa y reseñas de Google", "Google Maps and reviews", [20, 40]),
+      p("payments", "Cobrar pagos o señales online", "Take payments or deposits online", [100, 180]),
+      none("none", "Ninguna", "None"),
     ],
   },
   {
     id: "currentSite",
     title: { es: "¿Tienes web ahora mismo?", en: "Do you have a website right now?" },
     help: {
-      es: "Si ya existe, partimos de lo que funciona en vez de empezar de cero.",
-      en: "If there is one, we build on what works instead of starting from zero.",
+      es: "Si ya existe, aprovechamos su contenido y cuidamos que no pierdas posiciones en Google.",
+      en: "If there is one, we reuse its content and make sure you keep your Google rankings.",
     },
     options: [
-      o("none", "No, todavía no", "No, not yet"),
-      o("outdated", "Sí, pero se ha quedado anticuada", "Yes, but it's outdated"),
-      o("works", "Sí, funciona pero quiero más", "Yes, it works but I want more"),
-      o("social", "Solo tengo redes sociales", "I only have social media"),
+      p("none", "No, todavía no", "No, not yet"),
+      p("outdated", "Sí, pero se ha quedado anticuada", "Yes, but it's outdated", [50, 120]),
+      p("works", "Sí, funciona pero quiero más", "Yes, it works but I want more", [50, 120]),
+      p("social", "Solo tengo redes sociales", "I only have social media"),
     ],
   },
-  timing,
+  content([80, 150], [200, 350]),
+  images([30, 60], [180, 320]),
+  brand([100, 180], [300, 500]),
+  {
+    id: "seo",
+    title: { es: "¿Qué importancia tiene salir en Google?", en: "How important is ranking on Google?" },
+    help: {
+      es: "El SEO técnico va incluido. Posicionar por búsquedas concretas requiere estudio y contenidos.",
+      en: "Technical SEO is included. Ranking for specific searches takes research and content.",
+    },
+    options: [
+      p("basic", "Con que esté bien hecha me vale", "As long as it's built right, that's enough"),
+      p("local", "Quiero salir cuando buscan en mi zona", "I want to show up in local searches", [100, 180]),
+      p("strong", "Es clave, quiero competir por búsquedas", "It's key, I want to compete for searches", [250, 450]),
+    ],
+  },
+  care,
+  timing([100, 200]),
 ];
+
+/* ── Online store ──────────────────────────────────────────────────────── */
 
 const ecommerce: QuizQuestion[] = [
   {
     id: "productType",
     title: { es: "¿Qué vas a vender?", en: "What will you sell?" },
-    help: { es: "Puedes elegir varias.", en: "Pick as many as you like." },
+    help: pickAll,
     multi: true,
     options: [
-      o("physical", "Productos físicos", "Physical products"),
-      o("digital", "Productos digitales", "Digital products", ["Descargas, cursos, plantillas", "Downloads, courses, templates"]),
-      o("services", "Servicios o reservas", "Services or bookings"),
-      o("subscriptions", "Suscripciones", "Subscriptions"),
+      p("physical", "Productos físicos", "Physical products"),
+      p("digital", "Productos digitales", "Digital products", [50, 100], ["Descargas, cursos, plantillas", "Downloads, courses, templates"]),
+      p("services", "Servicios o reservas", "Services or bookings", [150, 250]),
+      p("subscriptions", "Suscripciones", "Subscriptions", [200, 350]),
     ],
   },
   {
     id: "catalogSize",
     title: { es: "¿Cuántos productos tendrás?", en: "How many products will you have?" },
     help: {
-      es: "Cambia mucho cómo se organiza la tienda y cómo se gestiona el stock.",
-      en: "It changes a lot how the store is organised and stock is managed.",
+      es: "Cambia mucho cómo se organiza la tienda: categorías, filtros, buscador.",
+      en: "It changes a lot how the store is organised: categories, filters, search.",
     },
     options: [
-      o("few", "Menos de 20", "Fewer than 20"),
-      o("some", "Entre 20 y 200", "Between 20 and 200"),
-      o("many", "Más de 200", "More than 200"),
-      o("unknown", "Todavía no lo sé", "I don't know yet"),
+      p("few", "Menos de 20", "Fewer than 20"),
+      p("some", "Entre 20 y 200", "Between 20 and 200", [100, 200]),
+      p("many", "Más de 200", "More than 200", [300, 500]),
+      p("unknown", "Todavía no lo sé", "I don't know yet", [0, 200]),
+    ],
+  },
+  {
+    id: "variants",
+    title: { es: "¿Tus productos tienen variantes?", en: "Do your products have variants?" },
+    help: {
+      es: "Tallas, colores, materiales, packs o productos personalizables.",
+      en: "Sizes, colours, materials, bundles or customisable products.",
+    },
+    options: [
+      p("no", "No, cada producto es único", "No, each product is a single item"),
+      p("simple", "Sí, tallas o colores", "Yes, sizes or colours", [50, 100]),
+      p("complex", "Sí, y personalizables por el cliente", "Yes, and customers can customise them", [180, 320]),
+    ],
+  },
+  {
+    id: "upload",
+    title: { es: "¿Quién sube los productos?", en: "Who uploads the products?" },
+    help: {
+      es: "Te enseñamos a hacerlo tú, o te entregamos la tienda ya llena.",
+      en: "We show you how to do it, or hand over the store already stocked.",
+    },
+    options: [
+      p("me", "Yo mismo", "Me"),
+      p("you", "Vosotros, la carga inicial", "You, the initial upload", [100, 250]),
     ],
   },
   {
@@ -137,61 +327,177 @@ const ecommerce: QuizQuestion[] = [
     },
     when: (a) => (a.productType ?? []).includes("physical"),
     options: [
-      o("local", "Solo a mi ciudad o recogida en tienda", "Just my city or in-store pickup"),
-      o("spain", "A toda España", "All of Spain"),
-      o("intl", "Europa o internacional", "Europe or international"),
+      p("local", "Solo a mi ciudad o recogida en tienda", "Just my city or in-store pickup"),
+      p("spain", "A toda España", "All of Spain", [30, 60]),
+      p("intl", "Europa o internacional", "Europe or international", [150, 250]),
+    ],
+  },
+  {
+    id: "payments",
+    title: { es: "¿Qué formas de pago quieres?", en: "Which payment methods do you want?" },
+    help: {
+      es: "Tarjeta, Apple Pay y Google Pay van incluidos con Stripe.",
+      en: "Cards, Apple Pay and Google Pay are included with Stripe.",
+    },
+    multi: true,
+    options: [
+      p("bizum", "Bizum", "Bizum", [40, 80]),
+      p("paypal", "PayPal", "PayPal", [30, 60]),
+      p("offline", "Transferencia o contrarreembolso", "Bank transfer or cash on delivery", 20),
+      none("standard", "Con tarjeta me vale", "Cards are enough"),
+    ],
+  },
+  {
+    id: "integrations",
+    title: { es: "¿Hay que conectarla con algo?", en: "Does it need to connect to anything?" },
+    help: pickAll,
+    multi: true,
+    options: [
+      p("invoicing", "Facturación o ERP (Holded, Sage…)", "Invoicing or ERP (Holded, Sage…)", [150, 300]),
+      p("pos", "Stock de mi tienda física (TPV)", "My physical shop's stock (POS)", [200, 400]),
+      p("marketplaces", "Amazon u otros marketplaces", "Amazon or other marketplaces", [200, 400]),
+      p("email", "Email marketing y carritos abandonados", "Email marketing and abandoned carts", [40, 80]),
+      none("none", "Nada de esto", "None of these"),
     ],
   },
   {
     id: "sellingNow",
     title: { es: "¿Dónde vendes ahora mismo?", en: "Where do you sell right now?" },
-    help: { es: "Puedes elegir varias.", en: "Pick as many as you like." },
+    help: pickAll,
     multi: true,
     options: [
-      o("store", "En tienda física", "In a physical store"),
-      o("marketplaces", "En marketplaces (Amazon, Etsy…)", "On marketplaces (Amazon, Etsy…)"),
-      o("social", "Por redes sociales o WhatsApp", "Through social media or WhatsApp"),
-      only("nowhere", "Todavía en ningún sitio", "Nowhere yet"),
+      p("store", "En tienda física", "In a physical store"),
+      p("social", "Por redes sociales o WhatsApp", "Through social media or WhatsApp"),
+      p("marketplaces", "En marketplaces (Amazon, Etsy…)", "On marketplaces (Amazon, Etsy…)"),
+      p("otherShop", "En otra tienda online que quiero cambiar", "In another online store I want to replace", [150, 300], [
+        "Migramos productos, clientes y pedidos",
+        "We move products, customers and orders",
+      ]),
+      none("nowhere", "Todavía en ningún sitio", "Nowhere yet"),
     ],
   },
-  timing,
+  brand([100, 180], [300, 500]),
+  timing([150, 250]),
 ];
+
+/* ── Custom ────────────────────────────────────────────────────────────── */
 
 const custom: QuizQuestion[] = [
   {
-    id: "customKind",
+    id: "kind",
     title: { es: "¿Qué quieres construir?", en: "What do you want to build?" },
     help: {
       es: "Elige lo que más se acerque. Los detalles los vemos juntos.",
       en: "Pick the closest one. We'll go through the details together.",
     },
     options: [
-      o("clientApp", "Una app para mis clientes", "An app for my customers", ["Reservas, área privada, pedidos…", "Bookings, client area, orders…"]),
-      o("internal", "Una herramienta para mi equipo", "A tool for my team", ["Gestión interna, automatizar tareas", "Internal management, automating tasks"]),
-      o("platform", "Una plataforma o marketplace", "A platform or marketplace"),
-      o("saas", "Un producto SaaS", "A SaaS product", ["Con usuarios y suscripciones", "With users and subscriptions"]),
-      o("other", "Otra cosa", "Something else"),
+      p("clientApp", "Una app para mis clientes", "An app for my customers", undefined, ["Reservas, área privada, pedidos…", "Bookings, client area, orders…"]),
+      p("internal", "Una herramienta para mi equipo", "A tool for my team", undefined, ["Gestión interna, automatizar tareas", "Internal management, automating tasks"]),
+      p("platform", "Una plataforma o marketplace", "A platform or marketplace", [1000, 2000]),
+      p("saas", "Un producto SaaS", "A SaaS product", [1500, 3000], ["Con usuarios y suscripciones", "With users and subscriptions"]),
+      p("other", "Otra cosa", "Something else", [0, 1000]),
     ],
   },
   {
-    id: "customStage",
+    id: "stage",
     title: { es: "¿En qué punto está el proyecto?", en: "Where is the project right now?" },
     help: {
-      es: "Así sabemos si empezamos por definirlo o directamente por construirlo.",
-      en: "So we know whether to start by defining it or go straight to building.",
+      es: "Si es una idea, empezamos por definirla contigo antes de construir.",
+      en: "If it's an idea, we start by defining it with you before building.",
     },
     options: [
-      o("idea", "Es solo una idea", "It's just an idea"),
-      o("defined", "Lo tengo definido o con diseños", "It's defined or has designs"),
-      o("existing", "Ya existe algo y quiero rehacerlo o ampliarlo", "Something exists and I want to rebuild or extend it"),
+      p("idea", "Es solo una idea", "It's just an idea", [300, 600]),
+      p("defined", "Lo tengo definido o con diseños", "It's defined or has designs"),
+      p("existing", "Ya existe algo y quiero rehacerlo o ampliarlo", "Something exists and I want to rebuild or extend it", [200, 800]),
     ],
   },
-  budget,
-  timing,
+  {
+    id: "platforms",
+    title: { es: "¿Dónde se va a usar?", en: "Where will it be used?" },
+    help: {
+      es: "Una web funciona en cualquier dispositivo; una app de tienda (iOS/Android) es otro desarrollo.",
+      en: "A web app works on any device; a store app (iOS/Android) is a separate build.",
+    },
+    options: [
+      p("web", "En el navegador, móvil y ordenador", "In the browser, phone and desktop"),
+      p("mobile", "Como app en App Store y Google Play", "As an app on the App Store and Google Play", [1500, 3000]),
+      p("both", "Las dos cosas", "Both", [2000, 4000]),
+    ],
+  },
+  {
+    id: "users",
+    title: { es: "¿Cuántas personas la usarán?", en: "How many people will use it?" },
+    help: {
+      es: "Cambia cómo se diseña la infraestructura y los permisos.",
+      en: "It changes how the infrastructure and permissions are designed.",
+    },
+    options: [
+      p("few", "Menos de 50", "Fewer than 50"),
+      p("hundreds", "Entre 50 y 1.000", "Between 50 and 1,000", [200, 500]),
+      p("many", "Más de 1.000", "More than 1,000", [500, 1200]),
+    ],
+  },
+  {
+    id: "features",
+    title: { es: "¿Qué tiene que incluir?", en: "What does it need to include?" },
+    help: pickAll,
+    multi: true,
+    options: [
+      p("accounts", "Usuarios con login y roles", "User accounts with roles", [200, 400]),
+      p("admin", "Panel de administración", "An admin dashboard", [300, 600]),
+      p("payments", "Pagos o suscripciones", "Payments or subscriptions", [300, 500]),
+      p("notifications", "Notificaciones por email o push", "Email or push notifications", [150, 300]),
+      p("integrations", "Conexión con otras herramientas (API)", "Connections to other tools (API)", [300, 700]),
+      p("ai", "Automatizaciones o IA", "Automations or AI", [400, 900]),
+    ],
+  },
+  care,
+  timing([300, 600]),
 ];
 
-const byPlan: Record<string, QuizQuestion[]> = { landing, business, ecommerce, custom };
+/* ── Plans ─────────────────────────────────────────────────────────────── */
+
+type PlanQuiz = {
+  /** Starting price in euros: the "Desde" on the card (Custom has none there). */
+  base: number;
+  questions: QuizQuestion[];
+};
+
+const byPlan: Record<string, PlanQuiz> = {
+  landing: { base: 199, questions: landing },
+  business: { base: 499, questions: business },
+  ecommerce: { base: 799, questions: ecommerce },
+  custom: { base: 1500, questions: custom },
+};
 
 export function getPlanQuiz(planId: string): QuizQuestion[] {
-  return byPlan[planId] ?? [timing];
+  return byPlan[planId]?.questions ?? [];
+}
+
+export type Estimate = { min: number; max: number };
+
+/** Base price plus the cost of every answer still in play, as a range. */
+export function estimatePlan(planId: string, answers: QuizAnswers): Estimate | null {
+  const plan = byPlan[planId];
+  if (!plan) return null;
+  const live = pruneAnswers(answers, plan.questions);
+  let min = plan.base;
+  let max = plan.base;
+  for (const q of activeQuestions(live, plan.questions)) {
+    for (const opt of q.options) {
+      if (!opt.cost || !(live[q.id] ?? []).includes(opt.id)) continue;
+      const [lo, hi] = typeof opt.cost === "number" ? [opt.cost, opt.cost] : opt.cost;
+      min += lo;
+      max += hi;
+    }
+  }
+  return { min, max };
+}
+
+/** "199 €", "1.499 – 2.300 €" / "€199", "€1,499 – €2,300". */
+export function formatEstimate({ min, max }: Estimate, locale: Locale) {
+  const n = (v: number) =>
+    String(v).replace(/\B(?=(\d{3})+(?!\d))/g, locale === "es" ? "." : ",");
+  if (locale === "en") return min === max ? `€${n(min)}` : `€${n(min)} – €${n(max)}`;
+  return min === max ? `${n(min)} €` : `${n(min)} – ${n(max)} €`;
 }
