@@ -92,7 +92,7 @@ function Generated({ page, locale }: { page: ServicePage; locale: Locale }) {
             className={cn(
               "rounded-xl border bg-paper px-5 py-4",
               r.hit
-                ? "border-ember/40 shadow-[0_16px_40px_-20px_rgba(11,70,255,0.45)]"
+                ? "border-ember/40 shadow-[0_16px_40px_-20px_rgba(107,122,69,0.45)]"
                 : "border-line opacity-60",
             )}
           >

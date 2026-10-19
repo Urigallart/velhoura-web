@@ -246,7 +246,7 @@ export function IntroZoom({
         style={{ height: "calc(var(--intro-z, 240svh) + var(--intro-vh, 100svh))" }}
       >
         <div
-          className="sticky top-0 w-full overflow-hidden bg-paper-sunk"
+          className="intro-stage sticky top-0 w-full overflow-hidden bg-paper-sunk"
           style={{ height: "var(--intro-vh, 100svh)" }}
         >
           {/* On narrow screens the opening shot is pulled back and the plate

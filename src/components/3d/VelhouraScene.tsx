@@ -174,7 +174,7 @@ export function VelhouraScene() {
 }
 
 /**
- * Studio lighting: a white key from upper right and a signal-blue bounce from
+ * Studio lighting: a white key from upper right and a khaki-green bounce from
  * lower left. The intensities are higher than they look because the camera now
  * sits further back to frame the planet inside the armature — same rig, longer
  * throw.
@@ -187,7 +187,7 @@ function Lighting({ fullEnvironment }: { fullEnvironment: boolean }) {
       <pointLight
         position={[-3, -1.5, 2]}
         intensity={2}
-        color="#3b5bff"
+        color="#9bab6a"
         distance={11}
         decay={2}
       />
@@ -213,7 +213,7 @@ function Lighting({ fullEnvironment }: { fullEnvironment: boolean }) {
             intensity={1.1}
             position={[-3, -1, 3]}
             scale={[2, 4, 1]}
-            color="#8fa3ff"
+            color="#c5cfa0"
           />
           <Lightformer
             form="ring"
