@@ -37,8 +37,12 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const LIMITS = {
   name: 120,
   email: 200,
-  projectType: 60,
+  phone: 40,
+  projectType: 200,
   message: 4000,
+  /** Questionnaire: max question/answer pairs, and length of each side. */
+  answers: 30,
+  answerText: 300,
   /** Milliseconds a genuine visitor needs to fill the form. */
   minElapsed: 3000,
   /** Requests allowed per IP per window. */
@@ -83,6 +87,18 @@ function field(value: unknown, max: number): string {
   return typeof value === "string" ? value.trim().slice(0, max) : "";
 }
 
+/** The questionnaire's question/answer pairs, capped and stripped of junk. */
+function answerPairs(value: unknown): { question: string; answer: string }[] {
+  if (!Array.isArray(value)) return [];
+  return value
+    .slice(0, LIMITS.answers)
+    .map((pair) => ({
+      question: field(pair?.question, LIMITS.answerText),
+      answer: field(pair?.answer, LIMITS.answerText),
+    }))
+    .filter((pair) => pair.question && pair.answer);
+}
+
 export async function POST(request: Request) {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
@@ -114,10 +130,17 @@ export async function POST(request: Request) {
 
   const name = field(body?.name, LIMITS.name);
   const email = field(body?.email, LIMITS.email);
+  const phone = field(body?.phone, LIMITS.phone);
   const projectType = field(body?.projectType, LIMITS.projectType);
   const message = field(body?.message, LIMITS.message);
+  const answers = answerPairs(body?.answers);
+  const isQuiz = body?.kind === "quiz";
 
-  if (!name || !email || !message || !EMAIL_RE.test(email)) {
+  // The free-text form needs a message; the questionnaire carries its content
+  // in the answers, so there the comment box is optional.
+  const hasContent = isQuiz ? answers.length > 0 : Boolean(message);
+
+  if (!name || !email || !hasContent || !EMAIL_RE.test(email)) {
     return NextResponse.json(
       { error: "Faltan campos obligatorios o el email no es válido." },
       { status: 400 },
@@ -126,20 +149,32 @@ export async function POST(request: Request) {
 
   const resend = new Resend(apiKey);
 
+  // Empty optional fields are dropped from the header; the body keeps its
+  // blank lines on purpose, as spacing.
+  const header = [
+    `Nombre: ${name}`,
+    `Email: ${email}`,
+    phone && `Teléfono: ${phone}`,
+    !isQuiz && projectType && `Tipo de proyecto: ${projectType}`,
+  ].filter((line): line is string => Boolean(line));
+
+  const content = isQuiz
+    ? [
+        "",
+        "── Respuestas del cuestionario ──",
+        ...answers.flatMap((a) => ["", a.question, `→ ${a.answer}`]),
+        ...(message ? ["", "── Comentario ──", "", message] : []),
+      ]
+    : ["", message];
+
   const { error } = await resend.emails.send({
     from: `${site.name} <onboarding@resend.dev>`,
     to: contact.email,
     replyTo: email,
-    subject: `Nuevo mensaje — ${name}${projectType ? ` (${projectType})` : ""}`,
-    text: [
-      `Nombre: ${name}`,
-      `Email: ${email}`,
-      projectType && `Tipo de proyecto: ${projectType}`,
-      "",
-      message,
-    ]
-      .filter(Boolean)
-      .join("\n"),
+    subject: isQuiz
+      ? `Nuevo proyecto — ${name}${projectType ? ` (${projectType})` : ""}`
+      : `Nuevo mensaje — ${name}${projectType ? ` (${projectType})` : ""}`,
+    text: [...header, ...content].join("\n"),
   });
 
   if (error) {
