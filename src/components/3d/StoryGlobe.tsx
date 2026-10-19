@@ -340,7 +340,7 @@ function Globe({
             aria-label={pinAria}
             className="pointer-events-auto relative block size-12 cursor-pointer rounded-full outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#6b7a45]"
           >
-            <span className="absolute bottom-full left-1/2 mb-0.5 -translate-x-1/2 whitespace-nowrap rounded-full sm:bottom-auto sm:left-full sm:top-1/2 sm:mb-0 sm:ml-1 sm:-translate-y-1/2 sm:translate-x-0 bg-[#08090a] px-3 py-1.5 font-mono text-[10px] font-semibold tracking-[0.14em] text-white uppercase shadow-[0_8px_24px_-10px_rgba(8,9,10,0.6)]">
+            <span className="absolute bottom-full left-1/2 mb-0.5 -translate-x-1/2 whitespace-nowrap rounded-full sm:bottom-auto sm:left-full sm:top-1/2 sm:mb-0 sm:ml-1 sm:-translate-y-1/2 sm:translate-x-0 bg-[#08090a] px-3 py-1.5 text-[12px] font-medium tracking-[0.01em] text-white shadow-[0_8px_24px_-10px_rgba(8,9,10,0.6)]">
               {pinLabel}
             </span>
           </button>

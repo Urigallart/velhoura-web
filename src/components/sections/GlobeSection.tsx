@@ -7,7 +7,6 @@ import { MaskedTitle } from "@/components/ui/MaskedTitle";
 import { Reveal } from "@/components/ui/Reveal";
 import { useLocale } from "@/i18n/useLocale";
 import { openContactModal } from "@/lib/contactModal";
-import { cn } from "@/lib/utils";
 
 /**
  * "Velhoura, desde España." — the studio's globe, large, turned to Spain with
@@ -24,68 +23,74 @@ const copy = {
   es: {
     label: "Desde España",
     lines: ["Velhoura,", "*desde España.*"],
-    lead: "Un estudio de Barcelona que diseña, programa y lanza. Pulsa el pin y te contamos cómo llegamos hasta aquí.",
+    lead: "Un estudio de Barcelona que diseña, programa y lanza. Toca el pin y te contamos cómo llegamos hasta aquí.",
     pinLabel: "Barcelona · España",
     pinAria: "Barcelona, España: abrir nuestra historia",
-    hint: "Pulsa el pin de Barcelona",
-    read: "Nuestra historia",
+    hint: "Empieza por Barcelona",
+    read: "Leer las postales",
     close: "Cerrar",
-    chapter: (n: number) => `Capítulo ${n}`,
+    chapter: (n: number) => `Postal ${n}`,
     prev: "Anterior",
     next: "Siguiente",
-    cardAria: "Nuestra historia",
+    cardAria: "Nuestra historia, en postales",
+    postal: "Postal",
+    sign: "Oriol e Ian",
+    stamp: "Barcelona",
     drag: "Arrastra para girar el globo",
     cta: "Cuéntanos tu negocio",
     chapters: [
       {
-        title: "Barcelona, España",
-        body: "Aquí está nuestra base. Somos dos socios, Oriol Gallart e Ian Monfil, y trabajamos con pymes de Barcelona y alrededores.",
+        title: "Aquí empezamos.",
+        body: "Barcelona. Somos Oriol e Ian, y trabajamos con negocios de la ciudad y de alrededor.",
       },
       {
-        title: "Dos perfiles, un mismo equipo",
-        body: "Oriol viene del desarrollo full stack y del diseño de interfaces; Ian, de los sistemas y las redes, y del desarrollo con React y Next.js. Quien diseña y quien programa son las mismas personas que te atienden.",
+        title: "Con quien hablas es quien lo hace.",
+        body: "Oriol viene del desarrollo y del diseño de interfaces. Ian, de los sistemas, las redes y React. No hay nadie entre tú y quien te hace la web.",
       },
       {
-        title: "También construimos lo nuestro",
-        body: "Además de trabajar para clientes, lanzamos y mantenemos productos propios: la marca de gafas Velhoura, Roady, Gym Tracker y Zhestar. Lo que aprendemos con ellos lo aplicamos a tu proyecto.",
+        title: "Probamos primero en casa.",
+        body: "Tenemos productos propios: las gafas Velhoura, Roady, Gym Tracker y Zhestar. Lo que aprendemos ahí lo usamos en tu proyecto.",
       },
       {
-        title: "Y ahora, lo tuyo",
-        body: "Marca, web y captación de clientes en un solo equipo. Cuéntanos tu negocio y vemos cómo ayudarte.",
+        title: "Ahora te toca a ti.",
+        body: "Marca, web y clientes, en el mismo equipo. Cuéntanos qué haces y lo vemos.",
       },
     ],
   },
   en: {
     label: "From Spain",
     lines: ["Velhoura,", "*from Spain.*"],
-    lead: "A Barcelona studio that designs, builds and launches. Press the pin and we'll tell you how we got here.",
+    lead: "A Barcelona studio that designs, builds and launches. Tap the pin and we'll tell you how we got here.",
     pinLabel: "Barcelona · Spain",
     pinAria: "Barcelona, Spain: open our story",
-    hint: "Press the Barcelona pin",
-    read: "Our story",
+    hint: "Start with Barcelona",
+    read: "Read the postcards",
     close: "Close",
-    chapter: (n: number) => `Chapter ${n}`,
+    chapter: (n: number) => `Postcard ${n}`,
     prev: "Previous",
     next: "Next",
-    cardAria: "Our story",
+    cardAria: "Our story, in postcards",
+    postal: "Postcard",
+    sign: "Oriol & Ian",
+    stamp: "Barcelona",
     drag: "Drag to turn the globe",
     cta: "Tell us about your business",
     chapters: [
       {
-        title: "Barcelona, Spain",
-        body: "This is our home base. We are two partners, Oriol Gallart and Ian Monfil, and we work with businesses in Barcelona and the surrounding area.",
+        title: "This is where we start.",
+        body: "Barcelona. We're Oriol and Ian, and we work with businesses in the city and around it.",
       },
       {
-        title: "Two backgrounds, one team",
-        body: "Oriol comes from full stack development and interface design; Ian from systems and networks, and from building with React and Next.js. The people who design and the people who code are the same people who answer you.",
+        title: "Who you talk to is who builds it.",
+        body: "Oriol comes from development and interface design. Ian from systems, networks and React. There's nobody between you and the person building your site.",
       },
       {
-        title: "We build our own, too",
-        body: "Besides client work, we launch and run products of our own: the Velhoura sunglasses brand, Roady, Gym Tracker and Zhestar. What we learn from them goes into your project.",
+        title: "We try it at home first.",
+        body: "We have products of our own: the Velhoura sunglasses, Roady, Gym Tracker and Zhestar. What we learn there goes into your project.",
       },
       {
-        title: "And now, yours",
-        body: "Brand, web and customer growth in one team. Tell us about your business and we'll see how we can help.",
+        title: "Now it's your turn.",
+        body: "Brand, web and customers, in one team. Tell us what you do and we'll take it from there.",
       },
     ],
   },
@@ -122,7 +127,7 @@ export function GlobeSection() {
       <div className="shell">
         <div className="text-center">
           <Reveal y={10}>
-            <p className="t-label flex items-center justify-center gap-3">
+            <p className="t-label !font-sans !normal-case !tracking-normal !text-[0.875rem] flex items-center justify-center gap-3">
               <span aria-hidden="true" className="h-px w-7 bg-line-strong" />
               {t.label}
               <span aria-hidden="true" className="h-px w-7 bg-line-strong" />
@@ -153,7 +158,7 @@ export function GlobeSection() {
               />
               <p
                 aria-hidden="true"
-                className="t-label pointer-events-none absolute inset-x-0 bottom-[1%] text-center !text-ink-faint"
+                className="t-label !font-sans !normal-case !tracking-normal !text-[0.8125rem] pointer-events-none absolute inset-x-0 bottom-[1%] text-center !text-ink-faint"
               >
                 {t.drag}
               </p>
@@ -169,25 +174,49 @@ export function GlobeSection() {
                   id={CARD_ID}
                   role="region"
                   aria-label={t.cardAria}
-                  initial={{ opacity: 0, y: 14 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 8 }}
-                  transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                  className="relative rounded-3xl border border-line bg-paper-raise p-7 shadow-[0_30px_70px_-40px_rgba(8,9,10,0.35)] sm:p-9"
+                  initial={{ opacity: 0, y: 18, rotate: 2 }}
+                  animate={{ opacity: 1, y: 0, rotate: -1.2 }}
+                  exit={{ opacity: 0, y: 8, rotate: 1 }}
+                  transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                  className="relative rounded-md border border-line bg-paper-raise p-7 pb-6 shadow-[0_26px_60px_-34px_rgba(8,9,10,0.4)] sm:p-9 sm:pb-7"
                 >
                   <button
                     type="button"
                     onClick={() => setOpen(false)}
                     aria-label={t.close}
-                    className="absolute right-4 top-4 grid size-9 place-items-center rounded-full border border-line text-ink-soft transition-colors duration-300 hover:border-line-strong hover:text-ink"
+                    className="absolute -left-3 -top-3 grid size-8 place-items-center rounded-full border border-line bg-paper-raise text-ink-soft transition-colors duration-300 hover:border-ink hover:text-ink"
                   >
-                    <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" className="size-3.5">
+                    <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" className="size-3">
                       <path d="M3 3l10 10M13 3L3 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                     </svg>
                   </button>
 
-                  <p className="t-label t-num !text-ember">
-                    {String(step + 1).padStart(2, "0")} / {String(t.chapters.length).padStart(2, "0")}
+                  {/* Postage stamp: the mark inside a perforated edge, with a
+                      postmark ring over its corner. */}
+                  <div aria-hidden="true" className="absolute right-6 top-6 sm:right-8 sm:top-8">
+                    <div
+                      className="relative grid size-[4.5rem] place-items-center bg-ember-wash p-2"
+                      style={{
+                        WebkitMask:
+                          "radial-gradient(circle 3px at 3px 3px, transparent 98%, #000) -3px -3px / 9px 9px",
+                        mask: "radial-gradient(circle 3px at 3px 3px, transparent 98%, #000) -3px -3px / 9px 9px",
+                      }}
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src="/brand/logo-mark.png" alt="" width={305} height={256} className="h-9 w-auto opacity-80" />
+                    </div>
+                    <svg viewBox="0 0 80 80" className="absolute -bottom-3 -left-7 size-[4.75rem] -rotate-12 text-ink-mute/70">
+                      <circle cx="40" cy="40" r="35" fill="none" stroke="currentColor" strokeWidth="1.2" />
+                      <circle cx="40" cy="40" r="26" fill="none" stroke="currentColor" strokeWidth="0.8" />
+                      <path id="pm" d="M40 40 m-30 0 a30 30 0 1 1 60 0 a30 30 0 1 1 -60 0" fill="none" />
+                      <text fontSize="8.5" fontWeight="600" letterSpacing="1.6" fill="currentColor">
+                        <textPath href="#pm" startOffset="2">{`${t.stamp.toUpperCase()} · ES · ${String(step + 1).padStart(2, "0")}`}</textPath>
+                      </text>
+                    </svg>
+                  </div>
+
+                  <p className="text-[0.8125rem] font-medium text-ember">
+                    {t.postal} {step + 1}/{t.chapters.length}
                   </p>
 
                   <AnimatePresence mode="wait" initial={false}>
@@ -198,15 +227,15 @@ export function GlobeSection() {
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: -12 }}
                       transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-                      className="min-h-[13.5rem] sm:min-h-[12rem]"
+                      className="min-h-[14rem] pr-20 sm:min-h-[13rem] sm:pr-24"
                     >
-                      <h3 className="t-h2 mt-4 text-balance">{chapter.title}</h3>
+                      <h3 className="t-h2 mt-3 text-balance">{chapter.title}</h3>
                       <p className="t-body mt-4 text-[0.9375rem]">{chapter.body}</p>
                       {step === last && (
                         <button
                           type="button"
                           onClick={openContactModal}
-                          className="mt-6 inline-flex h-11 items-center gap-2 rounded-full bg-ink px-5 text-[0.9375rem] font-medium text-paper-raise transition-colors duration-300 hover:bg-ember"
+                          className="mt-5 inline-flex h-11 items-center gap-2 rounded-full bg-ink px-5 text-[0.9375rem] font-medium text-paper-raise transition-colors duration-300 hover:bg-ember"
                         >
                           {t.cta}
                           <span aria-hidden="true">→</span>
@@ -215,29 +244,15 @@ export function GlobeSection() {
                     </motion.div>
                   </AnimatePresence>
 
-                  <div className="mt-6 flex items-center justify-between gap-4 border-t border-line pt-5">
-                    <div className="flex items-center gap-2">
-                      {t.chapters.map((c, i) => (
-                        <button
-                          key={c.title}
-                          type="button"
-                          onClick={() => setStep(i)}
-                          aria-label={t.chapter(i + 1)}
-                          aria-current={i === step ? "step" : undefined}
-                          className={cn(
-                            "h-2 rounded-full transition-[width,background-color] duration-300 ease-[var(--e-out)]",
-                            i === step ? "w-7 bg-ember" : "w-2 bg-line-strong hover:bg-ink-mute",
-                          )}
-                        />
-                      ))}
-                    </div>
-                    <div className="flex items-center gap-2">
+                  <div className="mt-5 flex items-end justify-between gap-4 border-t border-dashed border-line-strong pt-4">
+                    <p className="text-[1.375rem] italic leading-none text-ink-soft">{t.sign}</p>
+                    <div className="flex items-center gap-4 text-[0.9375rem] font-medium">
                       <button
                         type="button"
                         onClick={() => setStep((s) => Math.max(0, s - 1))}
                         disabled={step === 0}
                         aria-label={t.prev}
-                        className="grid size-10 place-items-center rounded-full border border-line text-ink transition-colors duration-300 hover:border-ink disabled:opacity-35 disabled:hover:border-line"
+                        className="text-ink transition-colors duration-300 hover:text-ember disabled:opacity-30 disabled:hover:text-ink"
                       >
                         ←
                       </button>
@@ -246,9 +261,9 @@ export function GlobeSection() {
                         onClick={() => setStep((s) => Math.min(last, s + 1))}
                         disabled={step === last}
                         aria-label={t.next}
-                        className="grid size-10 place-items-center rounded-full bg-ink text-paper-raise transition-colors duration-300 hover:bg-ember disabled:opacity-35 disabled:hover:bg-ink"
+                        className="text-ink transition-colors duration-300 hover:text-ember disabled:opacity-30 disabled:hover:text-ink"
                       >
-                        →
+                        {t.next} →
                       </button>
                     </div>
                   </div>
@@ -260,24 +275,28 @@ export function GlobeSection() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 6 }}
                   transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                  className="flex flex-col items-center gap-5 text-center lg:items-start lg:text-left"
+                  className="flex flex-col items-center gap-4 text-center lg:items-start lg:text-left"
                 >
-                  <p className="inline-flex items-center gap-3 font-mono text-[11px] tracking-[0.14em] text-ink-mute uppercase">
-                    <span className="relative flex size-2.5">
-                      <span className="absolute inline-flex size-full animate-ping rounded-full bg-ember opacity-60" />
-                      <span className="relative inline-flex size-2.5 rounded-full bg-ember" />
-                    </span>
-                    {t.hint}
-                  </p>
                   <button
                     type="button"
                     onClick={toggle}
                     aria-expanded={open}
                     aria-controls={CARD_ID}
-                    className="inline-flex h-12 items-center gap-3 rounded-full border border-line-strong px-6 text-[0.9375rem] font-medium text-ink transition-colors duration-300 hover:border-ink hover:bg-ink hover:text-paper-raise"
+                    className="group flex items-center gap-4 text-left"
                   >
-                    {t.read}
-                    <span aria-hidden="true">→</span>
+                    {/* A hand-drawn arrow pointing back at the pin. */}
+                    <svg viewBox="0 0 64 40" fill="none" aria-hidden="true" className="hidden h-10 w-16 shrink-0 text-ink-mute transition-colors duration-300 group-hover:text-ember lg:block">
+                      <path d="M62 30C46 36 26 32 12 14" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+                      <path d="M4 6l1 14 11-8" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                    <span className="block">
+                      <span className="block text-[clamp(1.5rem,2.6vw,2.125rem)] font-semibold leading-[1.05] tracking-[-0.03em]">
+                        {t.hint}
+                      </span>
+                      <span className="mt-2 inline-block border-b border-line-strong pb-0.5 text-[0.9375rem] text-ink-soft transition-colors duration-300 group-hover:border-ember group-hover:text-ember">
+                        {t.read} →
+                      </span>
+                    </span>
                   </button>
                 </motion.div>
               )}
