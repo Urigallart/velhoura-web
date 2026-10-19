@@ -6,6 +6,7 @@ import { ButtonAction } from "@/components/ui/Button";
 import {
   activeQuestions,
   pruneAnswers,
+  quiz,
   summarize,
   type QuizAnswers,
   type QuizQuestion,
@@ -78,18 +79,31 @@ export type QuizSubmission = {
  */
 export function ProjectQuiz({
   locale,
+  questions: source = quiz,
+  projectType,
   prefillMessage,
   submitting,
   errorMessage,
   onSubmit,
   onWriteInstead,
+  onBack,
+  eyebrow,
 }: {
   locale: Locale;
+  /** A short label in the top bar, e.g. the plan being requested. */
+  eyebrow?: string;
+  /** The question set — the full project quiz unless a plan passes its own. */
+  questions?: QuizQuestion[];
+  /** Known up front (a plan's short form); otherwise taken from the first answer. */
+  projectType?: string;
   prefillMessage?: string;
   submitting: boolean;
   errorMessage: string | null;
   onSubmit: (submission: QuizSubmission) => void;
-  onWriteInstead: () => void;
+  /** Shows the "write us a message" link when provided. */
+  onWriteInstead?: () => void;
+  /** Shows the back button on the first step too, to leave the form. */
+  onBack?: () => void;
 }) {
   const t = copy[locale];
   const reduced = useReducedMotion();
@@ -100,7 +114,7 @@ export function ProjectQuiz({
   const headingRef = useRef<HTMLHeadingElement>(null);
   const advanceTimer = useRef<number | undefined>(undefined);
 
-  const questions = useMemo(() => activeQuestions(answers), [answers]);
+  const questions = useMemo(() => activeQuestions(answers, source), [answers, source]);
   // The contact form is the step after the last question.
   const total = questions.length + 1;
   const onContact = index >= questions.length;
@@ -163,8 +177,8 @@ export function ProjectQuiz({
   function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = new FormData(e.currentTarget);
-    const clean = pruneAnswers(answers);
-    const summary = summarize(clean, locale);
+    const clean = pruneAnswers(answers, source);
+    const summary = summarize(clean, locale, source);
     const needs = summary.find((s) => s.question === questions[0]?.title[locale]);
 
     onSubmit({
@@ -175,7 +189,7 @@ export function ProjectQuiz({
       company: String(form.get("company") ?? ""),
       consent: form.get("consent") === "on",
       answers: summary,
-      projectType: needs?.answer ?? "",
+      projectType: projectType ?? needs?.answer ?? "",
     });
   }
 
@@ -190,17 +204,18 @@ export function ProjectQuiz({
   return (
     <div>
       {/* Top bar: back + progress. Leaves room for the dialog's close button. */}
-      <div className="flex h-9 items-center pr-12">
-        {index > 0 && (
+      <div className="flex h-9 items-center gap-3 pr-12">
+        {(index > 0 || onBack) && (
           <button
             type="button"
-            onClick={() => go(index - 1)}
+            onClick={() => (index > 0 ? go(index - 1) : onBack?.())}
             className="inline-flex items-center gap-1.5 rounded-full border border-line px-3.5 py-1.5 text-[0.8125rem] text-ink-soft transition-colors duration-300 hover:border-ink hover:text-ink"
           >
             <span aria-hidden="true">←</span>
             {t.back}
           </button>
         )}
+        {eyebrow && <span className="t-label truncate !text-ember">{eyebrow}</span>}
       </div>
 
       <div className="mt-5">
@@ -365,7 +380,7 @@ export function ProjectQuiz({
       </AnimatePresence>
 
       {/* The free-text route stays one click away for anyone it doesn't fit. */}
-      {(index === 0 || onContact) && (
+      {onWriteInstead && (index === 0 || onContact) && (
         <p className="mt-8 border-t border-line pt-5 text-center text-[0.8125rem] text-ink-mute">
           {t.writeInstead}{" "}
           <button

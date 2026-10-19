@@ -1,7 +1,6 @@
 "use client";
 
 import { ButtonAction } from "@/components/ui/Button";
-import { requestPlan } from "@/components/pricing/request";
 import type { Plan } from "@/data/plans";
 import { detailCopy } from "@/data/planDetails";
 import { useLocale } from "@/i18n/useLocale";
@@ -16,7 +15,16 @@ import { cn } from "@/lib/utils";
  * The featured plan inverts to ink instead of shouting in colour: on a page
  * with one accent, the loudest thing available is the absence of the ground.
  */
-export function PricingCard({ plan, onDetails }: { plan: Plan; onDetails: () => void }) {
+export function PricingCard({
+  plan,
+  onDetails,
+  onRequest,
+}: {
+  plan: Plan;
+  onDetails: () => void;
+  /** The call to action: opens this plan's own short form. */
+  onRequest: () => void;
+}) {
   const featured = Boolean(plan.featured);
   const locale = useLocale();
   const t = detailCopy[locale];
@@ -75,7 +83,7 @@ export function PricingCard({ plan, onDetails }: { plan: Plan; onDetails: () => 
       <ButtonAction
         onClick={(e) => {
           e.stopPropagation();
-          requestPlan(plan, locale);
+          onRequest();
         }}
         arrow
         size="lg"
