@@ -44,7 +44,7 @@ export function Particles({ count, intro }: ParticlesProps) {
         size={2}
         speed={0.36}
         opacity={0.55 * intro}
-        color="#3b5bff"
+        color="#8a9a5b"
         noise={0.8}
       />
     </group>
