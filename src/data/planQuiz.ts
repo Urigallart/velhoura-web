@@ -141,27 +141,27 @@ const landing: QuizQuestion[] = [
     },
     options: [
       p("short", "Corta, 3 o 4 secciones", "Short, 3 or 4 sections"),
-      p("medium", "Media, de 5 a 7 secciones", "Medium, 5 to 7 sections", [80, 120]),
-      p("long", "Larga, 8 secciones o más", "Long, 8 sections or more", [160, 240]),
+      p("medium", "Media, de 5 a 7 secciones", "Medium, 5 to 7 sections", [40, 60]),
+      p("long", "Larga, 8 secciones o más", "Long, 8 sections or more", [80, 120]),
     ],
   },
-  content([40, 80], [100, 180]),
-  images([20, 40], [120, 220]),
+  content([20, 40], [50, 90]),
+  images(15, [60, 100]),
   {
     id: "extras",
     title: { es: "¿Necesitas algo más además del formulario?", en: "Anything else besides the contact form?" },
     help: pickAll,
     multi: true,
     options: [
-      p("booking", "Reservas o citas", "Bookings or appointments", [60, 100]),
-      p("newsletter", "Captar emails para newsletter", "Collect emails for a newsletter", [40, 60]),
-      p("whatsapp", "Botón de WhatsApp", "WhatsApp button", 20),
-      p("languages", "Varios idiomas", "Several languages", [80, 140]),
-      p("analytics", "Analítica y píxel para anuncios", "Analytics and an ad pixel", [30, 50]),
+      p("booking", "Reservas o citas", "Bookings or appointments", [30, 50]),
+      p("newsletter", "Captar emails para newsletter", "Collect emails for a newsletter", [20, 30]),
+      p("whatsapp", "Botón de WhatsApp", "WhatsApp button", 10),
+      p("languages", "Varios idiomas", "Several languages", [40, 70]),
+      p("analytics", "Analítica y píxel para anuncios", "Analytics and an ad pixel", [15, 25]),
       none("nothing", "Nada más, con lo básico me vale", "Nothing else, the basics are fine"),
     ],
   },
-  brand([80, 150], [250, 400]),
+  brand([50, 80], [120, 200]),
   {
     id: "domain",
     title: { es: "¿Tienes dominio?", en: "Do you have a domain?" },
@@ -179,7 +179,7 @@ const landing: QuizQuestion[] = [
       p("unsure", "No estoy seguro", "I'm not sure"),
     ],
   },
-  timing([60, 120]),
+  timing([30, 60]),
 ];
 
 /* ── Business ──────────────────────────────────────────────────────────── */
@@ -194,9 +194,9 @@ const business: QuizQuestion[] = [
     },
     options: [
       p("3-5", "Entre 3 y 5", "3 to 5"),
-      p("6-10", "Entre 6 y 10", "6 to 10", [200, 320]),
-      p("10+", "Más de 10", "More than 10", [450, 700]),
-      p("unknown", "No lo sé, ayudadme a decidirlo", "Not sure, help me decide", [0, 320]),
+      p("6-10", "Entre 6 y 10", "6 to 10", [60, 100]),
+      p("10+", "Más de 10", "More than 10", [150, 220]),
+      p("unknown", "No lo sé, ayudadme a decidirlo", "Not sure, help me decide", [0, 100]),
     ],
   },
   {
@@ -208,11 +208,11 @@ const business: QuizQuestion[] = [
     },
     multi: true,
     options: [
-      p("booking", "Reservas o citas online", "Online bookings or appointments", [120, 200]),
-      p("blog", "Blog o noticias que actualice yo", "A blog or news I update myself", [80, 150]),
-      p("portfolio", "Mostrar proyectos o trabajos", "Show projects or past work", [60, 120]),
-      p("languages", "Varios idiomas", "Several languages", [150, 260]),
-      p("members", "Área privada para clientes", "A private client area", [300, 500]),
+      p("booking", "Reservas o citas online", "Online bookings or appointments", [40, 60]),
+      p("blog", "Blog o noticias que actualice yo", "A blog or news I update myself", [30, 50]),
+      p("portfolio", "Mostrar proyectos o trabajos", "Show projects or past work", [20, 40]),
+      p("languages", "Varios idiomas", "Several languages", [60, 90]),
+      p("members", "Área privada para clientes", "A private client area", [120, 180]),
       none("basic", "Nada de esto, solo informar y captar contactos", "None of these, just inform and get enquiries"),
     ],
   },
@@ -222,11 +222,11 @@ const business: QuizQuestion[] = [
     help: pickAll,
     multi: true,
     options: [
-      p("crm", "Un CRM (HubSpot, Pipedrive…)", "A CRM (HubSpot, Pipedrive…)", [80, 150]),
-      p("newsletter", "Email marketing (Mailchimp, Brevo…)", "Email marketing (Mailchimp, Brevo…)", [40, 80]),
-      p("calendar", "Calendario (Calendly, Google Calendar)", "Calendar (Calendly, Google Calendar)", [30, 60]),
-      p("reviews", "Mapa y reseñas de Google", "Google Maps and reviews", [20, 40]),
-      p("payments", "Cobrar pagos o señales online", "Take payments or deposits online", [100, 180]),
+      p("crm", "Un CRM (HubSpot, Pipedrive…)", "A CRM (HubSpot, Pipedrive…)", [30, 50]),
+      p("newsletter", "Email marketing (Mailchimp, Brevo…)", "Email marketing (Mailchimp, Brevo…)", [15, 30]),
+      p("calendar", "Calendario (Calendly, Google Calendar)", "Calendar (Calendly, Google Calendar)", [10, 20]),
+      p("reviews", "Mapa y reseñas de Google", "Google Maps and reviews", 10),
+      p("payments", "Cobrar pagos o señales online", "Take payments or deposits online", [40, 60]),
       none("none", "Ninguna", "None"),
     ],
   },
@@ -239,14 +239,14 @@ const business: QuizQuestion[] = [
     },
     options: [
       p("none", "No, todavía no", "No, not yet"),
-      p("outdated", "Sí, pero se ha quedado anticuada", "Yes, but it's outdated", [50, 120]),
-      p("works", "Sí, funciona pero quiero más", "Yes, it works but I want more", [50, 120]),
+      p("outdated", "Sí, pero se ha quedado anticuada", "Yes, but it's outdated", [20, 40]),
+      p("works", "Sí, funciona pero quiero más", "Yes, it works but I want more", [20, 40]),
       p("social", "Solo tengo redes sociales", "I only have social media"),
     ],
   },
-  content([80, 150], [200, 350]),
-  images([30, 60], [180, 320]),
-  brand([100, 180], [300, 500]),
+  content([30, 50], [60, 100]),
+  images(20, [60, 100]),
+  brand([50, 80], [120, 200]),
   {
     id: "seo",
     title: { es: "¿Qué importancia tiene salir en Google?", en: "How important is ranking on Google?" },
@@ -256,12 +256,12 @@ const business: QuizQuestion[] = [
     },
     options: [
       p("basic", "Con que esté bien hecha me vale", "As long as it's built right, that's enough"),
-      p("local", "Quiero salir cuando buscan en mi zona", "I want to show up in local searches", [100, 180]),
-      p("strong", "Es clave, quiero competir por búsquedas", "It's key, I want to compete for searches", [250, 450]),
+      p("local", "Quiero salir cuando buscan en mi zona", "I want to show up in local searches", [40, 60]),
+      p("strong", "Es clave, quiero competir por búsquedas", "It's key, I want to compete for searches", [90, 150]),
     ],
   },
   care,
-  timing([100, 200]),
+  timing([40, 80]),
 ];
 
 /* ── Online store ──────────────────────────────────────────────────────── */
@@ -274,9 +274,9 @@ const ecommerce: QuizQuestion[] = [
     multi: true,
     options: [
       p("physical", "Productos físicos", "Physical products"),
-      p("digital", "Productos digitales", "Digital products", [50, 100], ["Descargas, cursos, plantillas", "Downloads, courses, templates"]),
-      p("services", "Servicios o reservas", "Services or bookings", [150, 250]),
-      p("subscriptions", "Suscripciones", "Subscriptions", [200, 350]),
+      p("digital", "Productos digitales", "Digital products", [30, 60], ["Descargas, cursos, plantillas", "Downloads, courses, templates"]),
+      p("services", "Servicios o reservas", "Services or bookings", [80, 140]),
+      p("subscriptions", "Suscripciones", "Subscriptions", [120, 200]),
     ],
   },
   {
@@ -288,9 +288,9 @@ const ecommerce: QuizQuestion[] = [
     },
     options: [
       p("few", "Menos de 20", "Fewer than 20"),
-      p("some", "Entre 20 y 200", "Between 20 and 200", [100, 200]),
-      p("many", "Más de 200", "More than 200", [300, 500]),
-      p("unknown", "Todavía no lo sé", "I don't know yet", [0, 200]),
+      p("some", "Entre 20 y 200", "Between 20 and 200", [60, 120]),
+      p("many", "Más de 200", "More than 200", [150, 250]),
+      p("unknown", "Todavía no lo sé", "I don't know yet", [0, 120]),
     ],
   },
   {
@@ -302,8 +302,8 @@ const ecommerce: QuizQuestion[] = [
     },
     options: [
       p("no", "No, cada producto es único", "No, each product is a single item"),
-      p("simple", "Sí, tallas o colores", "Yes, sizes or colours", [50, 100]),
-      p("complex", "Sí, y personalizables por el cliente", "Yes, and customers can customise them", [180, 320]),
+      p("simple", "Sí, tallas o colores", "Yes, sizes or colours", [30, 60]),
+      p("complex", "Sí, y personalizables por el cliente", "Yes, and customers can customise them", [100, 180]),
     ],
   },
   {
@@ -315,7 +315,7 @@ const ecommerce: QuizQuestion[] = [
     },
     options: [
       p("me", "Yo mismo", "Me"),
-      p("you", "Vosotros, la carga inicial", "You, the initial upload", [100, 250]),
+      p("you", "Vosotros, la carga inicial", "You, the initial upload", [60, 150]),
     ],
   },
   {
@@ -328,8 +328,8 @@ const ecommerce: QuizQuestion[] = [
     when: (a) => (a.productType ?? []).includes("physical"),
     options: [
       p("local", "Solo a mi ciudad o recogida en tienda", "Just my city or in-store pickup"),
-      p("spain", "A toda España", "All of Spain", [30, 60]),
-      p("intl", "Europa o internacional", "Europe or international", [150, 250]),
+      p("spain", "A toda España", "All of Spain", [20, 40]),
+      p("intl", "Europa o internacional", "Europe or international", [80, 140]),
     ],
   },
   {
@@ -341,9 +341,9 @@ const ecommerce: QuizQuestion[] = [
     },
     multi: true,
     options: [
-      p("bizum", "Bizum", "Bizum", [40, 80]),
-      p("paypal", "PayPal", "PayPal", [30, 60]),
-      p("offline", "Transferencia o contrarreembolso", "Bank transfer or cash on delivery", 20),
+      p("bizum", "Bizum", "Bizum", [25, 40]),
+      p("paypal", "PayPal", "PayPal", [20, 30]),
+      p("offline", "Transferencia o contrarreembolso", "Bank transfer or cash on delivery", 10),
       none("standard", "Con tarjeta me vale", "Cards are enough"),
     ],
   },
@@ -353,10 +353,10 @@ const ecommerce: QuizQuestion[] = [
     help: pickAll,
     multi: true,
     options: [
-      p("invoicing", "Facturación o ERP (Holded, Sage…)", "Invoicing or ERP (Holded, Sage…)", [150, 300]),
-      p("pos", "Stock de mi tienda física (TPV)", "My physical shop's stock (POS)", [200, 400]),
-      p("marketplaces", "Amazon u otros marketplaces", "Amazon or other marketplaces", [200, 400]),
-      p("email", "Email marketing y carritos abandonados", "Email marketing and abandoned carts", [40, 80]),
+      p("invoicing", "Facturación o ERP (Holded, Sage…)", "Invoicing or ERP (Holded, Sage…)", [80, 150]),
+      p("pos", "Stock de mi tienda física (TPV)", "My physical shop's stock (POS)", [120, 220]),
+      p("marketplaces", "Amazon u otros marketplaces", "Amazon or other marketplaces", [120, 220]),
+      p("email", "Email marketing y carritos abandonados", "Email marketing and abandoned carts", [25, 50]),
       none("none", "Nada de esto", "None of these"),
     ],
   },
@@ -369,15 +369,15 @@ const ecommerce: QuizQuestion[] = [
       p("store", "En tienda física", "In a physical store"),
       p("social", "Por redes sociales o WhatsApp", "Through social media or WhatsApp"),
       p("marketplaces", "En marketplaces (Amazon, Etsy…)", "On marketplaces (Amazon, Etsy…)"),
-      p("otherShop", "En otra tienda online que quiero cambiar", "In another online store I want to replace", [150, 300], [
+      p("otherShop", "En otra tienda online que quiero cambiar", "In another online store I want to replace", [80, 160], [
         "Migramos productos, clientes y pedidos",
         "We move products, customers and orders",
       ]),
       none("nowhere", "Todavía en ningún sitio", "Nowhere yet"),
     ],
   },
-  brand([100, 180], [300, 500]),
-  timing([150, 250]),
+  brand([60, 100], [150, 250]),
+  timing([80, 150]),
 ];
 
 /* ── Custom ────────────────────────────────────────────────────────────── */
@@ -460,13 +460,19 @@ const custom: QuizQuestion[] = [
 type PlanQuiz = {
   /** Starting price in euros: the "Desde" on the card (Custom has none there). */
   base: number;
+  /**
+   * Where the estimate stops. Past it the range would mostly be noise — a
+   * project with every box ticked gets quoted properly — so the form shows
+   * "Desde …" instead of a figure that keeps climbing.
+   */
+  cap?: number;
   questions: QuizQuestion[];
 };
 
 const byPlan: Record<string, PlanQuiz> = {
-  landing: { base: 199, questions: landing },
-  business: { base: 499, questions: business },
-  ecommerce: { base: 799, questions: ecommerce },
+  landing: { base: 199, cap: 499, questions: landing },
+  business: { base: 499, cap: 990, questions: business },
+  ecommerce: { base: 799, cap: 1690, questions: ecommerce },
   custom: { base: 1500, questions: custom },
 };
 
@@ -474,7 +480,8 @@ export function getPlanQuiz(planId: string): QuizQuestion[] {
   return byPlan[planId]?.questions ?? [];
 }
 
-export type Estimate = { min: number; max: number };
+/** `open`: the range ran past the plan's cap, so only a floor is shown. */
+export type Estimate = { min: number; max: number; open?: boolean };
 
 /** Base price plus the cost of every answer still in play, as a range. */
 export function estimatePlan(planId: string, answers: QuizAnswers): Estimate | null {
@@ -491,13 +498,15 @@ export function estimatePlan(planId: string, answers: QuizAnswers): Estimate | n
       max += hi;
     }
   }
+  if (plan.cap && max > plan.cap) return { min: Math.min(min, plan.cap), max: plan.cap, open: true };
   return { min, max };
 }
 
-/** "199 €", "1.499 – 2.300 €" / "€199", "€1,499 – €2,300". */
-export function formatEstimate({ min, max }: Estimate, locale: Locale) {
+/** "199 €", "1.499 – 2.300 €", "Desde 990 €" / "€199", "€1,499 – €2,300", "From €990". */
+export function formatEstimate({ min, max, open }: Estimate, locale: Locale) {
   const n = (v: number) =>
     String(v).replace(/\B(?=(\d{3})+(?!\d))/g, locale === "es" ? "." : ",");
+  if (open) return locale === "en" ? `From €${n(min)}` : `Desde ${n(min)} €`;
   if (locale === "en") return min === max ? `€${n(min)}` : `€${n(min)} – €${n(max)}`;
   return min === max ? `${n(min)} €` : `${n(min)} – ${n(max)} €`;
 }
