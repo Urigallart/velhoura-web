@@ -128,7 +128,7 @@ export function ShowcaseSection() {
   const current = showcases[active];
 
   return (
-    <section className="band-tight border-t border-line bg-paper-off">
+    <section className="band-tight bg-paper-off">
       <div className="shell">
         <SectionHeading
           index="03"
@@ -265,7 +265,7 @@ function BrowserFrame({ children }: { children: ReactNode }) {
           <span className="size-2 rounded-full bg-line-strong" />
           <span className="size-2 rounded-full bg-line-strong" />
         </span>
-        <span className="mx-auto rounded-md bg-paper-raise px-3 py-0.5 font-mono text-[0.625rem] text-ink-faint">
+        <span className="mx-auto rounded-md bg-paper-raise px-3 py-0.5 font-sans text-[0.8125rem] text-ink-faint">
           ejemplo.velhoura.com
         </span>
       </div>

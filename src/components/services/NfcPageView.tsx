@@ -138,7 +138,7 @@ export function NfcPageView({ locale }: { locale: Locale }) {
       </section>
 
       {/* Includes + ideal for */}
-      <section className="band border-t border-line bg-paper-off">
+      <section className="band bg-paper-off">
         <div className="shell grid gap-y-14 md:grid-cols-12 md:gap-x-10">
           <div className="md:col-span-7">
             <SectionHeading label={p.includesLabel[locale]} lines={p.includesLines[locale]} />
@@ -168,7 +168,7 @@ export function NfcPageView({ locale }: { locale: Locale }) {
       </section>
 
       {/* Price */}
-      <section className="band border-t border-line">
+      <section className="band">
         <div className="shell">
           <div className="grid items-center gap-y-8 rounded-3xl border border-line bg-ember-wash p-8 sm:p-12 md:grid-cols-12 md:gap-x-10">
             <div className="md:col-span-7">
@@ -184,7 +184,7 @@ export function NfcPageView({ locale }: { locale: Locale }) {
       </section>
 
       {/* FAQ */}
-      <section className="band border-t border-line">
+      <section className="band">
         <div className="shell grid gap-y-10 md:grid-cols-12 md:gap-x-10">
           <div className="md:col-span-5">
             <SectionHeading label={p.faqLabel[locale]} lines={p.faqLines[locale]} />
@@ -203,7 +203,7 @@ export function NfcPageView({ locale }: { locale: Locale }) {
       </section>
 
       {/* Close */}
-      <section className="band border-t border-line bg-ink text-paper-raise">
+      <section className="band bg-ink text-paper-raise">
         <div className="shell text-center">
           <MaskedTitle
             split="word"

@@ -45,7 +45,7 @@ export function Footer() {
       <div className="shell pt-16 md:pt-20">
         <div className="grid gap-12 md:grid-cols-12">
           <div className="md:col-span-5">
-            <p className="flex items-center gap-2 font-mono text-sm font-semibold tracking-[0.24em] text-ink uppercase">
+            <p className="flex items-center gap-2 font-sans text-sm font-semibold text-ink">
               <span aria-hidden="true" className="size-1.5 rounded-full bg-ember" />
               Velhoura
             </p>

@@ -35,7 +35,7 @@ const copy = {
 export function DifferentiationSection({ locale = "es" }: { locale?: Locale }) {
   const t = copy[locale];
   return (
-    <section className="band border-t border-line">
+    <section className="band">
       <div className="shell">
         <SectionHeading
           index="07"

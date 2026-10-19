@@ -10,7 +10,6 @@ export default function NotFound() {
       <div className="shell relative">
         <p className="t-label flex items-center gap-3">
           <span className="t-num text-ember">404</span>
-          <span aria-hidden="true" className="h-px w-7 bg-line-strong" />
           No encontrado
         </p>
 

@@ -208,7 +208,7 @@ function WorkCard({
 
       <span className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-5 sm:p-6">
         <span className="min-w-0">
-          <span className="block font-mono text-[10px] font-semibold tracking-[0.16em] text-paper-raise/60 uppercase">
+          <span className="block font-sans text-[0.8125rem] font-semibold text-paper-raise/60">
             {t.category[product.category] ?? product.category} · {t.status[product.status] ?? product.status}
           </span>
           <span className="mt-1.5 block text-lg font-semibold tracking-[-0.02em] text-paper-raise">

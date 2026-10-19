@@ -32,7 +32,7 @@ export function ProductsSection({ locale = "es" }: { locale?: Locale }) {
   const live = products.filter((p) => p.status === "LIVE").length;
 
   return (
-    <section id="products" className="band border-t border-line bg-paper-off">
+    <section id="products" className="band bg-paper-off">
       <div className="shell">
         <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
           <SectionHeading

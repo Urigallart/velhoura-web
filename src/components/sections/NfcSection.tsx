@@ -11,7 +11,7 @@ import type { Locale } from "@/i18n/locale";
 export function NfcSection({ locale = "es" }: { locale?: Locale }) {
   const c = nfcCopy;
   return (
-    <section id="resenas" className="border-t border-line py-10 sm:py-14">
+    <section id="resenas" className="py-10 sm:py-14">
       <div className="shell">
         <Reveal>
           <Link

@@ -205,8 +205,7 @@ function PlanDialog({
               </div>
             ) : (
               <>
-                <p className="t-label t-num">Plan {plan.index}</p>
-                <div className="mt-3 flex flex-wrap items-end justify-between gap-x-6 gap-y-2 pr-10">
+                <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-2 pr-10">
                   <h2 id="plan-dialog-title" className="t-h2">
                     {plan.name}
                   </h2>
@@ -220,7 +219,7 @@ function PlanDialog({
                     <ul className="mt-3 space-y-2">
                       {detail.idealFor.map((line) => (
                         <li key={line} className="flex gap-3 text-[0.9375rem] text-ink-soft">
-                          <span aria-hidden="true" className="mt-[0.7em] h-px w-3 shrink-0 bg-ember" />
+                          <span aria-hidden="true" className="mt-[0.6em] size-1.5 shrink-0 rounded-full bg-ember" />
                           {line}
                         </li>
                       ))}

@@ -25,7 +25,7 @@ export type LegalDoc = {
 /** Visible marker for owner data that hasn't been provided yet. */
 function Pending({ what }: { what: string }) {
   return (
-    <span className="rounded bg-ember/10 px-1.5 py-0.5 font-mono text-[0.8125em] text-ember-deep">
+    <span className="rounded bg-ember/10 px-1.5 py-0.5 font-sans text-[0.8125em] text-ember-deep">
       [pendiente: {what}]
     </span>
   );

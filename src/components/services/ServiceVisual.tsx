@@ -125,7 +125,7 @@ function Generated({ page, locale }: { page: ServicePage; locale: Locale }) {
       <div className="col-span-1 row-span-1 rounded-xl bg-paper ring-1 ring-line" />
       <div className="col-span-1 row-span-1 rounded-xl bg-ink-soft" />
       <div className="col-span-5 row-span-1 flex items-center justify-between rounded-xl bg-paper px-5 ring-1 ring-line">
-        <span className="font-mono text-xs tracking-[0.2em] text-ink-mute uppercase">
+        <span className="font-sans text-xs text-ink-mute">
           {page.tag}
         </span>
         <span className="text-sm font-medium text-ink">{page.name}</span>

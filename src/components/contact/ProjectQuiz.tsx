@@ -238,7 +238,7 @@ export function ProjectQuiz({
       </div>
 
       <div className="mt-5">
-        <div className="flex items-center justify-between font-mono text-[0.6875rem] tracking-[0.08em] text-ink-mute uppercase">
+        <div className="flex items-center justify-between font-sans text-[0.8125rem] text-ink-mute">
           <span>{t.step(index + 1, total)}</span>
           <span className="t-num">{progress}%</span>
         </div>
@@ -287,7 +287,7 @@ export function ProjectQuiz({
 
               {estimateText && (
                 <div className="!mt-6 rounded-2xl bg-night px-5 py-4 text-paper-raise">
-                  <p className="font-mono text-[0.6875rem] tracking-[0.12em] text-paper-raise/55 uppercase">
+                  <p className="font-sans text-[0.8125rem] text-paper-raise/55">
                     {t.estimateLabel}
                   </p>
                   <p className="t-num mt-1 text-[1.75rem] font-medium leading-tight">{estimateText}</p>

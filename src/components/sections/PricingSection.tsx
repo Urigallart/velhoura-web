@@ -45,7 +45,7 @@ export function PricingSection({ locale = "es" }: { locale?: Locale }) {
   return (
     <section
       id="pricing"
-      className="border-t border-line pt-[clamp(56px,6vw,96px)] pb-[clamp(92px,13vw,184px)]"
+      className="pt-[clamp(56px,6vw,96px)] pb-[clamp(92px,13vw,184px)]"
     >
       <div className="shell">
         <div className="grid gap-y-8 md:grid-cols-12 md:gap-x-10">
@@ -109,7 +109,7 @@ export function PricingSection({ locale = "es" }: { locale?: Locale }) {
               <div className="min-w-0 flex-1">
                 <p className="flex items-center gap-2.5 text-[1.0625rem] font-semibold tracking-[-0.01em] text-ink">
                   {t.careTitle}
-                  <span className="rounded-full border border-line px-2 py-0.5 font-mono text-[0.625rem] font-normal tracking-[0.1em] text-ink-mute uppercase">
+                  <span className="rounded-full border border-line px-2 py-0.5 font-sans text-[0.8125rem] font-normal text-ink-mute">
                     {t.careOptional}
                   </span>
                 </p>

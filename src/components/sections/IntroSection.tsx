@@ -52,14 +52,13 @@ export function IntroSection({ locale = "es" }: { locale?: Locale }) {
   ];
 
   return (
-    <section id="studio" className="band border-t border-line">
+    <section id="studio" className="band">
       <div className="shell">
         <div className="grid gap-y-12 md:grid-cols-12 md:gap-x-10">
           <div className="md:col-span-4">
             <Reveal y={12}>
               <p className="t-label flex items-center gap-3">
                 <span className="text-ember">01</span>
-                <span aria-hidden="true" className="h-px w-7 bg-line-strong" />
                 {t.label}
               </p>
             </Reveal>
