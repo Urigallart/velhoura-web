@@ -1,46 +1,109 @@
 import {
+  siApple,
+  siBlender,
   siClaude,
   siFigma,
+  siFramer,
+  siGithub,
   siGoogleads,
   siGoogleanalytics,
+  siGooglegemini,
   siGooglesearchconsole,
+  siGoogletagmanager,
+  siHubspot,
   siInstagram,
+  siLinear,
+  siLottiefiles,
+  siMailchimp,
   siMeta,
+  siMiro,
   siNextdotjs,
+  siNotion,
+  siPerplexity,
   siReact,
+  siSemrush,
   siShopify,
+  siSketch,
+  siStorybook,
   siStripe,
+  siSupabase,
   siTailwindcss,
+  siTypescript,
   siVercel,
+  siWebflow,
   siWhatsapp,
   siWoocommerce,
   siWordpress,
+  siZapier,
   type SimpleIcon,
 } from "simple-icons";
 
 /**
- * The tools the studio works with, shown as a running strip on the home page.
- * Logos come from Simple Icons (CC0), each in its brand colour. Add or remove
- * a tool here and the strip follows; keep it to tools actually in use.
+ * The tools and brands the studio works with, shown as two running strips on
+ * the home page. Logos come from Simple Icons (CC0), each in its brand colour.
+ *
+ * A brand whose logo is not in that library (or whose owner asks for it not
+ * to be redistributed) gets a neutral tile with its initials instead — never
+ * a hand-drawn imitation of its mark. Swap one for the real logo by adding an
+ * SVG to `public/brands/` and setting `logo` on its entry. Keep the list to
+ * tools actually in use.
  */
 
-export type Tool = { name: string; icon: SimpleIcon };
+export type Tool = {
+  name: string;
+  /** Official logo from the icon library. */
+  icon?: SimpleIcon;
+  /** A logo file supplied by the studio, in `public/`. */
+  logo?: string;
+  /** Initials for the neutral tile, when there is no logo. */
+  mono?: string;
+};
 
-export const tools: Tool[] = [
-  { name: "Meta Ads", icon: siMeta },
+/** Design, UX/UI and brand. */
+export const designTools: Tool[] = [
+  { name: "Figma", icon: siFigma },
+  { name: "Framer", icon: siFramer },
+  { name: "Sketch", icon: siSketch },
+  { name: "Webflow", icon: siWebflow },
+  { name: "Storybook", icon: siStorybook },
+  { name: "LottieFiles", icon: siLottiefiles },
+  { name: "Blender", icon: siBlender },
+  { name: "Miro", icon: siMiro },
+  { name: "Notion", icon: siNotion },
+  { name: "Linear", icon: siLinear },
+  { name: "Apple", icon: siApple },
+  { name: "Simon", mono: "S" },
+];
+
+/** AI, marketing, commerce and development. */
+export const buildTools: Tool[] = [
   { name: "Claude", icon: siClaude },
-  { name: "Shopify", icon: siShopify },
-  { name: "WordPress", icon: siWordpress },
-  { name: "WooCommerce", icon: siWoocommerce },
+  { name: "ChatGPT", mono: "GPT" },
+  { name: "Gemini", icon: siGooglegemini },
+  { name: "Perplexity", icon: siPerplexity },
+  { name: "Meta Ads", icon: siMeta },
   { name: "Google Ads", icon: siGoogleads },
   { name: "Analytics", icon: siGoogleanalytics },
   { name: "Search Console", icon: siGooglesearchconsole },
-  { name: "Figma", icon: siFigma },
+  { name: "Tag Manager", icon: siGoogletagmanager },
+  { name: "Semrush", icon: siSemrush },
+  { name: "HubSpot", icon: siHubspot },
+  { name: "Mailchimp", icon: siMailchimp },
+  { name: "Zapier", icon: siZapier },
+  { name: "Shopify", icon: siShopify },
+  { name: "WordPress", icon: siWordpress },
+  { name: "WooCommerce", icon: siWoocommerce },
+  { name: "Stripe", icon: siStripe },
   { name: "Next.js", icon: siNextdotjs },
   { name: "React", icon: siReact },
+  { name: "TypeScript", icon: siTypescript },
   { name: "Tailwind CSS", icon: siTailwindcss },
-  { name: "Stripe", icon: siStripe },
+  { name: "Supabase", icon: siSupabase },
   { name: "Vercel", icon: siVercel },
+  { name: "GitHub", icon: siGithub },
   { name: "Instagram", icon: siInstagram },
   { name: "WhatsApp", icon: siWhatsapp },
 ];
+
+/** Kept for anything that wants one flat list. */
+export const tools: Tool[] = [...designTools, ...buildTools];
