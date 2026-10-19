@@ -34,7 +34,7 @@ export function HeroCharacters({
 
   return (
     <div
-      className="pointer-events-none absolute bottom-0 left-4 z-[2] hidden h-[clamp(300px,40vh,460px)] min-[1280px]:block xl:left-[max(1rem,calc(50%-47rem))]"
+      className="pointer-events-none absolute bottom-10 left-1 z-[2] hidden h-[clamp(340px,50vh,560px)] min-[1280px]:block xl:left-[max(0.25rem,calc(50%-52rem))]"
       aria-hidden={interactive ? undefined : true}
     >
       {interactive ? (
@@ -44,7 +44,7 @@ export function HeroCharacters({
           aria-label={`${t.hint} — ${who.name}`}
           className="group pointer-events-auto relative block h-full cursor-pointer"
         >
-          <span className="absolute -top-2 left-[58%] z-[3] whitespace-nowrap rounded-2xl rounded-bl-sm border border-line bg-paper-raise px-3.5 py-2 text-[0.8125rem] font-medium text-ink shadow-[0_12px_30px_-16px_rgba(8,9,10,0.4)] transition-colors duration-300 group-hover:border-ink">
+          <span className="absolute -top-9 left-0 z-[3] whitespace-nowrap rounded-2xl rounded-bl-sm border border-line bg-paper-raise px-3.5 py-2 text-[0.8125rem] font-medium text-ink shadow-[0_12px_30px_-16px_rgba(8,9,10,0.4)] transition-colors duration-300 group-hover:border-ink">
             {t.hint}
           </span>
           {figure}
