@@ -33,12 +33,12 @@ export function HomePage({ locale }: { locale: Locale }) {
         hero={<Hero locale={locale} />}
         screen={<Hero scene={false} locale={locale} />}
       />
+      <ToolsSection locale={locale} />
       <WorkSection />
       <ServicesSection locale={locale} />
       <ShowcaseSection />
       <PricingSection locale={locale} />
       <ProcessSection />
-      <ToolsSection locale={locale} />
       <VisionSection locale={locale} />
       <DifferentiationSection locale={locale} />
       <AboutSection locale={locale} />
