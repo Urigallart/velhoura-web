@@ -2,7 +2,7 @@ import { PricingGrid } from "@/components/pricing/PricingGrid";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { getPlans } from "@/data/localized";
-import { nfcCopy, nfcOffer } from "@/data/nfc";
+import { nfcCopy, nfcOffer, nfcPath } from "@/data/nfc";
 import type { Locale } from "@/i18n/locale";
 
 const copy = {
@@ -59,7 +59,7 @@ export function PricingSection({ locale = "es" }: { locale?: Locale }) {
 
         <Reveal delay={160}>
           <a
-            href="#resenas"
+            href={nfcPath(locale)}
             className="group mt-6 flex flex-col gap-3 rounded-2xl border border-line bg-ember-wash px-6 py-5 transition-colors duration-300 hover:border-ember sm:flex-row sm:items-center sm:justify-between"
           >
             <span className="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:gap-5">

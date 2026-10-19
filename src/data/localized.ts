@@ -173,6 +173,7 @@ export function alternatePath(pathname: string, to: Locale): string {
   if (to === "en") {
     if (path === "/") return "/en";
     if (path === "/servicios") return "/en/services";
+    if (path === "/servicios/tarjetas-nfc") return "/en/services/nfc-review-cards";
     const service = path.match(/^\/servicios\/([^/]+)$/);
     if (service) return servicePath("en", service[1]);
     const product = path.match(/^\/products\/([^/]+)$/);
@@ -182,6 +183,7 @@ export function alternatePath(pathname: string, to: Locale): string {
   }
   if (path === "/en") return "/";
   if (path === "/en/services") return "/servicios";
+  if (path === "/en/services/nfc-review-cards") return "/servicios/tarjetas-nfc";
   const service = path.match(/^\/en\/services\/([^/]+)$/);
   if (service) {
     const es = Object.entries(servicePagesEn).find(

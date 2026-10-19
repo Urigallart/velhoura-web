@@ -42,6 +42,7 @@ const copy = {
   },
 };
 import { openContactModal } from "@/lib/contactModal";
+import { nfcCopy, nfcPath } from "@/data/nfc";
 import { cn } from "@/lib/utils";
 
 /** The `id`s the nav tracks, in page order. */
@@ -373,6 +374,21 @@ export function Navbar() {
                   </div>
                 ))}
               </div>
+              <Link
+                href={nfcPath(locale)}
+                onClick={() => setServicesOpen(false)}
+                className="group mt-2 flex items-center justify-between gap-4 rounded-2xl border border-line bg-ember-wash px-5 py-3 transition-colors duration-200 hover:border-ember"
+              >
+                <span className="flex items-center gap-3">
+                  <span className="rounded-full bg-ember px-2.5 py-0.5 text-[0.6875rem] font-semibold text-paper-raise">
+                    {nfcCopy.badge[locale]}
+                  </span>
+                  <span className="text-[0.875rem] font-medium tracking-[-0.01em] text-ink">
+                    {nfcCopy.bannerTitle[locale].replace(/^[^:]+:\s*/, "")}
+                  </span>
+                </span>
+                <span aria-hidden="true" className="text-ink transition-transform duration-300 group-hover:translate-x-1">→</span>
+              </Link>
               <div className="mt-2 flex items-center justify-between rounded-2xl bg-paper-sunk px-5 py-3">
                 <span className="text-sm text-ink-soft">
                   {t.blurb}
@@ -449,6 +465,18 @@ export function Navbar() {
                                 </Link>
                               </li>
                             ))}
+                            <li>
+                              <Link
+                                href={nfcPath(locale)}
+                                onClick={() => setMenuOpen(false)}
+                                className="flex items-center justify-between py-2 text-[0.9375rem] text-ink-soft"
+                              >
+                                {nfcCopy.bannerTitle[locale].replace(/^[^:]+:\s*/, "")}
+                                <span className="rounded-full bg-ember px-2 py-0.5 text-[0.6875rem] font-semibold text-paper-raise">
+                                  {nfcCopy.badge[locale]}
+                                </span>
+                              </Link>
+                            </li>
                             <li>
                               <Link
                                 href={servicesIndexPath(locale)}
