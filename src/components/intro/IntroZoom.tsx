@@ -93,6 +93,12 @@ export function IntroZoom({
     const ty = g.cy0 * (1 - f) + (g.vh / 2) * f - s * fy;
     scene.current.style.transform = `translate3d(${tx}px, ${ty}px, 0) scale(${s})`;
 
+    // The name on the glass slides off to the right as the camera goes in.
+    scene.current.style.setProperty(
+      "--intro-logo",
+      String(easeInOut(clamp01((p - 0.08) / 0.55))),
+    );
+
     if (shade.current) shade.current.style.opacity = String(1 - e);
 
     // The cards and the cue belong to the room: they step aside and fade in
