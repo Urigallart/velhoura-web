@@ -114,7 +114,7 @@ export const teamEn: Record<string, { role: string; bio: string }> = {
   },
   "founder-02": {
     role: "Full Stack Developer",
-    bio: "From repairing hardware to building products: systems and networks first, then full stack web development, with an internship at Worldline working with React and Next.js in production. Co-founder of Velhoura.",
+    bio: "From repairing hardware to building products: systems and networks first, then full stack development with React and Next.js in production at Worldline. Currently studying Computer Engineering at Tecnocampus while co-founding and building Velhoura.",
   },
 };
 
