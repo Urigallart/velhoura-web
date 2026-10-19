@@ -5,8 +5,12 @@ import { AnimatePresence, motion } from "motion/react";
 import { ButtonAction } from "@/components/ui/Button";
 import { onOpenContactModal, type ContactPrefill } from "@/lib/contactModal";
 import { useLocale } from "@/i18n/useLocale";
+import { ProjectQuiz, type QuizSubmission } from "./ProjectQuiz";
 
 type Status = "idle" | "submitting" | "sent" | "error";
+
+/** The questionnaire is the default; the free-text form stays available. */
+type Mode = "quiz" | "message";
 
 const copy = {
   es: {
@@ -22,9 +26,13 @@ const copy = {
     sentLabel: "Enviado",
     sentTitle: "Mensaje recibido.",
     sentBody: "Gracias por escribirnos. Te respondemos al correo que nos has dejado — normalmente el mismo día.",
+    sentTitleQuiz: "Respuestas recibidas.",
+    sentBodyQuiz: "Gracias. Con lo que nos has contado preparamos una primera propuesta y te la enviamos al correo que nos has dejado — normalmente en uno o dos días.",
     eyebrow: "Nuevo proyecto",
     title: "Cuéntanos tu negocio.",
     intro: "A qué te dedicas y qué te gustaría conseguir. Lo leemos y lo contestamos nosotros mismos.",
+    backToQuiz: "¿Prefieres responder unas preguntas rápidas?",
+    backToQuizCta: "Volver al cuestionario",
     name: "Nombre",
     email: "Email",
     type: "Tipo de proyecto",
@@ -46,9 +54,13 @@ const copy = {
     sentLabel: "Sent",
     sentTitle: "Message received.",
     sentBody: "Thanks for writing to us. We'll reply to the email you left — usually the same day.",
+    sentTitleQuiz: "Answers received.",
+    sentBodyQuiz: "Thank you. We'll put together a first proposal from what you've told us and send it to the email you left — usually within a day or two.",
     eyebrow: "New project",
     title: "Tell us about your business.",
     intro: "What you do and what you'd like to achieve. We read it and reply ourselves.",
+    backToQuiz: "Would you rather answer a few quick questions?",
+    backToQuizCta: "Back to the questionnaire",
     name: "Name",
     email: "Email",
     type: "Project type",
@@ -76,6 +88,7 @@ export function ContactModal() {
   const t = copy[locale];
   const PROJECT_TYPES = t.types;
   const [open, setOpen] = useState(false);
+  const [mode, setMode] = useState<Mode>("quiz");
   const [status, setStatus] = useState<Status>("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
@@ -92,6 +105,7 @@ export function ContactModal() {
     () =>
       onOpenContactModal((p) => {
         setPrefill(p);
+        setMode("quiz");
         setFormKey((k) => k + 1);
         setOpen(true);
       }),
@@ -156,21 +170,28 @@ export function ContactModal() {
     };
   }, [open, close]);
 
-  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setStatus("submitting");
-    setErrorMessage(null);
-
     const form = new FormData(e.currentTarget);
-    const payload = {
+    void send({
       name: String(form.get("name") ?? ""),
       email: String(form.get("email") ?? ""),
       projectType: String(form.get("projectType") ?? ""),
       message: String(form.get("message") ?? ""),
-      // Anti-spam, see the note above.
       company: String(form.get("company") ?? ""),
-      elapsed: Date.now() - openedAt.current,
-    };
+    });
+  }
+
+  function onQuizSubmit(submission: QuizSubmission) {
+    void send({ ...submission, kind: "quiz" });
+  }
+
+  async function send(fields: Record<string, unknown>) {
+    setStatus("submitting");
+    setErrorMessage(null);
+
+    // `company` (honeypot) and `elapsed` are the anti-spam pair, see above.
+    const payload = { ...fields, elapsed: Date.now() - openedAt.current };
 
     try {
       const res = await fetch("/api/contact", {
@@ -240,12 +261,30 @@ export function ContactModal() {
             {status === "sent" ? (
               <div className="py-6">
                 <p className="t-label !text-ember">{t.sentLabel}</p>
-                <h2 className="t-h2 mt-3">{t.sentTitle}</h2>
-                <p className="t-body mt-4 max-w-[38ch]">{t.sentBody}</p>
+                <h2 className="t-h2 mt-3">
+                  {mode === "quiz" ? t.sentTitleQuiz : t.sentTitle}
+                </h2>
+                <p className="t-body mt-4 max-w-[40ch]">
+                  {mode === "quiz" ? t.sentBodyQuiz : t.sentBody}
+                </p>
                 <ButtonAction onClick={close} className="mt-8">
                   {t.close}
                 </ButtonAction>
               </div>
+            ) : mode === "quiz" ? (
+              <ProjectQuiz
+                key={formKey}
+                locale={locale}
+                prefillMessage={prefill?.message}
+                submitting={status === "submitting"}
+                errorMessage={status === "error" ? errorMessage : null}
+                onSubmit={onQuizSubmit}
+                onWriteInstead={() => {
+                  setStatus("idle");
+                  setErrorMessage(null);
+                  setMode("message");
+                }}
+              />
             ) : (
               <>
                 <p className="t-label !text-ember">{t.eyebrow}</p>
@@ -335,6 +374,21 @@ export function ContactModal() {
                     {status === "submitting" ? t.sending : t.send}
                   </ButtonAction>
                 </form>
+
+                <p className="mt-8 border-t border-line pt-5 text-center text-[0.8125rem] text-ink-mute">
+                  {t.backToQuiz}{" "}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setStatus("idle");
+                      setErrorMessage(null);
+                      setMode("quiz");
+                    }}
+                    className="font-medium text-ink underline decoration-line-strong underline-offset-4 transition-colors hover:text-ember hover:decoration-ember"
+                  >
+                    {t.backToQuizCta}
+                  </button>
+                </p>
               </>
             )}
           </motion.div>
