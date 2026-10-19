@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useReducedMotion } from "motion/react";
+import { useRef, useState } from "react";
 import { ButtonAction } from "@/components/ui/Button";
 import type { Plan } from "@/data/plans";
 import { detailCopy } from "@/data/planDetails";
@@ -39,16 +38,11 @@ export function PricingCard({
   const locale = useLocale();
   const t = detailCopy[locale];
 
-  // The card alternates between its price and its features on its own, every
-  // nine seconds; hovering or focusing it holds the current face.
-  const reduced = useReducedMotion();
+  // Two faces: the price, and what the plan includes. A mouse pointer over
+  // the card shows the features and leaving brings the price back; on a touch
+  // screen a sideways swipe flips it. The dots do the same for the keyboard.
   const [face, setFace] = useState<0 | 1>(0);
-  const [held, setHeld] = useState(false);
-  useEffect(() => {
-    if (reduced || held) return;
-    const id = window.setInterval(() => setFace((f) => (f === 0 ? 1 : 0)), 9000);
-    return () => window.clearInterval(id);
-  }, [reduced, held]);
+  const touch = useRef<{ x: number; y: number } | null>(null);
 
   return (
     // The whole card opens the details for pointer users; keyboard and
@@ -56,10 +50,22 @@ export function PricingCard({
     // on a click handler on a non-interactive element.
     <div
       onClick={onDetails}
-      onPointerEnter={(e) => e.pointerType === "mouse" && setHeld(true)}
-      onPointerLeave={() => setHeld(false)}
-      onFocus={() => setHeld(true)}
-      onBlur={() => setHeld(false)}
+      onPointerEnter={(e) => e.pointerType === "mouse" && setFace(1)}
+      onPointerLeave={(e) => e.pointerType === "mouse" && setFace(0)}
+      onTouchStart={(e) => {
+        const t0 = e.touches[0];
+        touch.current = { x: t0.clientX, y: t0.clientY };
+      }}
+      onTouchEnd={(e) => {
+        const start = touch.current;
+        touch.current = null;
+        if (!start) return;
+        const t1 = e.changedTouches[0];
+        const dx = t1.clientX - start.x;
+        if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(t1.clientY - start.y)) {
+          setFace((f) => (f === 0 ? 1 : 0));
+        }
+      }}
       data-plan-card
       className={cn(
         "group relative flex h-full cursor-pointer flex-col rounded-3xl p-6 text-ink sm:p-7",
