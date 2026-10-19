@@ -49,7 +49,7 @@ export const servicePages: ServicePage[] = [
     area: "brand",
     name: "Identidad de marca",
     tag: "Logotipo",
-    metaTitle: "Diseño de logotipo e identidad de marca en Barcelona",
+    metaTitle: "Diseño de logotipo e identidad de marca en España",
     metaDescription:
       "Creamos el logotipo y la identidad visual de tu negocio: símbolo, colores, tipografías y un manual sencillo para aplicarla bien en todas partes.",
     headline: ["Una marca que", "*se recuerda.*"],
@@ -103,7 +103,7 @@ export const servicePages: ServicePage[] = [
     area: "brand",
     name: "Diseño gráfico y packaging",
     tag: "Gráfico",
-    metaTitle: "Diseño gráfico y packaging para empresas en Barcelona",
+    metaTitle: "Diseño gráfico y packaging para empresas en España",
     metaDescription:
       "Papelería, catálogos, cartelería, piezas para redes y packaging: diseño gráfico que mantiene tu marca coherente en cada pieza.",
     headline: ["Cada pieza,", "*a la altura.*"],
@@ -157,7 +157,7 @@ export const servicePages: ServicePage[] = [
     area: "web",
     name: "Diseño web y WordPress",
     tag: "WordPress",
-    metaTitle: "Diseño de páginas web y WordPress para pymes en Barcelona",
+    metaTitle: "Diseño de páginas web y WordPress para pymes en España",
     metaDescription:
       "Webs corporativas rápidas, adaptadas a móvil y fáciles de editar, pensadas para que las visitas se conviertan en contactos.",
     headline: ["Tu mejor comercial,", "*abierto siempre.*"],
@@ -214,7 +214,7 @@ export const servicePages: ServicePage[] = [
     area: "web",
     name: "Tiendas online",
     tag: "E-commerce",
-    metaTitle: "Diseño de tiendas online para pymes en Barcelona",
+    metaTitle: "Diseño de tiendas online para pymes en España",
     metaDescription:
       "Tiendas online con catálogo, carrito, pagos seguros y gestión de pedidos, para vender también fuera de tu horario.",
     headline: ["Vende también", "*cuando cierras.*"],
@@ -271,7 +271,7 @@ export const servicePages: ServicePage[] = [
     area: "web",
     name: "Desarrollo a medida",
     tag: "A medida",
-    metaTitle: "Desarrollo web y aplicaciones a medida en Barcelona",
+    metaTitle: "Desarrollo web y aplicaciones a medida en España",
     metaDescription:
       "Áreas de cliente, sistemas de reservas, paneles internos y aplicaciones web hechas a la medida de cómo trabaja tu negocio.",
     headline: ["Herramientas que", "*te ahorran horas.*"],
@@ -325,7 +325,7 @@ export const servicePages: ServicePage[] = [
     area: "growth",
     name: "Posicionamiento SEO",
     tag: "Google",
-    metaTitle: "Posicionamiento SEO para pymes en Barcelona",
+    metaTitle: "Posicionamiento SEO para pymes en España",
     metaDescription:
       "Mejoramos tu posición en Google para que te encuentre quien busca lo que ofreces en tu zona: SEO técnico, contenido y ficha de empresa.",
     headline: ["Que te encuentren", "*cuando te buscan.*"],
@@ -379,7 +379,7 @@ export const servicePages: ServicePage[] = [
     area: "growth",
     name: "Campañas de Google Ads",
     tag: "Campañas",
-    metaTitle: "Gestión de campañas de Google Ads en Barcelona",
+    metaTitle: "Gestión de campañas de Google Ads en España",
     metaDescription:
       "Campañas de Google Ads con presupuesto controlado, dirigidas a búsquedas con intención de compra y medidas por contactos reales.",
     headline: ["Clientes desde", "*el primer día.*"],

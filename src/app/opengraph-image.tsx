@@ -122,7 +122,7 @@ export default function OpengraphImage() {
               display: "flex",
             }}
           >
-            Marca, web y captación de clientes para pymes de Barcelona.
+            Marca, web y captación de clientes para negocios de toda España.
           </div>
         </div>
 

@@ -14,7 +14,7 @@ const copy = {
   es: {
     label: "Servicios",
     lines: ["Todo lo digital", "de tu negocio,", "*en un solo sitio.*"],
-    lead: "Marca, web y captación de clientes para pymes de Barcelona. Contrata un servicio suelto o combínalos: los hacemos encajar porque los hace el mismo equipo.",
+    lead: "Marca, web y captación de clientes para pymes de toda España y de fuera. Contrata un servicio suelto o combínalos: los hacemos encajar porque los hace el mismo equipo.",
     custom: "Presupuesto a medida",
     see: "Ver servicio →",
     closeLines: ["¿No sabes", "*por dónde empezar?*"],
@@ -24,7 +24,7 @@ const copy = {
   en: {
     label: "Services",
     lines: ["Everything digital", "for your business,", "*in one place.*"],
-    lead: "Brand, web and customer growth for Barcelona businesses. Hire one service or combine them: they fit together because the same team makes them.",
+    lead: "Brand, web and customer growth for businesses in Spain and worldwide. Hire one service or combine them: they fit together because the same team makes them.",
     custom: "Custom quote",
     see: "See service →",
     closeLines: ["Not sure", "*where to start?*"],

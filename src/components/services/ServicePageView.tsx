@@ -39,7 +39,7 @@ const copy = {
     closeLines: ["Hablemos de", "*tu proyecto.*"],
     closeLead: "Cuéntanos a qué te dedicas y qué necesitas. Te respondemos nosotros mismos, sin compromiso.",
     closeCta: "Ir al contacto",
-    city: "Barcelona",
+    country: "España",
   },
   en: {
     breadcrumb: "Services",
@@ -64,7 +64,7 @@ const copy = {
     closeLines: ["Let's talk about", "*your project.*"],
     closeLead: "Tell us what you do and what you need. We reply ourselves, no strings attached.",
     closeCta: "Go to contact",
-    city: "Barcelona",
+    country: "Spain",
   },
 };
 
@@ -97,8 +97,12 @@ export function ServicePageView({
       description: page.metaDescription,
       serviceType: page.name,
       inLanguage: locale,
-      areaServed: { "@type": "City", name: t.city },
-      provider: { "@type": "ProfessionalService", name: site.name, url: site.url },
+      // Based in Barcelona, working across Spain and abroad, remotely.
+      areaServed: [
+        { "@type": "Country", name: t.country },
+        { "@type": "Place", name: "Worldwide" },
+      ],
+      provider: { "@type": "ProfessionalService", "@id": `${site.url}/#organization`, name: site.name, url: site.url },
     },
     {
       "@context": "https://schema.org",

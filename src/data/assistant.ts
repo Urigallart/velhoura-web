@@ -260,8 +260,8 @@ The exact fee depends on the size of the site and is stated in the proposal. If 
       en: ["where", "barcelona", "location", "office", "address", "city", "remote"],
     },
     answer: {
-      es: "Estamos en Barcelona y trabajamos sobre todo con pymes, comercios y profesionales de Barcelona y alrededores.",
-      en: "We're based in Barcelona and mostly work with small businesses, shops and professionals in Barcelona and the surrounding area.",
+      es: "Estamos en Barcelona, pero trabajamos con clientes de **toda España** y de **otros países**: todo el proyecto se puede llevar en remoto, por videollamada y email, en español o en inglés.",
+      en: "We're based in Barcelona, but we work with clients **all over Spain** and **in other countries**: the whole project can run remotely, over video calls and email, in English or Spanish.",
     },
     next: ["who", "contact"],
   },

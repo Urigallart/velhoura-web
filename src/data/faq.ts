@@ -28,7 +28,7 @@ export const faqs: Faq[] = [
   },
   {
     q: "¿Con qué tipo de empresas trabajáis?",
-    a: "Sobre todo con pymes, comercios y profesionales de Barcelona y alrededores que quieren una presencia digital seria sin tener que coordinar a varios proveedores.",
+    a: "Sobre todo con pymes, comercios y profesionales que quieren una presencia digital seria sin tener que coordinar a varios proveedores. Estamos en Barcelona y trabajamos con clientes de toda España y de otros países, en remoto.",
   },
   {
     q: "¿Cómo es el proceso?",
@@ -39,12 +39,16 @@ export const faqs: Faq[] = [
     a: "Solo contarnos a qué te dedicas y qué quieres conseguir. Si ya tienes logotipo, textos o fotos, nos sirven; si no, te ayudamos a prepararlos.",
   },
   {
+    q: "¿Trabajáis con clientes de fuera de Barcelona o de otros países?",
+    a: "Sí. Tenemos la base en Barcelona, pero trabajamos con negocios de toda España y de otros países. Todo el proyecto se lleva en remoto, por videollamada y email, y podemos trabajar en español o en inglés.",
+  },
+  {
     q: "¿Hacéis páginas web para autónomos y pequeños negocios?",
     a: "Sí, es la mayor parte de nuestro trabajo. Para un autónomo o un negocio pequeño solemos empezar por una landing o una web de pocas páginas, bien hecha y adaptada a móvil, que se puede ampliar más adelante cuando el negocio lo pida.",
   },
   {
     q: "¿Me ayudáis a aparecer en Google?",
-    a: "Sí. Todas nuestras webs salen con el SEO técnico hecho: velocidad, estructura y textos pensados para que Google entienda a qué te dedicas. Si quieres ir más allá, trabajamos el posicionamiento SEO local en Barcelona y campañas de Google Ads para aparecer cuando te buscan.",
+    a: "Sí. Todas nuestras webs salen con el SEO técnico hecho: velocidad, estructura y textos pensados para que Google entienda a qué te dedicas. Si quieres ir más allá, trabajamos el posicionamiento SEO (también el local, esté donde esté tu negocio) y campañas de Google Ads para aparecer cuando te buscan.",
   },
   {
     q: "¿Y cuando la web ya está publicada?",
