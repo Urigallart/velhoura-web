@@ -23,12 +23,13 @@ export const site = {
    * address this site is actually served from — pointing it anywhere else
    * tells Google this site is a copy of that one.
    *
-   * velhoura.com is NOT this site (it's the eyewear shop in
-   * `data/products.ts`). When the studio gets its own domain, set
-   * NEXT_PUBLIC_SITE_URL in Vercel (e.g. "https://velhoura.studio") and
-   * redeploy; nothing else needs to change.
+   * This site is served at https://www.velhoura.com (the bare velhoura.com
+   * redirects to it), so that is the canonical origin. It used to point at the
+   * vercel.app address, which told Google this site was a copy of that one and
+   * left the old eyewear shop's pages as the version to show for velhoura.com.
+   * To move to another domain, set NEXT_PUBLIC_SITE_URL in Vercel and redeploy.
    */
-  url: (process.env.NEXT_PUBLIC_SITE_URL || "https://velhouraempyre-ashen.vercel.app").replace(/\/$/, ""),
+  url: (process.env.NEXT_PUBLIC_SITE_URL || "https://www.velhoura.com").replace(/\/$/, ""),
 } as const;
 
 export const nav = [
