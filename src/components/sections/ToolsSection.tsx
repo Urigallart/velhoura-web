@@ -82,7 +82,7 @@ function ToolTile({ tool, duplicate }: { tool: Tool; duplicate?: boolean }) {
         </svg>
       ) : tool.logo ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={tool.logo} alt={tool.name} className="h-9 w-auto max-w-[72px] object-contain" />
+        <img src={tool.logo} alt={tool.name} className="h-9 w-auto max-w-[84px] object-contain" />
       ) : (
         <span
           role="img"

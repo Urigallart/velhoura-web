@@ -72,13 +72,13 @@ export const designTools: Tool[] = [
   { name: "Notion", icon: siNotion },
   { name: "Linear", icon: siLinear },
   { name: "Apple", icon: siApple },
-  { name: "Simon", mono: "S" },
+  { name: "Simon Electric", logo: "/brands/simon-electric.png" },
 ];
 
 /** AI, marketing, commerce and development. */
 export const buildTools: Tool[] = [
   { name: "Claude", icon: siClaude },
-  { name: "ChatGPT", mono: "GPT" },
+  { name: "ChatGPT", logo: "/brands/chatgpt.png" },
   { name: "Gemini", icon: siGooglegemini },
   { name: "Perplexity", icon: siPerplexity },
   { name: "Meta Ads", icon: siMeta },
