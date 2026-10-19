@@ -52,6 +52,9 @@ export function AssistantChat() {
   const [msgs, setMsgs] = useState<Msg[]>([]);
   const [draft, setDraft] = useState("");
   const [busy, setBusy] = useState(false);
+  // Past the first screen the launcher drops its label and shrinks to the
+  // face alone, so it stops sitting on top of the content being read.
+  const [compact, setCompact] = useState(false);
   const logRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
@@ -79,6 +82,23 @@ export function AssistantChat() {
   }, [locale]);
 
   useEffect(() => () => clearTimeout(timer.current), []);
+
+  useEffect(() => {
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      setCompact(window.scrollY > window.innerHeight * 0.5);
+    };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(frame);
+    };
+  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -233,7 +253,10 @@ export function AssistantChat() {
         onClick={toggle}
         aria-expanded={open}
         aria-label={open ? t.close : t.open}
-        className="group relative flex items-center gap-3 rounded-full border border-line bg-paper-raise p-1.5 pr-1.5 shadow-[0_14px_40px_-18px_rgba(8,9,10,0.5)] transition-colors duration-300 hover:border-line-strong sm:pr-5"
+        className={cn(
+          "group relative flex items-center rounded-full border border-line bg-paper-raise p-1.5 shadow-[0_14px_40px_-18px_rgba(8,9,10,0.5)] transition-[border-color,padding] duration-300 hover:border-line-strong",
+          !compact && "sm:pr-5",
+        )}
       >
         <span className="relative">
           <Face who={who} className="size-12" />
@@ -242,7 +265,14 @@ export function AssistantChat() {
             <span className="relative inline-flex size-3 rounded-full border-2 border-paper-raise bg-ember" />
           </span>
         </span>
-        <span className="hidden text-[0.9375rem] font-medium sm:block">{t.hint}</span>
+        <span
+          className={cn(
+            "hidden overflow-hidden whitespace-nowrap text-[0.9375rem] font-medium transition-[max-width,opacity,margin] duration-300 sm:block",
+            compact ? "ml-0 max-w-0 opacity-0" : "ml-3 max-w-[16rem] opacity-100",
+          )}
+        >
+          {t.hint}
+        </span>
       </button>
     </div>
   );

@@ -674,3 +674,26 @@ html[data-intro="play"] .assistant-root {
     bottom: 11.5rem;
   }
 }
+
+/* On short desktop screens (laptops around 768px tall) pricing tightens up
+   so the heading and all four cards still fit below the navbar at once. */
+@media (min-width: 1280px) and (max-height: 820px) {
+  #pricing {
+    padding-top: 20px;
+  }
+  #pricing h2 {
+    font-size: 56px;
+  }
+  #pricing [data-pricing-grid] {
+    margin-top: 24px;
+  }
+  #pricing [data-plan-card] {
+    padding: 20px 22px;
+  }
+  #pricing [data-plan-card] > div:first-of-type {
+    margin-block: 14px;
+  }
+  #pricing [data-plan-card] > button:first-of-type {
+    margin-top: 14px;
+  }
+}
