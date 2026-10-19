@@ -78,7 +78,7 @@ export const designTools: Tool[] = [
 /** AI, marketing, commerce and development. */
 export const buildTools: Tool[] = [
   { name: "Claude", icon: siClaude },
-  { name: "ChatGPT", mono: "GPT" },
+  { name: "ChatGPT", logo: "/brands/chatgpt.png" },
   { name: "Gemini", icon: siGooglegemini },
   { name: "Perplexity", icon: siPerplexity },
   { name: "Meta Ads", icon: siMeta },
