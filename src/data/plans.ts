@@ -100,3 +100,33 @@ export const plans: Plan[] = [
     cta: "Contactar",
   },
 ];
+
+/**
+ * Optional maintenance once a site is live, billed monthly and separately
+ * from the project. The figure is a floor: the exact fee depends on the site
+ * and goes in each proposal. Every mention on the site reads from here.
+ */
+export const maintenance = {
+  /** Monthly starting price, in euros. */
+  from: 29,
+  includes: {
+    es: [
+      "Actualizaciones y parches de seguridad",
+      "Copias de seguridad periódicas",
+      "Vigilamos que la web siga en línea",
+      "Pequeños cambios de textos e imágenes",
+      "Soporte por email cuando lo necesites",
+    ],
+    en: [
+      "Updates and security patches",
+      "Regular backups",
+      "We keep an eye on the site staying online",
+      "Small text and image changes",
+      "Email support whenever you need it",
+    ],
+  },
+};
+
+/** "29 €/mes" / "€29/month". */
+export const maintenancePrice = (locale: "es" | "en") =>
+  locale === "en" ? `€${maintenance.from}/month` : `${maintenance.from} €/mes`;

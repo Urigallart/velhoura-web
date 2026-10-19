@@ -1,4 +1,4 @@
-import { plans } from "./plans";
+import { maintenancePrice, plans } from "./plans";
 import type { Service } from "./services";
 
 /**
@@ -315,7 +315,7 @@ export const servicePages: ServicePage[] = [
       },
       {
         q: "¿Quién mantiene la aplicación después?",
-        a: "Podemos seguir encargándonos del mantenimiento con una cuota mensual aparte, o dejarla documentada para que la gestione tu equipo. Las mejoras nuevas se presupuestan por separado.",
+        a: `Podemos seguir encargándonos del mantenimiento con una cuota mensual aparte (desde ${maintenancePrice("es")}, según el proyecto), o dejarla documentada para que la gestione tu equipo. Las mejoras nuevas se presupuestan por separado.`,
       },
     ],
     related: ["diseno-web", "seo"],

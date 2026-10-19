@@ -1,4 +1,5 @@
 import type { Locale } from "@/i18n/locale";
+import { maintenancePrice } from "./plans";
 
 /**
  * Knowledge base for the on-site assistant.
@@ -220,8 +221,22 @@ export const topics: Topic[] = [
       en: ["maintenance", "maintain", "after launch", "once it's live", "updates", "backups", "monthly", "support", "retainer"],
     },
     answer: {
-      es: "El mantenimiento es **opcional** y va **aparte** del precio de la web, con una **cuota mensual**: nos encargamos de actualizaciones, copias de seguridad, seguridad y pequeños cambios. Si prefieres llevarla tú, te la entregamos lista y te explicamos cómo. El importe depende de cada web y te lo indicamos en la propuesta.",
-      en: "Maintenance is **optional** and **separate** from the price of the site, as a **monthly fee**: we handle updates, backups, security and small changes. If you'd rather run it yourself, we hand it over ready and show you how. The amount depends on each site and is stated in the proposal.",
+      es: `El mantenimiento es **opcional** y va **aparte** del precio de la web, **desde ${maintenancePrice("es")}**:
+• Actualizaciones y parches de seguridad
+• Copias de seguridad periódicas
+• Vigilamos que la web siga en línea
+• Pequeños cambios de textos e imágenes
+• Soporte por email
+
+La cuota exacta depende del tamaño de la web y te la indicamos en la propuesta. Si prefieres llevarla tú, te la entregamos lista y te explicamos cómo.`,
+      en: `Maintenance is **optional** and **separate** from the price of the site, **from ${maintenancePrice("en")}**:
+• Updates and security patches
+• Regular backups
+• We keep an eye on the site staying online
+• Small text and image changes
+• Email support
+
+The exact fee depends on the size of the site and is stated in the proposal. If you'd rather run it yourself, we hand it over ready and show you how.`,
     },
     next: ["prices", "contact"],
     contact: true,

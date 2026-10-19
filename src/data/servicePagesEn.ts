@@ -3,6 +3,8 @@
  * English pages live at /en/services/[slugEn].
  */
 
+import { maintenancePrice } from "./plans";
+
 type PageEn = {
   slugEn: string;
   name: string;
@@ -275,7 +277,7 @@ export const servicePagesEn: Record<string, PageEn> = {
       },
       {
         q: "Who maintains the application afterwards?",
-        a: "We can keep handling maintenance for a separate monthly fee, or leave it documented for your team to run. New improvements are quoted separately.",
+        a: `We can keep handling maintenance for a separate monthly fee (from ${maintenancePrice("en")}, depending on the project), or leave it documented for your team to run. New improvements are quoted separately.`,
       },
     ],
   },

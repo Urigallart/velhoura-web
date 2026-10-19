@@ -1,4 +1,5 @@
 import type { Locale } from "@/i18n/locale";
+import { maintenancePrice } from "./plans";
 
 /**
  * What opens when a visitor clicks a pricing card: who the plan is for, what
@@ -158,7 +159,7 @@ export const detailCopy = {
     idealFor: "Ideal para",
     includes: "Qué incluye",
     notIncluded:
-      "El precio no incluye IVA ni costes de terceros como dominio, alojamiento o licencias, que se indican aparte en el presupuesto. El mantenimiento una vez publicada la web es opcional y se paga aparte, con una cuota mensual.",
+      `El precio no incluye IVA ni costes de terceros como dominio, alojamiento o licencias, que se indican aparte en el presupuesto. El mantenimiento una vez publicada la web es opcional y se paga aparte, desde ${maintenancePrice("es")}.`,
     seeMore: "Ver qué incluye",
     close: "Cerrar",
     cta: "Quiero este plan",
@@ -175,7 +176,7 @@ export const detailCopy = {
     idealFor: "Ideal for",
     includes: "What's included",
     notIncluded:
-      "The price excludes VAT and third-party costs such as domain, hosting or licences, which are listed separately in the quote. Maintenance once the site is live is optional and billed separately, as a monthly fee.",
+      `The price excludes VAT and third-party costs such as domain, hosting or licences, which are listed separately in the quote. Maintenance once the site is live is optional and billed separately, from ${maintenancePrice("en")}.`,
     seeMore: "See what's included",
     close: "Close",
     cta: "I want this plan",
