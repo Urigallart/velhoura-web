@@ -21,6 +21,8 @@ export type QuizOption = {
   hint?: Text;
   /** In a multi-choice question, picking this clears the others (and vice versa). */
   exclusive?: boolean;
+  /** Euros this choice adds to a plan's estimate: fixed, or a [min, max] range. */
+  cost?: number | [number, number];
 };
 
 export type QuizQuestion = {

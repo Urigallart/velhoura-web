@@ -34,6 +34,12 @@ const copy = {
     sending: "Enviando…",
     writeInstead: "¿Prefieres contárnoslo con tus palabras?",
     writeInsteadCta: "Escríbenos un mensaje",
+    estimateLabel: "Precio estimado",
+    quoteTitle: "¿Dónde te enviamos el presupuesto?",
+    quoteHelp:
+      "Revisamos tus respuestas y te enviamos un presupuesto cerrado nosotros mismos, sin compromiso.",
+    estimateNote:
+      "Orientativo, sin IVA ni costes de terceros (dominio, alojamiento, licencias). El precio final lo confirmamos en el presupuesto.",
   },
   en: {
     back: "Back",
@@ -53,6 +59,12 @@ const copy = {
     sending: "Sending…",
     writeInstead: "Would you rather tell us in your own words?",
     writeInsteadCta: "Write us a message",
+    estimateLabel: "Estimated price",
+    quoteTitle: "Where should we send the quote?",
+    quoteHelp:
+      "We'll go through your answers and send you a fixed quote ourselves, no strings attached.",
+    estimateNote:
+      "Indicative, excluding VAT and third-party costs (domain, hosting, licences). The final price is confirmed in the quote.",
   },
 };
 
@@ -68,6 +80,8 @@ export type QuizSubmission = {
   answers: { question: string; answer: string }[];
   /** First answer to "what would you like to build", for the email subject. */
   projectType: string;
+  /** The price estimate shown when the form was sent, if the form has one. */
+  estimate?: string;
 };
 
 /**
@@ -88,8 +102,11 @@ export function ProjectQuiz({
   onWriteInstead,
   onBack,
   eyebrow,
+  estimate,
 }: {
   locale: Locale;
+  /** Turns the answers so far into a formatted price, shown live and on the last step. */
+  estimate?: (answers: QuizAnswers) => string | null;
   /** A short label in the top bar, e.g. the plan being requested. */
   eyebrow?: string;
   /** The question set — the full project quiz unless a plan passes its own. */
@@ -120,6 +137,7 @@ export function ProjectQuiz({
   const onContact = index >= questions.length;
   const question: QuizQuestion | undefined = questions[index];
   const progress = Math.round(((index + 1) / total) * 100);
+  const estimateText = estimate ? estimate(answers) : null;
 
   useEffect(() => () => window.clearTimeout(advanceTimer.current), []);
 
@@ -189,6 +207,7 @@ export function ProjectQuiz({
       company: String(form.get("company") ?? ""),
       consent: form.get("consent") === "on",
       answers: summary,
+      estimate: estimateText ?? undefined,
       projectType: projectType ?? needs?.answer ?? "",
     });
   }
@@ -236,6 +255,13 @@ export function ProjectQuiz({
             style={{ width: `${progress}%` }}
           />
         </div>
+        {/* The running estimate; on the last step it gets its own box instead. */}
+        {estimateText && !onContact && (
+          <p className="mt-3 flex items-baseline justify-between gap-4 text-[0.8125rem]" aria-live="polite">
+            <span className="text-ink-mute">{t.estimateLabel}</span>
+            <span className="t-num font-medium text-ink">{estimateText}</span>
+          </p>
+        )}
       </div>
 
       <AnimatePresence mode="wait" initial={false}>
@@ -253,9 +279,21 @@ export function ProjectQuiz({
                 id="contact-modal-title"
                 className="t-h3 text-[1.625rem] leading-tight outline-none"
               >
-                {t.contactTitle}
+                {estimateText ? t.quoteTitle : t.contactTitle}
               </h2>
-              <p className="t-body !mt-3 max-w-[44ch] text-[0.9375rem]">{t.contactHelp}</p>
+              <p className="t-body !mt-3 max-w-[44ch] text-[0.9375rem]">
+                {estimateText ? t.quoteHelp : t.contactHelp}
+              </p>
+
+              {estimateText && (
+                <div className="!mt-6 rounded-2xl bg-night px-5 py-4 text-paper-raise">
+                  <p className="font-mono text-[0.6875rem] tracking-[0.12em] text-paper-raise/55 uppercase">
+                    {t.estimateLabel}
+                  </p>
+                  <p className="t-num mt-1 text-[1.75rem] font-medium leading-tight">{estimateText}</p>
+                  <p className="mt-2 text-[0.75rem] leading-relaxed text-paper-raise/55">{t.estimateNote}</p>
+                </div>
+              )}
 
               <div className="!mt-7 grid gap-4 sm:grid-cols-2">
                 <Field label={t.name}>
