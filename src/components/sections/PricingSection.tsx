@@ -9,13 +9,13 @@ const copy = {
     label: "Precios",
     lines: ["Precios claros,", "*antes de empezar.*"],
     intro: "Cuatro puntos de partida para tu web. Pulsa en cualquiera para ver todo lo que incluye; sabes lo que vas a pagar antes de que empecemos a trabajar.",
-    note: "Todos los precios son orientativos. Cada proyecto se presupuesta según alcance y plazos.",
+    note: "Todos los precios son orientativos. Cada proyecto se presupuesta según alcance y plazos. El mantenimiento de la web una vez entregada es un pago mensual aparte.",
   },
   en: {
     label: "Pricing",
     lines: ["Clear prices,", "*before we start.*"],
     intro: "Four starting points for your website. Tap any of them to see everything it includes; you know what you'll pay before we start working.",
-    note: "All prices are indicative. Every project is quoted on scope and timing.",
+    note: "All prices are indicative. Every project is quoted on scope and timing. Ongoing maintenance after launch is a separate monthly fee.",
   },
 };
 

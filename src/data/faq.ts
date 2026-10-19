@@ -38,4 +38,8 @@ export const faqs: Faq[] = [
     q: "¿Qué necesito para empezar?",
     a: "Solo contarnos a qué te dedicas y qué quieres conseguir. Si ya tienes logotipo, textos o fotos, nos sirven; si no, te ayudamos a prepararlos.",
   },
+  {
+    q: "¿El mantenimiento está incluido una vez terminada la web?",
+    a: "El precio del proyecto cubre el diseño, el desarrollo y la puesta en marcha de la web, y la corrección de errores de nuestro trabajo durante los 30 días siguientes a la entrega. Si quieres que después sigamos encargándonos de ella (actualizaciones, seguridad, copias de seguridad y pequeños cambios), es un pago mensual aparte, que presupuestamos según lo que necesite tu web.",
+  },
 ];

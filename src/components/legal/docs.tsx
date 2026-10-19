@@ -475,9 +475,10 @@ export const docs: Record<"notice" | "privacy" | "cookies" | "terms", LegalDoc> 
           <p>
             Corregimos sin coste los errores de funcionamiento atribuibles a
             nuestro trabajo que nos comuniques durante los 30 días siguientes a la
-            entrega, salvo que el presupuesto indique otro plazo. Las
-            actualizaciones, nuevas funcionalidades y el mantenimiento continuado
-            se contratan aparte.
+            entrega, salvo que el presupuesto indique otro plazo. El
+            mantenimiento continuado de la web una vez entregada se contrata
+            aparte mediante una cuota mensual, y las nuevas funcionalidades se
+            presupuestan por separado.
           </p>
         ),
       },

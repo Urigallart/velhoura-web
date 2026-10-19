@@ -273,4 +273,8 @@ export const faqsEn: { q: string; a: string }[] = [
     q: "What do I need to get started?",
     a: "Just tell us what you do and what you want to achieve. If you already have a logo, copy or photos, we'll use them; if not, we'll help you prepare them.",
   },
+  {
+    q: "Is maintenance included once the website is finished?",
+    a: "The project price covers designing, building and launching the website, plus fixing any errors in our work during the first 30 days. If you'd like us to keep looking after it afterwards (updates, security, backups and small changes), that's a separate monthly fee, quoted according to what your website needs.",
+  },
 ];
