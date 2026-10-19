@@ -5,6 +5,7 @@ import { ServicesSection } from "@/components/sections/ServicesSection";
 import { NfcSection } from "@/components/sections/NfcSection";
 import { ShowcaseSection } from "@/components/sections/ShowcaseSection";
 import { PricingSection } from "@/components/sections/PricingSection";
+import { WhySection } from "@/components/sections/WhySection";
 import { ProcessSection } from "@/components/sections/ProcessSection";
 import { ToolsSection } from "@/components/sections/ToolsSection";
 import { GlobeSection } from "@/components/sections/GlobeSection";
@@ -42,6 +43,7 @@ export function HomePage({ locale }: { locale: Locale }) {
       <NfcSection locale={locale} />
       <ShowcaseSection />
       <PricingSection locale={locale} />
+      <WhySection locale={locale} />
       <ProcessSection />
       <VisionSection locale={locale} />
       <DifferentiationSection locale={locale} />
