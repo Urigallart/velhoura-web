@@ -231,8 +231,8 @@ export const productsEn: Record<
       { title: "What comes next", body: "The brand will work in drops, limited collections released on set dates. When the first one lands, the site will grow into a full online store." },
     ],
     captions: [
-      "The launch site on desktop",
-      "And on mobile",
+      "The store home page, ready for the first drop",
+      "The launch site on mobile",
     ],
   },
 };
