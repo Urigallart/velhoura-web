@@ -17,20 +17,20 @@ import { useLocale } from "@/i18n/useLocale";
 const showcasesEn: Record<string, Pick<Showcase, "tier" | "sector" | "blurb" | "scope">> = {
   landing: {
     tier: "Landing",
-    sector: "Botanical skincare · fictional brand",
-    blurb: "One page. One product. Editorial type, plenty of space and a single call to action.",
+    sector: "Training app · fictional brand",
+    blurb: "One page, one message and a single button: download the app.",
     scope: ["One page", "Visual identity", "Entrance animation", "Basic SEO"],
   },
   business: {
     tier: "Business",
-    sector: "Industrial engineering · fictional brand",
-    blurb: "Multi-page company website: services, sectors, projects and proposal requests.",
+    sector: "Renewable energy · fictional brand",
+    blurb: "Company website: solutions, cases, figures and quote requests.",
     scope: ["6 pages", "Content manager", "Forms", "Technical SEO"],
   },
   ecommerce: {
     tier: "Online Store",
-    sector: "Homeware · fictional brand",
-    blurb: "A complete direct-to-consumer store: catalogue, cart, Stripe checkout and order management.",
+    sector: "Trainers and clothes · fictional brand",
+    blurb: "A complete store: catalogue, cart, Stripe checkout and order management.",
     scope: ["Product catalogue", "Cart and checkout", "Stripe payments", "Order panel"],
   },
   custom: {
@@ -39,6 +39,14 @@ const showcasesEn: Record<string, Pick<Showcase, "tier" | "sector" | "blurb" | "
     blurb: "A platform with real-time data, roles, a dashboard and API integrations.",
     scope: ["Web application", "Database", "API", "Real-time dashboard"],
   },
+};
+
+/** Each example wears its plan's colour (same as the pricing cards). */
+const planColour: Record<string, string> = {
+  landing: "#ffe45c",
+  business: "#ff7a45",
+  ecommerce: "#7fd8ff",
+  custom: "#c77dff",
 };
 
 const copy = {
@@ -77,30 +85,30 @@ const showcasesBase: Showcase[] = [
   {
     id: "landing",
     tier: "Landing",
-    brand: "Meridia",
-    sector: "Cosmética botánica · marca ficticia",
+    brand: "Pulso",
+    sector: "App de entrenamiento · marca ficticia",
     blurb:
-      "Una página. Un producto. Tipografía editorial, mucho aire y una única llamada a la acción.",
-    scope: ["One page", "Identidad visual", "Animación de entrada", "SEO básico"],
+      "Una página, un mensaje y un único botón: descargar la app.",
+    scope: ["Una página", "Identidad visual", "Animación de entrada", "SEO básico"],
     preview: <PreviewLanding />,
   },
   {
     id: "business",
     tier: "Business",
-    brand: "Nordvik",
-    sector: "Ingeniería industrial · marca ficticia",
+    brand: "Brisa",
+    sector: "Energía renovable · marca ficticia",
     blurb:
-      "Web corporativa multi-página: servicios, sectores, proyectos y captación de propuestas.",
+      "Web corporativa: soluciones, casos, cifras y petición de presupuesto.",
     scope: ["6 páginas", "Gestor de contenido", "Formularios", "SEO técnico"],
     preview: <PreviewBusiness />,
   },
   {
     id: "ecommerce",
     tier: "Tienda Online",
-    brand: "Solstice",
-    sector: "Artículos de hogar · marca ficticia",
+    brand: "Kiko",
+    sector: "Zapatillas y ropa · marca ficticia",
     blurb:
-      "Tienda D2C completa: catálogo, carrito, checkout con Stripe y gestión de pedidos.",
+      "Tienda completa: catálogo, carrito, checkout con Stripe y gestión de pedidos.",
     scope: ["Catálogo de producto", "Carrito y checkout", "Pagos con Stripe", "Panel de pedidos"],
     preview: <PreviewEcommerce />,
   },
@@ -128,7 +136,7 @@ export function ShowcaseSection() {
   const current = showcases[active];
 
   return (
-    <section className="band-tight bg-paper-off">
+    <section className="band-tight bg-paper-sunk">
       <div className="shell">
         <SectionHeading
           align="center"
@@ -145,7 +153,7 @@ export function ShowcaseSection() {
             <div
               role="tablist"
               aria-label={t.tablist}
-              className="flex gap-1 rounded-full border border-line bg-paper-raise p-1"
+              className="mx-auto flex gap-1 rounded-full bg-paper-raise p-1.5 shadow-[0_10px_30px_-20px_rgba(8,9,10,0.3)]"
               style={{ width: "fit-content" }}
             >
               {showcases.map((s, i) => (
@@ -158,14 +166,15 @@ export function ShowcaseSection() {
                   aria-controls={`panel-${s.id}`}
                   onClick={() => setActive(i)}
                   className={cn(
-                    "relative rounded-full px-5 py-2 text-sm font-medium transition-colors duration-300",
-                    active === i ? "text-paper-raise" : "text-ink-soft hover:text-ink",
+                    "relative rounded-full px-6 py-2.5 text-[0.9375rem] font-semibold transition-colors duration-300",
+                    active === i ? "text-ink" : "text-ink-soft hover:text-ink",
                   )}
                 >
                   {active === i && (
                     <motion.span
                       layoutId="showcase-pill"
-                      className="absolute inset-0 rounded-full bg-ink"
+                      className="absolute inset-0 rounded-full"
+                      style={{ background: planColour[s.id] }}
                       transition={{
                         type: "spring",
                         stiffness: 380,
@@ -210,24 +219,32 @@ export function ShowcaseSection() {
                     exit={reduced ? undefined : { opacity: 0, y: -8 }}
                     transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
                   >
-                    <p className="t-label !text-ember">{current.tier}</p>
-                    <h3 className="t-h2 mt-3">{current.brand}</h3>
-                    <p className="mt-2 text-sm text-ink-mute">
-                      {current.sector}
-                    </p>
+                    <span
+                      className="inline-block rounded-full px-3.5 py-1 text-[0.8125rem] font-semibold text-ink"
+                      style={{ background: planColour[current.id] }}
+                    >
+                      {current.tier}
+                    </span>
+                    <h3 className="mt-4 text-[clamp(2.25rem,4vw,3.25rem)] font-semibold leading-none tracking-[-0.05em]">
+                      {current.brand}
+                    </h3>
+                    <p className="mt-2 text-[0.9375rem] text-ink-mute">{current.sector}</p>
                     <p className="t-body mt-5 max-w-[38ch]">{current.blurb}</p>
 
-                    <ul className="mt-7 space-y-px overflow-hidden rounded-xl border border-line">
+                    <ul className="mt-7 space-y-2">
                       {current.scope.map((item) => (
                         <li
                           key={item}
-                          className="flex items-center justify-between border-b border-line bg-paper-raise px-4 py-3 text-sm text-ink-soft last:border-b-0"
+                          className="flex items-center gap-3 rounded-2xl bg-paper-raise px-4 py-3 text-[0.9375rem] font-medium text-ink"
                         >
-                          {item}
                           <span
                             aria-hidden="true"
-                            className="size-1.5 rounded-full bg-line-strong"
-                          />
+                            className="grid size-5 shrink-0 place-items-center rounded-full text-[0.7rem] font-bold text-ink"
+                            style={{ background: planColour[current.id] }}
+                          >
+                            ✓
+                          </span>
+                          {item}
                         </li>
                       ))}
                     </ul>
@@ -242,9 +259,14 @@ export function ShowcaseSection() {
         <div className="mt-12 space-y-10 md:hidden">
           {showcases.map((s, i) => (
             <Reveal key={s.id} delay={i * 80}>
-              <p className="t-label !text-ember">{s.tier}</p>
-              <h3 className="t-h3 mt-2">{s.brand}</h3>
-              <p className="mt-1 text-xs text-ink-mute">{s.sector}</p>
+              <span
+                className="inline-block rounded-full px-3 py-1 text-[0.8125rem] font-semibold text-ink"
+                style={{ background: planColour[s.id] }}
+              >
+                {s.tier}
+              </span>
+              <h3 className="mt-3 text-[2rem] font-semibold leading-none tracking-[-0.045em]">{s.brand}</h3>
+              <p className="mt-1 text-sm text-ink-mute">{s.sector}</p>
               <div className="mt-4">
                 <BrowserFrame>{s.preview}</BrowserFrame>
               </div>
@@ -260,14 +282,14 @@ export function ShowcaseSection() {
 /** Neutral browser chrome so the previews read as real sites, not as UI cards. */
 function BrowserFrame({ children }: { children: ReactNode }) {
   return (
-    <div className="overflow-hidden rounded-xl border border-line bg-paper-raise shadow-[0_34px_74px_-40px_rgba(8,9,10,0.42)]">
-      <div className="flex items-center gap-2 border-b border-line bg-paper-sunk px-4 py-2.5">
+    <div className="overflow-hidden rounded-3xl bg-paper-raise shadow-[0_40px_80px_-40px_rgba(8,9,10,0.45)]">
+      <div className="flex items-center gap-2 bg-paper-sunk px-4 py-3">
         <span className="flex gap-1.5" aria-hidden="true">
           <span className="size-2 rounded-full bg-line-strong" />
           <span className="size-2 rounded-full bg-line-strong" />
           <span className="size-2 rounded-full bg-line-strong" />
         </span>
-        <span className="mx-auto rounded-md bg-paper-raise px-3 py-0.5 font-sans text-[0.8125rem] text-ink-faint">
+        <span className="mx-auto rounded-full bg-paper-raise px-4 py-0.5 font-sans text-[0.8125rem] text-ink-mute">
           ejemplo.velhoura.com
         </span>
       </div>
