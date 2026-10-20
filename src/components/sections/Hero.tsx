@@ -111,26 +111,28 @@ export function Hero({
         </p>
 
         <div
-          className="anim-rise mx-auto mt-9 flex max-w-sm flex-col items-center justify-center gap-3 sm:max-w-none sm:flex-row sm:gap-4"
+          className="anim-rise mx-auto mt-8 flex flex-wrap items-center justify-center gap-2.5 sm:mt-9 sm:gap-4"
           style={{ "--d": "640ms" } as React.CSSProperties}
         >
-          <div className="w-full sm:w-auto">
+          <div>
             <ButtonLink
               href="#contact"
               size="lg"
               arrow
-              className="w-full sm:w-auto"
+              // Phones: sized to the label, not the column — a full-width 54px pill
+              // there reads as a banner, not a button.
+              className="max-sm:h-11 max-sm:px-5 max-sm:text-[0.875rem]"
             >
               {t.primary}
             </ButtonLink>
           </div>
-          <div className="w-full sm:w-auto">
+          <div>
             <ButtonLink
               href="#services"
               variant="outline"
               size="lg"
               arrow
-              className="w-full sm:w-auto"
+              className="max-sm:h-11 max-sm:px-5 max-sm:text-[0.875rem]"
             >
               {t.secondary}
             </ButtonLink>
