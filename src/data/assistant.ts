@@ -321,6 +321,7 @@ export const ui = {
     open: "Abrir chat",
     contactCta: "Contar mi proyecto",
     hint: "Pregúntanos lo que quieras",
+    nudges: ["¿Tienes alguna duda?", "¿Quieres saber cuánto cuesta?", "¿Te contamos cómo trabajamos?"],
     typing: "Escribiendo…",
     greeting:
       "¡Hola! Somos {name}, de Velhoura. Pregúntanos por servicios, precios, cómo trabajamos o cuánto tarda. Este chat es un asistente automático, pero lo que te contamos sale de lo que publicamos.",
@@ -334,6 +335,7 @@ export const ui = {
     open: "Open chat",
     contactCta: "Tell us about my project",
     hint: "Ask us anything",
+    nudges: ["Any questions?", "Want to know what it costs?", "Shall we tell you how we work?"],
     typing: "Typing…",
     greeting:
       "Hi! We're {name} from Velhoura. Ask us about services, prices, how we work or how long things take. This chat is an automated assistant, but everything we tell you comes from what we publish.",

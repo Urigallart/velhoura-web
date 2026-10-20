@@ -55,6 +55,10 @@ export function AssistantChat() {
   // Past the first screen the launcher drops its label and shrinks to the
   // face alone, so it stops sitting on top of the content being read.
   const [compact, setCompact] = useState(false);
+  // A speech bubble that pops out of the launcher now and then ("Any
+  // questions?"), until the visitor opens the chat or closes the bubble.
+  const [nudge, setNudge] = useState<number | null>(null);
+  const [quiet, setQuiet] = useState(false);
   const logRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
@@ -82,6 +86,28 @@ export function AssistantChat() {
   }, [locale]);
 
   useEffect(() => () => clearTimeout(timer.current), []);
+
+  // First nudge after 25 s; then 7 s on screen, 2 min off, round and round.
+  useEffect(() => {
+    if (open || quiet) return;
+    const count = ui[locale].nudges.length;
+    let n = 0;
+    let showTimer: ReturnType<typeof setTimeout>;
+    let hideTimer: ReturnType<typeof setTimeout>;
+    const show = () => {
+      setNudge(n % count);
+      n += 1;
+      hideTimer = setTimeout(() => {
+        setNudge(null);
+        showTimer = setTimeout(show, 120_000);
+      }, 7_000);
+    };
+    showTimer = setTimeout(show, 25_000);
+    return () => {
+      clearTimeout(showTimer);
+      clearTimeout(hideTimer);
+    };
+  }, [open, quiet, locale]);
 
   useEffect(() => {
     let frame = 0;
@@ -113,6 +139,8 @@ export function AssistantChat() {
   }, [msgs, busy]);
 
   const toggle = () => {
+    setNudge(null);
+    setQuiet(true);
     setOpen((v) => !v);
     if (!msgs.length) greet(who);
   };
@@ -246,6 +274,29 @@ export function AssistantChat() {
             <p className="mt-2 px-1 text-[0.6875rem] leading-snug text-ink-mute">{t.note}</p>
           </form>
         </section>
+      )}
+
+      {nudge !== null && !open && (
+        <div className="nudge-in relative max-w-[15rem]" role="status">
+          <button
+            type="button"
+            onClick={toggle}
+            className="block rounded-2xl rounded-br-md border border-line bg-paper-raise px-4 py-3 text-left text-[0.9375rem] font-medium leading-snug shadow-[0_16px_40px_-18px_rgba(8,9,10,0.45)]"
+          >
+            {t.nudges[nudge]}
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setNudge(null);
+              setQuiet(true);
+            }}
+            aria-label={t.close}
+            className="absolute -left-2 -top-2 grid size-6 place-items-center rounded-full border border-line bg-paper-raise text-[0.75rem] leading-none text-ink-soft"
+          >
+            ×
+          </button>
+        </div>
       )}
 
       <button
