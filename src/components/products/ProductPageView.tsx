@@ -144,6 +144,7 @@ export function ProductPageView({
                     alt={t.shot(product.name)}
                     fill
                     sizes="(min-width: 1280px) 1200px, 100vw"
+                    quality={90}
                     className="object-cover object-top"
                     priority
                   />
@@ -218,11 +219,7 @@ export function ProductPageView({
                 lines={t.galleryLines}
                 className="text-balance text-[clamp(2.25rem,5vw,4rem)] font-semibold leading-[0.95] tracking-[-0.045em] text-paper-raise"
               />
-              {phones.length > 4 ? (
-                <p className="text-sm text-paper-raise/50">{t.galleryHint} →</p>
-              ) : phones.length > 1 ? (
-                <p className="text-sm text-paper-raise/50 lg:hidden">{t.galleryHint} →</p>
-              ) : null}
+              {phones.length > 1 && <p className="text-sm text-paper-raise/50 sm:hidden">{t.galleryHint} →</p>}
             </div>
 
             {desktops.length > 0 && (
@@ -236,7 +233,7 @@ export function ProductPageView({
                             <span key={c} className="size-2.5 rounded-full" style={{ background: c }} />
                           ))}
                         </div>
-                        <Image src={g.src} alt={g.caption} width={1600} height={1000} sizes="(min-width: 768px) 1200px, 100vw" className="block h-auto w-full" />
+                        <Image src={g.src} alt={g.caption} width={2400} height={1500} sizes={i === 0 ? "(min-width: 1280px) 1200px, 100vw" : "(min-width: 768px) 600px, 100vw"} quality={90} className="block h-auto w-full" />
                       </div>
                       <figcaption className="mt-3 text-sm text-paper-raise/60">{g.caption}</figcaption>
                     </figure>
@@ -249,21 +246,26 @@ export function ProductPageView({
               <ul
                 className={cn(
                   "flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+                  "sm:mx-auto sm:grid sm:snap-none sm:gap-x-6 sm:gap-y-12 sm:overflow-visible sm:pb-0",
                   desktops.length > 0 ? "mt-10" : "mt-12",
-                  phones.length <= 4 && "lg:grid lg:grid-cols-4 lg:overflow-visible",
+                  phones.length === 1 && "sm:max-w-[280px] sm:grid-cols-1",
+                  phones.length === 2 && "sm:max-w-[600px] sm:grid-cols-2",
+                  (phones.length === 3 || phones.length > 4) && "sm:max-w-[920px] sm:grid-cols-3",
+                  phones.length === 4 && "sm:grid-cols-2 lg:grid-cols-4",
                 )}
               >
                 {phones.map((g, i) => (
-                  <li key={g.src} className="w-[68vw] max-w-[270px] shrink-0 snap-start sm:w-[240px] lg:w-auto lg:max-w-none">
+                  <li key={g.src} className="w-[72vw] max-w-[290px] shrink-0 snap-center sm:w-auto sm:max-w-none">
                     <Reveal delay={i * 70} y={24}>
                       <figure>
                         <div className="rounded-[2.4rem] border border-paper-raise/15 bg-black p-2 shadow-[0_40px_80px_-40px_rgba(0,0,0,0.9)]">
                           <Image
                             src={g.src}
                             alt={g.caption}
-                            width={645}
-                            height={1398}
-                            sizes="270px"
+                            width={1080}
+                            height={2341}
+                            sizes="(min-width: 640px) 300px, 72vw"
+                            quality={90}
                             className="block h-auto w-full rounded-[1.9rem]"
                           />
                         </div>
@@ -340,7 +342,7 @@ export function ProductPageView({
               </div>
               {next.image && (
                 <div className="relative hidden aspect-[16/10] w-64 overflow-hidden rounded-2xl border border-line sm:block">
-                  <Image src={next.image} alt="" fill sizes="256px" className="object-cover object-top transition-transform duration-700 ease-[var(--e-out)] group-hover:scale-[1.04]" />
+                  <Image src={next.image} alt="" fill sizes="256px" quality={90} className="object-cover object-top transition-transform duration-700 ease-[var(--e-out)] group-hover:scale-[1.04]" />
                 </div>
               )}
             </Link>

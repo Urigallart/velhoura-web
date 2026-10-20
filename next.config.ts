@@ -36,6 +36,9 @@ const nextConfig: NextConfig = {
     // AVIF first, WebP as the fallback: the product screenshots are large flat
     // UI surfaces, which is exactly the content AVIF compresses best.
     formats: ["image/avif", "image/webp"],
+    // 90 is for the product screenshots: small UI text turns soft at the
+    // default 75. Everything else keeps 75.
+    qualities: [75, 90],
   },
 
   async headers() {
