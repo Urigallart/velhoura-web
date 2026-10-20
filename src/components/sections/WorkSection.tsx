@@ -33,6 +33,7 @@ const copy = {
     filters: { all: "Todos", APP: "Apps", WEB: "Webs y tiendas" } as Record<string, string>,
     filterGroup: "Filtrar proyectos",
     category: { APP: "App", WEB: "Web y tienda", SAAS: "SaaS", PLATFORM: "Plataforma" } as Record<string, string>,
+    marks: "Marcas y aplicaciones en las que hemos trabajado",
     status: { LIVE: "En producción", "COMING SOON": "Próximamente", BUILDING: "En desarrollo" } as Record<string, string>,
     open: (name: string) => `Ver ${name}`,
     nextTitle: ["Tu negocio,", "el siguiente."],
@@ -46,6 +47,7 @@ const copy = {
     filters: { all: "All", APP: "Apps", WEB: "Sites and stores" } as Record<string, string>,
     filterGroup: "Filter projects",
     category: { APP: "App", WEB: "Site and store", SAAS: "SaaS", PLATFORM: "Platform" } as Record<string, string>,
+    marks: "Brands and apps we have worked on",
     status: { LIVE: "Live", "COMING SOON": "Coming soon", BUILDING: "In development" } as Record<string, string>,
     open: (name: string) => `View ${name}`,
     nextTitle: ["Your business,", "next."],
@@ -180,8 +182,57 @@ export function WorkSection() {
             </Reveal>
           </li>
         </ul>
+
+        {/* The marks of the projects, as app icons: no heading, the icons say it. */}
+        <ul
+          aria-label={t.marks}
+          className="mt-16 flex flex-wrap items-start justify-center gap-x-7 gap-y-8 sm:mt-20 sm:gap-x-12"
+        >
+          {products
+            .filter((p) => appIcons[p.slug] && p.slug !== "velhoura-eyewear")
+            .map((p, i) => (
+              <li key={p.slug}>
+                <Reveal delay={i * 70} y={18}>
+                  <Link
+                    href={localePath(locale, `/products/${p.slug}`)}
+                    aria-label={t.open(p.name)}
+                    className="group flex w-[84px] flex-col items-center gap-3 sm:w-[104px]"
+                  >
+                    <IconTile slug={p.slug} name={p.name} />
+                    <span className="text-center text-[0.8125rem] font-medium leading-tight text-paper-raise/65 transition-colors duration-300 group-hover:text-paper-raise">
+                      {p.name}
+                    </span>
+                  </Link>
+                </Reveal>
+              </li>
+            ))}
+        </ul>
       </div>
     </section>
+  );
+}
+
+/** The same app icon as on the cards, larger, standing on its own. */
+function IconTile({ slug, name }: { slug: string; name: string }) {
+  const icon = appIcons[slug];
+  if (!icon) return null;
+  return (
+    <span
+      className={`relative block size-[4.75rem] overflow-hidden rounded-[22.5%] shadow-[0_18px_36px_-14px_rgba(0,0,0,0.8),0_0_0_1px_rgba(255,255,255,0.16)] transition-transform duration-500 ease-[var(--e-out)] group-hover:-translate-y-1.5 group-hover:scale-105 sm:size-[6.25rem] ${icon.bg}`}
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={icon.src}
+        alt={name}
+        loading="lazy"
+        className={`size-full ${icon.bleed ? "object-cover" : `object-contain ${icon.pad}`}`}
+        style={icon.invert ? { filter: "brightness(0) invert(1)" } : undefined}
+      />
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/30 via-transparent to-black/10"
+      />
+    </span>
   );
 }
 
