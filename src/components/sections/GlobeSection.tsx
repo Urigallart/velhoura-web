@@ -6,6 +6,7 @@ import { MaskedTitle } from "@/components/ui/MaskedTitle";
 import { Reveal } from "@/components/ui/Reveal";
 import { useLocale } from "@/i18n/useLocale";
 import { openContactModal } from "@/lib/contactModal";
+import { smoothScrollTo } from "@/lib/smoothScroll";
 import { cn } from "@/lib/utils";
 
 /**
@@ -119,8 +120,10 @@ export function GlobeSection() {
     return () => io.disconnect();
   }, []);
 
-  const toStart = () =>
-    refs.current[0]?.scrollIntoView({ behavior: "smooth", block: "center" });
+  const toStart = () => {
+    const el = refs.current[0];
+    if (el) smoothScrollTo(el.getBoundingClientRect().top + window.scrollY - window.innerHeight / 2 + el.offsetHeight / 2);
+  };
 
   return (
     <section id="story" className="band relative" data-tone="sun">

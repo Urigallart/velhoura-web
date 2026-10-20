@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { ContactModal } from "@/components/contact/ContactModal";
+import { SmoothAnchors } from "@/components/layout/SmoothAnchors";
 import { AssistantChat } from "@/components/assistant/AssistantChat";
 import { CookieNotice } from "@/components/legal/CookieNotice";
 import { contact, site } from "@/data/site";
@@ -241,6 +242,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </a>
 
         <HtmlLang />
+        <SmoothAnchors />
         <Navbar />
         <main id="main">{children}</main>
         <Footer />
