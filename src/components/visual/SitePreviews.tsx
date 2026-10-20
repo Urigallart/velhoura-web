@@ -156,12 +156,47 @@ export function PreviewBusiness() {
   );
 }
 
+/** Three drawn products for the store preview: a trainer, a hoodie and a tee. */
+function ProductArt({ kind }: { kind: "shoe" | "hoodie" | "tee" }) {
+  const body = "#ffffff";
+  const line = "rgba(14,26,36,0.22)";
+  return (
+    <svg viewBox="0 0 120 120" aria-hidden="true" className="absolute inset-[8%] size-[84%] drop-shadow-[0_2.4cqw_2cqw_rgba(0,0,0,0.18)]">
+      {kind === "shoe" && (
+        <>
+          <path d="M14 84c0-4 3-7 7-7h82c5 0 8 3 8 7v3c0 4-3 7-7 7H21c-4 0-7-3-7-7z" fill={body} />
+          <path d="M20 78c0-20 6-31 16-35l17 0c4 10 15 15 29 18 15 3 24 9 24 17z" fill={body} opacity="0.96" />
+          <path d="M36 43c-3 3-5 6-6 10M46 43l-2 8M56 47l-2 7" stroke={line} strokeWidth="2.2" strokeLinecap="round" fill="none" />
+          <path d="M24 74c14-2 28-1 44 3 12 3 22 3 32 0" stroke="#3b8bff" strokeWidth="4.5" strokeLinecap="round" fill="none" />
+          <path d="M20 94h86" stroke={line} strokeWidth="2" />
+        </>
+      )}
+      {kind === "hoodie" && (
+        <>
+          <path d="M38 30L22 40 8 74l16 6 8-16v38h56V64l8 16 16-6-14-34-16-10c-4 10-12 14-22 14S42 40 38 30z" fill={body} />
+          <path d="M44 26c4-12 28-12 32 0-2 12-10 20-16 20s-14-8-16-20z" fill="rgba(14,26,36,0.12)" />
+          <path d="M52 44l-2 22M68 44l2 22" stroke={line} strokeWidth="2.4" strokeLinecap="round" />
+          <rect x="44" y="78" width="32" height="16" rx="6" fill="none" stroke={line} strokeWidth="2.2" />
+        </>
+      )}
+      {kind === "tee" && (
+        <>
+          <path d="M40 22c6 8 34 8 40 0l24 12-10 22-10-6v58H36V50l-10 6L16 34z" fill={body} />
+          <path d="M46 22c4 6 24 6 28 0" stroke={line} strokeWidth="2.4" strokeLinecap="round" fill="none" />
+          <circle cx="60" cy="58" r="7" fill="#c77dff" />
+          <path d="M56 58h8M60 54v8" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" />
+        </>
+      )}
+    </svg>
+  );
+}
+
 /* ── Plan 3 · Tienda Online — KIKO, trainers and clothes ────────── */
 export function PreviewEcommerce() {
   const items = [
-    ["Aero Run", "89 €", "from-[#7fd8ff] to-[#3b8bff]", "Nuevo"],
-    ["Loop Hoodie", "59 €", "from-[#ffd36e] to-[#ff8a3d]", "−20%"],
-    ["Daily Tee", "29 €", "from-[#ff9cc4] to-[#c77dff]", ""],
+    ["Aero Run", "89 €", "from-[#7fd8ff] to-[#3b8bff]", "Nuevo", "shoe"],
+    ["Loop Hoodie", "59 €", "from-[#ffd36e] to-[#ff8a3d]", "−20%", "hoodie"],
+    ["Daily Tee", "29 €", "from-[#ff9cc4] to-[#c77dff]", "", "tee"],
   ] as const;
 
   return (
@@ -187,11 +222,10 @@ export function PreviewEcommerce() {
       </div>
 
       <div className="grid flex-1 grid-cols-3 gap-[2cqw] px-[4cqw] pb-[2.4cqw]">
-        {items.map(([name, price, grad, tag]) => (
+        {items.map(([name, price, grad, tag, kind]) => (
           <div key={name} className="flex flex-col rounded-[2cqw] bg-white p-[1.2cqw] shadow-[0_1.4cqw_3cqw_-2cqw_rgba(0,0,0,0.3)]">
             <div className={`relative flex-1 overflow-hidden rounded-[1.4cqw] bg-gradient-to-br ${grad}`}>
-              <span className="absolute left-[18%] top-[22%] h-[44%] w-[64%] rotate-[-8deg] rounded-[40%_60%_50%_50%] bg-white/45" />
-              <span className="absolute bottom-[14%] right-[16%] size-[26%] rounded-full bg-white/60" />
+              <ProductArt kind={kind} />
               {tag && (
                 <span className="absolute left-[1cqw] top-[1cqw] rounded-full bg-[#0e1a24] px-[1.1cqw] py-[0.35cqw] text-[1.1cqw] font-semibold text-white">
                   {tag}
