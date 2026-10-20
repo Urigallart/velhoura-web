@@ -54,15 +54,25 @@ let mounted = 0;
 export function IntroZoom({
   hero,
   screen,
+  desk,
 }: {
   /** The real hero — always in the document, revealed when the zoom lands. */
   hero: ReactNode;
   /** A copy of the hero without the globe, shown on the laptop glass. */
   screen: ReactNode;
+  /**
+   * The same copy as a desktop browser lays it out, captured as an image.
+   * On a phone the live copy can only take the phone's own layout — a
+   * narrow column in a landscape screen — so the laptop shows this instead
+   * and it dissolves into the live copy on the way in. Regenerate it when
+   * the hero changes (1440×858 at 2x, the glass's proportions).
+   */
+  desk?: string;
 }) {
   const scene = useRef<HTMLDivElement>(null);
   const shade = useRef<HTMLDivElement>(null);
   const overlay = useRef<HTMLDivElement>(null);
+  const deskImg = useRef<HTMLImageElement>(null);
   const geo = useRef<Geometry | null>(null);
   // The cards are interactive only while the camera is still in the room.
   const [inRoom, setInRoom] = useState(true);
@@ -100,6 +110,12 @@ export function IntroZoom({
     );
 
     if (shade.current) shade.current.style.opacity = String(1 - e);
+
+    // Phones: the desktop picture holds while the camera is in the room,
+    // then gives way to the live phone layout well before the landing.
+    if (deskImg.current) {
+      deskImg.current.style.opacity = String(1 - clamp01((p - 0.3) / 0.18));
+    }
 
     // The cards and the cue belong to the room: they step aside and fade in
     // the first stretch, before the camera is anywhere near the glass.
@@ -321,6 +337,24 @@ export function IntroZoom({
             >
               {screen}
             </div>
+
+            {desk && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                ref={deskImg}
+                src={desk}
+                alt=""
+                decoding="async"
+                draggable={false}
+                className="intro-desk absolute select-none object-cover object-top"
+                style={{
+                  left: "var(--intro-gx)",
+                  top: "var(--intro-gy)",
+                  width: "var(--intro-gw)",
+                  height: "var(--intro-gh)",
+                }}
+              />
+            )}
 
             {/* Plan demos, cross-faded over the hero copy on demand. */}
             <ScreenPreviews active={preview} />
