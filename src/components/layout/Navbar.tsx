@@ -248,7 +248,7 @@ export function Navbar() {
               }
             }}
             aria-label={t.home}
-            className="flex shrink-0 items-center px-4"
+            className="flex shrink-0 items-center px-4 max-md:pl-5"
           >
             <Image
               src="/brand/logo-mark.png"
@@ -258,6 +258,13 @@ export function Navbar() {
               priority
               className="h-7 w-auto"
             />
+            {/* On phones the mark is the "V" of the name: "elhoura" continues it. */}
+            <span
+              aria-hidden="true"
+              className="-ml-0.5 text-[1.3125rem] font-semibold leading-none tracking-[-0.045em] text-ink md:hidden"
+            >
+              elhoura
+            </span>
           </Link>
 
           <nav
