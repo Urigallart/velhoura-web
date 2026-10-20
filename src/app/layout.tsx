@@ -8,6 +8,7 @@ import { CookieNotice } from "@/components/legal/CookieNotice";
 import { contact, site } from "@/data/site";
 import { maintenance, plans } from "@/data/plans";
 import { gateScript } from "@/components/intro/geometry";
+import { Analytics } from "@vercel/analytics/next";
 import { HtmlLang } from "@/i18n/HtmlLang";
 import "./globals.css";
 
@@ -247,6 +248,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <ContactModal />
         <AssistantChat />
         <CookieNotice />
+        {/* Cookieless visit counts: see the legal texts before changing this. */}
+        <Analytics />
       </body>
     </html>
   );

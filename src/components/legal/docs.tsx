@@ -180,8 +180,10 @@ export const docs: Record<"notice" | "privacy" | "cookies" | "terms", LegalDoc> 
               <strong>Si solo navegas:</strong> el servidor que aloja la web
               registra datos técnicos de la conexión (como la dirección IP, el
               navegador y la hora de la visita) para poder servir la página y
-              protegerla frente a abusos. No usamos herramientas de analítica ni
-              de publicidad, y no creamos perfiles de los visitantes.
+              protegerla frente a abusos. Contamos las visitas con Vercel Web
+              Analytics, que no usa cookies ni identifica a los visitantes: solo
+              suma páginas vistas de forma agregada. No usamos herramientas de
+              publicidad y no creamos perfiles de los visitantes.
             </p>
           </>
         ),
@@ -313,7 +315,8 @@ export const docs: Record<"notice" | "privacy" | "cookies" | "terms", LegalDoc> 
               <strong>Ninguna de analítica, publicidad ni redes sociales.</strong>{" "}
               Esta web no instala cookies propias ni de terceros para medir
               visitas, crear perfiles o mostrarte anuncios, ni guarda información
-              en tu navegador para seguirte.
+              en tu navegador para seguirte. Las visitas se cuentan con Vercel
+              Web Analytics, que funciona sin cookies.
             </p>
             <p>
               Solo guardamos un dato en el almacenamiento local de tu navegador,
