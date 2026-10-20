@@ -63,7 +63,7 @@ export function AssistantChat() {
     setMsgs([
       {
         from: "bot",
-        text: t.greeting.replace("{name}", c.name),
+        text: t.greeting.replace("{name}", locale === "en" ? c.name.replace(" e ", " & ") : c.name),
         reply: { topic: "greeting", text: "", next: ["services", "prices", "process", "time"], contact: false },
       },
     ]);
@@ -75,7 +75,7 @@ export function AssistantChat() {
       setOpen(true);
       setMsgs((m) => (m.length ? m : [{
         from: "bot",
-        text: ui[locale].greeting.replace("{name}", c.name),
+        text: ui[locale].greeting.replace("{name}", locale === "en" ? c.name.replace(" e ", " & ") : c.name),
         reply: { topic: "greeting", text: "", next: ["services", "prices", "process", "time"], contact: false },
       }]));
     });
@@ -150,7 +150,7 @@ export function AssistantChat() {
           <header className="flex items-center gap-3 border-b border-line px-4 py-3">
             <Face who={who} className="size-10" />
             <div className="min-w-0 flex-1">
-              <p className="truncate text-[0.9375rem] font-semibold leading-tight">{who.name} · Velhoura</p>
+              <p className="truncate text-[0.9375rem] font-semibold leading-tight">{locale === "en" ? who.name.replace(" e ", " & ") : who.name} · Velhoura</p>
               <p className="truncate text-xs text-ink-mute">{who.role[locale]}</p>
             </div>
             <button

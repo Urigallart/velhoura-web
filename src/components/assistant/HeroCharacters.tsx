@@ -25,8 +25,8 @@ export function HeroCharacters({
     <img
       src={who.figure}
       alt={interactive ? "" : ""}
-      width={630}
-      height={1300}
+      width={who.figureSize.width}
+      height={who.figureSize.height}
       draggable={false}
       className="h-full w-auto select-none object-contain object-bottom"
     />
@@ -34,7 +34,7 @@ export function HeroCharacters({
 
   return (
     <div
-      className="pointer-events-none absolute bottom-10 left-1 z-[2] hidden h-[clamp(340px,50vh,560px)] min-[1280px]:block xl:left-[max(0.25rem,calc(50%-52rem))]"
+      className="pointer-events-none absolute bottom-10 left-1 z-[2] hidden h-[clamp(320px,46vh,520px)] min-[1280px]:block xl:left-[max(0.25rem,calc(50%-52rem))]"
       aria-hidden={interactive ? undefined : true}
     >
       {interactive ? (

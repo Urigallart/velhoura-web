@@ -320,10 +320,10 @@ export const ui = {
     close: "Cerrar chat",
     open: "Abrir chat",
     contactCta: "Contar mi proyecto",
-    hint: "Pregúntame lo que quieras",
+    hint: "Pregúntanos lo que quieras",
     typing: "Escribiendo…",
     greeting:
-      "¡Hola! Soy {name}, de Velhoura. Pregúntame por servicios, precios, cómo trabajamos o cuánto tarda. Soy un asistente automático, pero lo que te cuento está sacado de lo que publicamos.",
+      "¡Hola! Somos {name}, de Velhoura. Pregúntanos por servicios, precios, cómo trabajamos o cuánto tarda. Este chat es un asistente automático, pero lo que te contamos sale de lo que publicamos.",
   },
   en: {
     title: "Ask us anything",
@@ -333,9 +333,9 @@ export const ui = {
     close: "Close chat",
     open: "Open chat",
     contactCta: "Tell us about my project",
-    hint: "Ask me anything",
+    hint: "Ask us anything",
     typing: "Typing…",
     greeting:
-      "Hi! I'm {name} from Velhoura. Ask me about services, prices, how we work or how long things take. I'm an automated assistant, but everything I tell you comes from what we publish.",
+      "Hi! We're {name} from Velhoura. Ask us about services, prices, how we work or how long things take. This chat is an automated assistant, but everything we tell you comes from what we publish.",
   },
 };
