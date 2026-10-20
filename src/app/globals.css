@@ -589,6 +589,20 @@ html:not([data-intro-cards="sides"]) .intro-cards-sides {
   display: none;
 }
 
+/* Chrome on Android tints the system navigation bar with the page's
+   background. While the office is on screen that would be a white strip
+   under a warm photo, so the ground takes the colour of the scene's lower
+   edge until the page itself takes over. */
+html[data-intro="play"],
+html[data-intro="play"] body {
+  background-color: #a08574;
+}
+
+/* Wide windows already show the live hero in its desktop layout. */
+html:not([data-intro-cards="row"]) .intro-desk {
+  display: none;
+}
+
 /* The intro's scroll cue: the chevron dips, as if pointing the way in. */
 @keyframes v-nudge {
   0%,
