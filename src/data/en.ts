@@ -216,6 +216,29 @@ export const productsEn: Record<
       "The people behind the design",
     ],
   },
+  "maria-del-mar": {
+    summary:
+      "A website for an educational psychologist and coach in Barcelona: two lines of support, in Catalan and Spanish.",
+    description:
+      "The website of Maria del Mar, an educational psychologist and coach in Barcelona (Sarrià–Sant Gervasi). It presents her two lines of support — coaching and one-off sessions for young people and adults, and educational psychology for children and teenagers — who she is, the space where she sees people and the testimonials of the people she has supported. It is in Catalan and Spanish.",
+    highlights: [
+      "Website in Catalan and Spanish",
+      "Two lines of support",
+      "About her and her space in Barcelona",
+      "Direct contact from every page",
+    ],
+    story: [
+      { title: "The starting point", body: "A professional with more than twenty-five years supporting children, young people and families needed a website that conveyed what she conveys in the consulting room: calm, warmth and clarity, so that visitors know right away which line of work suits them." },
+      { title: "What we built", body: "A website for her business in Barcelona, in Catalan and Spanish. It opens with a clear message and the two lines of support, moves on to who she is and photographs of her space, and ends with testimonials and a contact button always within reach." },
+      { title: "The details", body: "Its own identity with her logo and a soft green, large type, plenty of air and real photographs of the practice, so the site feels as warm as she is." },
+    ],
+    captions: [
+      "Home: the message and the two lines of work",
+      "Two lines of support, one outlook",
+      "About her, with key figures at a glance",
+      "Her space in Barcelona",
+    ],
+  },
   zhestar: {
     summary: "Gymwear brand in the making — the site for the first drop, counting down.",
     description:

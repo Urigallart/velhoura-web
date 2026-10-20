@@ -48,16 +48,16 @@ export function ToolsSection({ locale = "es" }: { locale?: Locale }) {
   );
 }
 
-function Strip({ tools, reverse }: { tools: Tool[]; reverse?: boolean }) {
+export function Strip({ tools, reverse }: { tools: Tool[]; reverse?: boolean }) {
   return (
     <div className={reverse ? "marquee marquee-reverse" : "marquee"}>
       <ul className="marquee-track">
-        {tools.map((tool) => (
-          <ToolTile key={tool.name} tool={tool} />
+        {tools.map((tool, i) => (
+          <ToolTile key={`${tool.name}-${i}`} tool={tool} />
         ))}
         {/* The second run is only there to close the loop. */}
-        {tools.map((tool) => (
-          <ToolTile key={`dup-${tool.name}`} tool={tool} duplicate />
+        {tools.map((tool, i) => (
+          <ToolTile key={`dup-${tool.name}-${i}`} tool={tool} duplicate />
         ))}
       </ul>
     </div>

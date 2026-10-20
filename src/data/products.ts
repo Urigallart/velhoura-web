@@ -247,6 +247,47 @@ export const products: Product[] = [
       { src: "/products/simon-design/team.jpg", kind: "desktop", caption: "Las personas detrás del diseño" },
     ],
   },
+  {
+    slug: "maria-del-mar",
+    name: "Mª del Mar",
+    summary:
+      "Web para una psicopedagoga y coach de Barcelona: dos líneas de acompañamiento, en catalán y castellano.",
+    description:
+      "La web de Maria del Mar, psicopedagoga y coach en Barcelona (Sarrià–Sant Gervasi). Presenta sus dos líneas de acompañamiento —coaching y consultas puntuales para jóvenes y adultos, e intervención psicopedagógica para niños y adolescentes—, quién es ella, el espacio donde atiende y los testimonios de las personas que ha acompañado. Está en catalán y en castellano.",
+    category: "WEB",
+    status: "LIVE",
+    year: "2026",
+    highlights: [
+      "Web en catalán y castellano",
+      "Dos líneas de acompañamiento",
+      "Sobre ella y su espacio en Barcelona",
+      "Contacto directo desde cada página",
+    ],
+    href: "https://mmarcoach.com/ca",
+    accent: "#4e8276",
+    image: "/products/maria-del-mar.jpg",
+    tone: "green",
+    story: [
+      {
+        title: "El punto de partida",
+        body: "Una profesional con más de veinticinco años acompañando a niños, jóvenes y familias necesitaba una web que transmitiera lo que ella transmite en consulta: calma, cercanía y claridad, para que quien llega sepa enseguida qué línea de trabajo le encaja.",
+      },
+      {
+        title: "Qué construimos",
+        body: "Una web para su negocio en Barcelona, en catalán y castellano. Abre con un mensaje claro y las dos líneas de acompañamiento, sigue con quién es ella y las fotografías de su espacio, y termina con los testimonios y un botón de contacto siempre a mano.",
+      },
+      {
+        title: "Los detalles",
+        body: "Una identidad propia con su logotipo y un verde suave, tipografía grande, mucho aire y fotografías reales de la consulta, para que la web se sienta tan cercana como ella.",
+      },
+    ],
+    gallery: [
+      { src: "/products/maria-del-mar/hero.jpg", kind: "desktop", caption: "Portada: el mensaje y las dos líneas de trabajo" },
+      { src: "/products/maria-del-mar/lines.jpg", kind: "desktop", caption: "Dos líneas de acompañamiento, una misma mirada" },
+      { src: "/products/maria-del-mar/about.jpg", kind: "desktop", caption: "Sobre ella, con cifras de un vistazo" },
+      { src: "/products/maria-del-mar/space.jpg", kind: "desktop", caption: "Su espacio en Barcelona" },
+    ],
+  },
 ];
 
 export function getProduct(slug: string): Product | undefined {

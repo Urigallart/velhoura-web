@@ -73,6 +73,9 @@ export const designTools: Tool[] = [
   { name: "Linear", icon: siLinear },
   { name: "Apple", icon: siApple },
   { name: "Simon Electric", logo: "/brands/simon-electric.png" },
+  { name: "MMR", logo: "/logos/mmr-icon.webp" },
+  { name: "Roady", logo: "/logos/roady.webp" },
+  { name: "Gym Tracker", logo: "/logos/gym-tracker-icon.webp" },
 ];
 
 /** AI, marketing, commerce and development. */
