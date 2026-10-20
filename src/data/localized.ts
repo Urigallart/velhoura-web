@@ -74,7 +74,14 @@ export function getTeam(locale: Locale): Member[] {
 
 export function getProducts(locale: Locale): Product[] {
   if (locale === "es") return productsEs;
-  return productsEs.map((p) => ({ ...p, ...productsEn[p.slug] }));
+  return productsEs.map((p) => {
+    const { captions, ...en } = productsEn[p.slug] ?? {};
+    return {
+      ...p,
+      ...en,
+      gallery: p.gallery?.map((g, i) => ({ ...g, caption: captions?.[i] ?? g.caption })),
+    };
+  });
 }
 
 /** Where a service page lives in each language. */
