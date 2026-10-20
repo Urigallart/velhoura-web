@@ -151,59 +151,73 @@ export function IntroZoom({
   useEffect(() => {
     let frame = 0;
     /**
-     * Once the camera has landed, the page belongs to the visitor. A small
-     * scroll up from the hero — a thumb resting, a trackpad nudge — must not
-     * throw them back into the office and freeze the buttons: within
-     * `RELEASE` of a window's height the zoom holds at the landing and the
-     * page eases back into place when the gesture ends. Only a deliberate
-     * pull past that runs the camera back out.
+     * Landing hands the page over for good. As soon as the camera arrives,
+     * the runway is taken out of the document and the scroll position moves
+     * up by the same amount in the same frame — nothing on screen moves — so
+     * from then on the home is an ordinary page that starts at its top. A
+     * scroll up only ever reaches the top of the page; it can no longer
+     * slip back into the office and freeze the hero's buttons.
+     *
+     * Going back into the office takes a deliberate pull at the very top
+     * (see `arm`). Right after that re-arming the landing check waits until
+     * the camera has actually left, or the pull would land again at once.
      */
-    const RELEASE = 0.28;
-    let landed = false;
-    let settle = 0;
-    // Until when a pull re-armed from the top (see `arm`) skips the hold.
-    let pullUntil = 0;
+    let rearmed = false;
+
+    const land = (g: Geometry) => {
+      const root = document.documentElement;
+      const y = Math.max(0, window.scrollY - g.z);
+      root.dataset.intro = "skip";
+      delete root.dataset.introNav;
+      delete root.dataset.introRoom;
+      root.style.removeProperty("--intro-nav");
+      window.scrollTo({ top: y, behavior: "instant" });
+    };
 
     const update = () => {
       frame = 0;
       const g = geo.current;
       if (!g || !isPlaying()) return;
-      let p = clamp01(window.scrollY / g.z);
-      window.clearTimeout(settle);
-      if (landed && p < 1 && Date.now() > pullUntil) {
-        if (g.z - window.scrollY < g.vh * RELEASE) {
-          p = 1;
-          settle = window.setTimeout(() => {
-            if (landed && window.scrollY < g.z) window.scrollTo({ top: g.z, behavior: "smooth" });
-          }, 160);
-        } else {
-          landed = false;
-        }
+      const p = clamp01(window.scrollY / g.z);
+      if (rearmed && p < 0.97) rearmed = false;
+      if (p >= 0.999 && !rearmed) {
+        apply(1);
+        land(g);
+        return;
       }
-      if (p >= 0.999) landed = true;
       apply(p);
       setInRoom(p < 0.12);
       // Any scroll hands the screen back to the hero before the camera moves
       // in, so the landing is always on the real page.
       if (p > 0.02) setPreview(null);
-
-      if (p >= 0.999) {
-        setPhase("done");
-      } else {
-        setPhase("play");
-      }
+      setPhase(p >= 0.999 ? "done" : "play");
     };
 
     /**
      * Pulling back out of the screen.
      *
-     * While the intro is mounted, scrolling up past the hero simply runs the
-     * zoom in reverse. When it is not mounted (the page was reached by a
-     * client-side link) the runway is hidden and the page starts at 0, so
-     * there is nothing above to scroll into: a scroll-up at the very top re-inserts the runway and jumps
-     * to its end in the same frame — the page does not move — and the rest of
-     * that gesture carries the camera back out into the office.
+     * Once landed (or when the page was reached by a link) the runway is out
+     * of the document and the page starts at 0. Asking for what is above —
+     * enough of it, at the very top — re-inserts the runway and jumps to its
+     * end in the same frame, so the page does not move, and the rest of that
+     * gesture carries the camera back out into the office. "Enough" is
+     * several wheel notches or a long drag, so an ordinary scroll to the top
+     * never sets it off.
      */
+    const PULL = 700;
+    let pull = 0;
+    let pullAt = 0;
+    const addPull = (amount: number) => {
+      const now = Date.now();
+      if (now - pullAt > 700) pull = 0;
+      pullAt = now;
+      pull += amount;
+      if (pull >= PULL) {
+        pull = 0;
+        arm();
+      }
+    };
+
     const arm = () => {
       const root = document.documentElement;
       if (isPlaying() || window.scrollY > 0) return;
@@ -213,30 +227,36 @@ export function IntroZoom({
       geo.current = g;
       writeIntroVars(g);
       root.dataset.intro = "done";
+      rearmed = true;
       window.scrollTo({ top: g.z, behavior: "instant" });
       apply(1);
-      // Re-armed from the top of the page: the pull that follows is meant to
-      // go back into the office, so it does not wait for the release distance.
-      landed = false;
-      pullUntil = Date.now() + 1500;
     };
 
+    const atTop = () => !isPlaying() && window.scrollY <= 0;
+
     const onWheel = (e: WheelEvent) => {
-      if (e.deltaY < 0) arm();
+      if (e.deltaY < 0 && atTop()) addPull(-e.deltaY);
+      else if (e.deltaY > 0) pull = 0;
     };
 
     let touchY = 0;
     const onTouchStart = (e: TouchEvent) => {
       touchY = e.touches[0]?.clientY ?? 0;
+      pull = 0;
     };
     const onTouchMove = (e: TouchEvent) => {
       const y = e.touches[0]?.clientY ?? 0;
-      // Finger dragging down at the top = asking for what is above.
-      if (y - touchY > 24) arm();
+      // A long drag down at the very top = asking for what is above.
+      if (atTop() && y - touchY > 160) {
+        touchY = y;
+        arm();
+      }
     };
 
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "ArrowUp" || e.key === "PageUp" || e.key === "Home") arm();
+      if (!atTop()) return;
+      if (e.key === "ArrowUp") addPull(120);
+      else if (e.key === "PageUp" || e.key === "Home") addPull(350);
     };
 
     const schedule = () => {
@@ -269,7 +289,6 @@ export function IntroZoom({
       window.removeEventListener("touchmove", onTouchMove);
       window.removeEventListener("keydown", onKey);
       if (frame) cancelAnimationFrame(frame);
-      window.clearTimeout(settle);
     };
   }, [apply, setPhase]);
 
