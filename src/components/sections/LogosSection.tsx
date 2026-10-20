@@ -20,6 +20,7 @@ const projects: Tool[] = [
   { name: "MMR", logo: "/logos/mmr-icon.webp" },
   { name: "Roady", logo: "/logos/roady.webp" },
   { name: "Gym Tracker", logo: "/logos/gym-tracker-icon.webp" },
+  { name: "Zhestar", logo: "/logos/zhestar.webp" },
 ];
 
 /**
