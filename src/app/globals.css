@@ -841,3 +841,16 @@ html[data-menu="open"] .assistant-root {
     filter: blur(16px) saturate(1.2);
   }
 }
+
+/* Phone: the cards of "four steps" are plain, static cards in a sideways row:
+   no entrance, no lift, nothing that moves except the scroll itself. */
+@media (max-width: 767px) {
+  [data-static-mobile] [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+    filter: none !important;
+    transition: none !important;
+    animation: none !important;
+  }
+}

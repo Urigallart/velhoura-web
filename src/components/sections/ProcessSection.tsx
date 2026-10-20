@@ -80,21 +80,22 @@ export function ProcessSection({ locale = "es" }: { locale?: Locale }) {
       <div className="shell mt-14 md:mt-20">
         {/* Phone: a row you swipe, bleeding off both edges of the screen. */}
         <ol
+          data-static-mobile
           className={cn(
-            "no-scrollbar -mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-4",
-            "md:mx-0 md:grid md:snap-none md:grid-cols-2 md:overflow-visible md:px-0 md:pb-0 lg:grid-cols-4",
+            "no-scrollbar -mx-6 flex gap-4 overflow-x-auto px-6 pb-4",
+            "md:mx-0 md:grid md:grid-cols-2 md:overflow-visible md:px-0 md:pb-0 lg:grid-cols-4",
           )}
         >
           {steps.map((step, i) => {
             const look = looks[i % looks.length];
             return (
-              <li key={step.index} className="w-[78vw] max-w-[22rem] shrink-0 snap-center md:w-auto md:max-w-none">
+              <li key={step.index} className="w-[78vw] max-w-[22rem] shrink-0 md:w-auto md:max-w-none">
                 <Reveal delay={i * 90} variant="lift" y={30} className="h-full">
                   <div
                     className={cn(
                       "group relative flex h-full min-h-[27rem] flex-col overflow-hidden rounded-[2rem] p-7 sm:p-8 md:min-h-[30rem]",
                       look.dark ? "text-white" : "text-ink",
-                      "transition-transform duration-500 ease-[var(--e-out)] hover:-translate-y-1.5",
+                      "md:transition-transform md:duration-500 md:ease-[var(--e-out)] md:hover:-translate-y-1.5",
                       look.bg,
                     )}
                   >
@@ -116,7 +117,7 @@ export function ProcessSection({ locale = "es" }: { locale?: Locale }) {
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       aria-hidden="true"
-                      className="relative mt-8 size-14 transition-transform duration-500 ease-[var(--e-out)] group-hover:scale-110"
+                      className="relative mt-8 size-14 md:transition-transform md:duration-500 md:ease-[var(--e-out)] md:group-hover:scale-110"
                     >
                       {glyphs[i % glyphs.length]}
                     </svg>
