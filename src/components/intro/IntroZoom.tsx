@@ -133,6 +133,11 @@ export function IntroZoom({
     root.style.setProperty("--intro-nav", String(nav));
     const navOn = nav > 0.5 ? "on" : "off";
     if (root.dataset.introNav !== navOn) root.dataset.introNav = navOn;
+
+    // Only while the room is in shot does the page ground take the scene's
+    // colour (see globals.css); by the landing it is the page's own again.
+    const room = p < 0.3 ? "on" : "off";
+    if (root.dataset.introRoom !== room) root.dataset.introRoom = room;
   }, []);
 
   useLayoutEffect(() => {
@@ -256,6 +261,7 @@ export function IntroZoom({
         const root = document.documentElement;
         delete root.dataset.intro;
         delete root.dataset.introNav;
+        delete root.dataset.introRoom;
         root.style.removeProperty("--intro-nav");
       }, 0);
     };
