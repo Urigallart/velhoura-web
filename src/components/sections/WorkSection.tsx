@@ -243,7 +243,8 @@ function WorkCard({
           alt=""
           fill
           sizes="(min-width: 1024px) 400px, (min-width: 640px) 50vw, 100vw"
-          className="object-cover object-top opacity-70 transition-opacity duration-500 group-hover:opacity-90"
+          quality={90}
+          className="object-cover object-top transition-transform duration-700 ease-[var(--e-out)] group-hover:scale-[1.03]"
         />
       )}
       <AppIcon slug={product.slug} name={product.name} />
@@ -251,7 +252,7 @@ function WorkCard({
       {/* Readability: the image falls to night under the text. */}
       <span
         aria-hidden="true"
-        className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(8,9,10,0.15)_0%,rgba(8,9,10,0.35)_45%,rgba(8,9,10,0.92)_100%)]"
+        className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(8,9,10,0)_0%,rgba(8,9,10,0.05)_45%,rgba(8,9,10,0.9)_100%)]"
       />
 
       <span className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-5 sm:p-6">
