@@ -32,8 +32,6 @@ import {
   siVercel,
   siWebflow,
   siWhatsapp,
-  siWoocommerce,
-  siWordpress,
   siZapier,
   type SimpleIcon,
 } from "simple-icons";
@@ -95,8 +93,6 @@ export const buildTools: Tool[] = [
   { name: "Mailchimp", icon: siMailchimp },
   { name: "Zapier", icon: siZapier },
   { name: "Shopify", icon: siShopify },
-  { name: "WordPress", icon: siWordpress },
-  { name: "WooCommerce", icon: siWoocommerce },
   { name: "Stripe", icon: siStripe },
   { name: "Next.js", icon: siNextdotjs },
   { name: "React", icon: siReact },

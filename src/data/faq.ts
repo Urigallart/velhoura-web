@@ -16,15 +16,15 @@ const webPrices = plans
 export const faqs: Faq[] = [
   {
     q: "¿Qué servicios ofrecéis?",
-    a: "Tres áreas que se complementan: marca (logotipo, identidad visual, diseño gráfico y packaging), web (diseño web, WordPress, tiendas online y desarrollo a medida) y captación (posicionamiento SEO y campañas de Google Ads). Puedes contratar una sola o todas.",
+    a: "Tres áreas que se complementan: marca (logotipo, identidad visual, diseño gráfico y packaging), web (diseño web, tiendas online y desarrollo a medida) y captación (posicionamiento SEO y campañas de Google Ads). Puedes contratar una sola o todas.",
   },
   {
     q: "¿Cuánto cuesta una página web?",
     a: `Publicamos precios orientativos para que sepas por dónde empezar: ${webPrices}. Los proyectos a medida se presupuestan según lo que necesites, y siempre conoces el precio antes de que empecemos.`,
   },
   {
-    q: "¿Trabajáis con WordPress?",
-    a: "Sí. Para la mayoría de webs corporativas es una buena opción porque puedes editar textos e imágenes tú mismo. Cuando el proyecto pide algo más específico, lo desarrollamos a medida.",
+    q: "¿Con qué tecnología hacéis las webs?",
+    a: "Programamos cada web desde cero con tecnología moderna como React y Next.js, la misma con la que está hecha esta página: sin plantillas y sin WordPress. Así son más rápidas y seguras, y si necesitas actualizar contenidos te dejamos un panel sencillo para cambiar textos e imágenes tú mismo.",
   },
   {
     q: "¿Con qué tipo de empresas trabajáis?",

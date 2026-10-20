@@ -294,7 +294,7 @@ export const servicesEn: Record<
     body: "We design and build fast websites that are easy to update and made so that visitors end up writing to you or buying.",
     items: [
       {
-        name: "Web design and WordPress",
+        name: "Web design",
         detail: "Company websites you can edit yourself, without depending on anyone.",
       },
       {
@@ -331,15 +331,15 @@ export const servicesEn: Record<
 export const faqsEn: { q: string; a: string }[] = [
   {
     q: "What services do you offer?",
-    a: "Three areas that work together: brand (logo, visual identity, graphic design and packaging), web (web design, WordPress, online stores and custom development) and growth (SEO and Google Ads campaigns). You can hire one or all of them.",
+    a: "Three areas that work together: brand (logo, visual identity, graphic design and packaging), web (web design, online stores and custom development) and growth (SEO and Google Ads campaigns). You can hire one or all of them.",
   },
   {
     q: "How much does a website cost?",
     a: "We publish indicative prices so you know where to start: __PRICES__. Custom projects are quoted on what you need, and you always know the price before we start.",
   },
   {
-    q: "Do you work with WordPress?",
-    a: "Yes. For most company websites it's a good choice because you can edit text and images yourself. When a project needs something more specific, we build it custom.",
+    q: "What technology do you build websites with?",
+    a: "We code every site from scratch with modern technology like React and Next.js, the same this site is built with: no templates and no WordPress. That makes them faster and more secure, and if you need to update content we leave you a simple dashboard to change text and images yourself.",
   },
   {
     q: "What kind of companies do you work with?",

@@ -4,7 +4,7 @@ import { ServicesIndexView } from "@/components/services/ServicesIndexView";
 export const metadata: Metadata = {
   title: "Servicios: marca, diseño web, tiendas online, SEO y Google Ads",
   description:
-    "Todos los servicios de Velhoura para pymes de toda España: identidad de marca, diseño gráfico y packaging, diseño web y WordPress, tiendas online, desarrollo a medida, SEO y Google Ads.",
+    "Todos los servicios de Velhoura para pymes de toda España: identidad de marca, diseño gráfico y packaging, diseño web a medida, tiendas online, desarrollo a medida, SEO y Google Ads.",
   alternates: {
     canonical: "/servicios",
     languages: { es: "/servicios", en: "/en/services" },
