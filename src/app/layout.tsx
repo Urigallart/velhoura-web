@@ -59,7 +59,7 @@ export const metadata: Metadata = {
     "diseño de tiendas online",
     "tienda online Barcelona",
     "desarrollo web a medida",
-    "diseño web WordPress",
+    "diseño web a medida",
     "posicionamiento SEO",
     "SEO local",
     "gestión de Google Ads",
@@ -170,7 +170,6 @@ const organizationLd = {
   knowsAbout: [
     "Diseño web",
     "Desarrollo web",
-    "WordPress",
     "Tiendas online",
     "Ecommerce",
     "SEO",

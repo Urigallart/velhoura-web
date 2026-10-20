@@ -127,9 +127,9 @@ export const servicePagesEn: Record<string, PageEn> = {
   },
   "diseno-web": {
     slugEn: "web-design",
-    name: "Web design and WordPress",
-    tag: "WordPress",
-    metaTitle: "Website design and WordPress for small businesses",
+    name: "Web design",
+    tag: "Custom websites",
+    metaTitle: "Custom website design for small businesses",
     metaDescription:
       "Fast, mobile-ready company websites that are easy to edit, designed to turn visits into enquiries.",
     headline: ["Your best salesperson,", "*always open.*"],
@@ -145,7 +145,7 @@ export const servicePagesEn: Record<string, PageEn> = {
       },
       {
         title: "You edit it",
-        body: "With WordPress you can change text, photos or add news without touching code and without waiting for anyone.",
+        body: "We leave you a simple dashboard to change text, photos or add news without touching code and without waiting for anyone.",
       },
     ],
     includes: [

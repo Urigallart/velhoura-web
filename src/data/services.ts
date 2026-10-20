@@ -59,7 +59,7 @@ export const services: Service[] = [
     body: "Diseñamos y programamos webs rápidas, fáciles de actualizar y pensadas para que quien entra acabe escribiéndote o comprando.",
     items: [
       {
-        name: "Diseño web y WordPress",
+        name: "Diseño web",
         href: "/servicios/diseno-web",
         detail: "Webs corporativas que puedes editar tú mismo sin depender de nadie.",
       },

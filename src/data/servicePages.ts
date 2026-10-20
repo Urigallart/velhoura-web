@@ -155,9 +155,9 @@ export const servicePages: ServicePage[] = [
   {
     slug: "diseno-web",
     area: "web",
-    name: "Diseño web y WordPress",
-    tag: "WordPress",
-    metaTitle: "Diseño de páginas web y WordPress para pymes en España",
+    name: "Diseño web",
+    tag: "Webs a medida",
+    metaTitle: "Diseño de páginas web a medida para pymes en España",
     metaDescription:
       "Webs corporativas rápidas, adaptadas a móvil y fáciles de editar, pensadas para que las visitas se conviertan en contactos.",
     headline: ["Tu mejor comercial,", "*abierto siempre.*"],
@@ -173,7 +173,7 @@ export const servicePages: ServicePage[] = [
       },
       {
         title: "La editas tú",
-        body: "Con WordPress puedes cambiar textos, fotos o añadir novedades sin tocar código y sin esperar a nadie.",
+        body: "Te dejamos un panel sencillo para cambiar textos, fotos o añadir novedades sin tocar código y sin esperar a nadie.",
       },
     ],
     includes: [
