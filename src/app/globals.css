@@ -542,8 +542,13 @@
    layout: `play` while the zoom runs, `done` once it lands, `skip` when it
    should not run. Unset (no JS, other routes) means the page, directly. */
 
+/* Collapsed rather than `display: none`: un-hiding a display:none subtree
+   restarts every CSS animation in it, so pulling back into the office after
+   landing would replay the laptop copy's entrance, like a reload. */
 html:not([data-intro="play"]):not([data-intro="done"]) .intro-runway {
-  display: none;
+  height: 0 !important;
+  overflow: hidden;
+  visibility: hidden;
 }
 
 html[data-intro="play"] .intro-hero,
