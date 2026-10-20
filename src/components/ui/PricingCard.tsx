@@ -12,10 +12,10 @@ import { cn } from "@/lib/utils";
  * stops being quiet. Text stays ink on all four so every card reads cleanly.
  */
 const tones: Record<string, string> = {
-  landing: "bg-[#dcf56a]",
-  business: "bg-[#ff7d5c]",
-  ecommerce: "bg-[#9ccfff]",
-  custom: "bg-[#c7a8ff]",
+  landing: "bg-[#ffe45c]",
+  business: "bg-[#ff7a45]",
+  ecommerce: "bg-[#7fd8ff]",
+  custom: "bg-[#c77dff]",
 };
 
 /**

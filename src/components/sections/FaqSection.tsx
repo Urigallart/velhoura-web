@@ -40,7 +40,7 @@ export function FaqSection({ locale = "es" }: { locale?: Locale }) {
                   <h3 className="text-[1.125rem] font-semibold leading-snug tracking-[-0.02em] text-pretty">{f.q}</h3>
                   <span
                     aria-hidden="true"
-                    className="grid size-9 shrink-0 place-items-center rounded-full bg-paper-sunk text-[1.25rem] leading-none text-ink transition-[transform,background-color] duration-300 ease-[var(--e-out)] group-open:rotate-45 group-open:bg-[#dcf56a]"
+                    className="grid size-9 shrink-0 place-items-center rounded-full bg-paper-sunk text-[1.25rem] leading-none text-ink transition-[transform,background-color] duration-300 ease-[var(--e-out)] group-open:rotate-45 group-open:bg-[#ffe45c]"
                   >
                     +
                   </span>

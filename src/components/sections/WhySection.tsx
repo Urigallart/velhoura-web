@@ -126,10 +126,10 @@ const copy = {
 
 /** The four plan colours, as a stack of chips on the big card. */
 const chips = [
-  { name: "Landing", price: "199 €", bg: "bg-[#dcf56a]" },
-  { name: "Business", price: "499 €", bg: "bg-[#ff7d5c]" },
-  { name: "Tienda", price: "799 €", bg: "bg-[#9ccfff]" },
-  { name: "Custom", price: "···", bg: "bg-[#c7a8ff]" },
+  { name: "Landing", price: "199 €", bg: "bg-[#ffe45c]" },
+  { name: "Business", price: "499 €", bg: "bg-[#ff7a45]" },
+  { name: "Tienda", price: "799 €", bg: "bg-[#7fd8ff]" },
+  { name: "Custom", price: "···", bg: "bg-[#c77dff]" },
 ];
 
 export function WhySection({ locale = "es" }: { locale?: Locale }) {

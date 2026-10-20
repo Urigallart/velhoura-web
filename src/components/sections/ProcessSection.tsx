@@ -17,10 +17,10 @@ const copy = {
 
 /** One loud colour per step, as in the pricing cards; ink text on all four. */
 const looks = [
-  { bg: "bg-gradient-to-br from-[#bfe0ff] to-[#7db6ff]", glow: "bg-[#ffffff]/40" },
-  { bg: "bg-gradient-to-br from-[#e0ccff] to-[#b894ff]", glow: "bg-[#ffffff]/40" },
-  { bg: "bg-gradient-to-br from-[#ffb199] to-[#ff7a8c]", glow: "bg-[#ffffff]/35" },
-  { bg: "bg-gradient-to-br from-[#e8fa8a] to-[#b6ec5a]", glow: "bg-[#ffffff]/45" },
+  { bg: "bg-gradient-to-br from-[#bcd9ff] to-[#4d9bff]", glow: "bg-[#ffffff]/40", dark: false },
+  { bg: "bg-gradient-to-br from-[#c2f6ee] to-[#4fd8c4]", glow: "bg-[#ffffff]/40", dark: false },
+  { bg: "bg-gradient-to-br from-[#f0fd96] to-[#b8e83c]", glow: "bg-[#ffffff]/45", dark: false },
+  { bg: "bg-gradient-to-br from-[#2d313c] to-[#0e1015]", glow: "bg-[#4d9bff]/30", dark: true },
 ];
 
 /** One glyph per step, drawn in ink on the card's own colour. */
@@ -92,7 +92,8 @@ export function ProcessSection({ locale = "es" }: { locale?: Locale }) {
                 <Reveal delay={i * 90} variant="lift" y={30} className="h-full">
                   <div
                     className={cn(
-                      "group relative flex h-full min-h-[27rem] flex-col overflow-hidden rounded-[2rem] p-7 text-ink sm:p-8 md:min-h-[30rem]",
+                      "group relative flex h-full min-h-[27rem] flex-col overflow-hidden rounded-[2rem] p-7 sm:p-8 md:min-h-[30rem]",
+                      look.dark ? "text-white" : "text-ink",
                       "transition-transform duration-500 ease-[var(--e-out)] hover:-translate-y-1.5",
                       look.bg,
                     )}
@@ -103,7 +104,7 @@ export function ProcessSection({ locale = "es" }: { locale?: Locale }) {
                       className={cn("absolute -right-16 -top-16 size-56 rounded-full blur-3xl", look.glow)}
                     />
 
-                    <span className="relative text-[clamp(4.5rem,8vw,6.5rem)] font-semibold leading-[0.8] tracking-[-0.06em] text-ink/90">
+                    <span className="relative text-[clamp(4.5rem,8vw,6.5rem)] font-semibold leading-[0.8] tracking-[-0.06em] opacity-90">
                       {i + 1}
                     </span>
 
@@ -115,14 +116,14 @@ export function ProcessSection({ locale = "es" }: { locale?: Locale }) {
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       aria-hidden="true"
-                      className="relative mt-8 size-14 text-ink transition-transform duration-500 ease-[var(--e-out)] group-hover:scale-110"
+                      className="relative mt-8 size-14 transition-transform duration-500 ease-[var(--e-out)] group-hover:scale-110"
                     >
                       {glyphs[i % glyphs.length]}
                     </svg>
 
                     <div className="relative mt-auto pt-10">
                       <h3 className="text-[1.75rem] font-semibold leading-[1.02] tracking-[-0.04em]">{step.title}</h3>
-                      <p className="mt-3 text-[0.9375rem] leading-relaxed text-ink/75">{step.body}</p>
+                      <p className="mt-3 text-[0.9375rem] leading-relaxed opacity-75">{step.body}</p>
                     </div>
                   </div>
                 </Reveal>

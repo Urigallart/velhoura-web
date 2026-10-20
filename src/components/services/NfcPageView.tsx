@@ -110,7 +110,7 @@ export function NfcPageView({ locale }: { locale: Locale }) {
                   className="col-span-7 w-full"
                 />
                 {/* eslint-enable @next/next/no-img-element */}
-                <span className="absolute -left-2 -top-3 rounded-full bg-ember px-4 py-1.5 text-[0.8125rem] font-semibold text-paper-raise shadow-[0_10px_26px_-12px_rgba(78,91,48,0.8)]">
+                <span className="absolute -left-2 -top-3 rounded-full bg-ember px-4 py-1.5 text-[0.8125rem] font-semibold text-paper-raise shadow-[0_10px_26px_-12px_rgba(0,113,227,0.6)]">
                   {nfcCopy.badge[locale]}
                 </span>
               </div>

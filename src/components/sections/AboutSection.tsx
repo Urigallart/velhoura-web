@@ -36,7 +36,7 @@ export function AboutSection({ locale = "es" }: { locale?: Locale }) {
           {team.map((member, i) => (
             <Reveal key={member.id} delay={i * 120} variant="lift" y={34}>
               <article
-                className={`group relative h-full overflow-hidden rounded-[2rem] p-8 text-ink transition-[transform,box-shadow] duration-500 ease-[var(--e-out)] hover:-translate-y-1.5 hover:shadow-[0_30px_60px_-30px_rgba(8,9,10,0.35)] sm:p-10 ${i % 2 === 0 ? "bg-gradient-to-br from-[#171a22] to-[#2c3346] !text-white" : "bg-gradient-to-br from-[#fff1d6] to-[#ffd9a0]"}`}
+                className={`group relative h-full overflow-hidden rounded-[2rem] p-8 text-ink transition-[transform,box-shadow] duration-500 ease-[var(--e-out)] hover:-translate-y-1.5 hover:shadow-[0_30px_60px_-30px_rgba(8,9,10,0.35)] sm:p-10 ${i % 2 === 0 ? "bg-gradient-to-br from-[#0d2b5e] to-[#1f58c7] !text-white" : "bg-gradient-to-br from-[#ffe6d6] to-[#ffb892]"}`}
               >
                 {/* Ember hairline across the top, drawn in on hover — the same
                     gesture the product cards use, so the page has one idea of

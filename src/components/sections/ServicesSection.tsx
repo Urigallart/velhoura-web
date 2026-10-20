@@ -6,11 +6,11 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { getServices, servicesIndexPath } from "@/data/localized";
 import type { Locale } from "@/i18n/locale";
 
-/** One colour per area: amber for brand, mint for web, pink for growth. */
+/** One colour per area: pink for brand, indigo for web, green for growth. */
 const tones: Record<string, string> = {
-  brand: "bg-gradient-to-br from-[#ffe9a3] to-[#ffb04d]",
-  web: "bg-gradient-to-br from-[#b4f5e6] to-[#4fd1c5]",
-  growth: "bg-gradient-to-br from-[#ffd0e6] to-[#f77fb5]",
+  brand: "bg-gradient-to-br from-[#ffc6dc] to-[#ff6f9f]",
+  web: "bg-gradient-to-br from-[#d2d3ff] to-[#7f7dff]",
+  growth: "bg-gradient-to-br from-[#c8f8d6] to-[#34d27b]",
 };
 
 const copy = {

@@ -350,7 +350,7 @@ function Globe({
       <group position={pin.position} quaternion={pin.quaternion}>
         <mesh ref={ring} rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.004, 0]}>
           <ringGeometry args={[0.05, 0.062, 40]} />
-          <meshBasicMaterial color="#6b7a45" transparent opacity={0.5} depthWrite={false} side={THREE.DoubleSide} />
+          <meshBasicMaterial color="#ff3b30" transparent opacity={0.5} depthWrite={false} side={THREE.DoubleSide} />
         </mesh>
         <mesh position={[0, 0.1, 0]}>
           <cylinderGeometry args={[0.008, 0.008, 0.2, 12]} />
@@ -358,7 +358,7 @@ function Globe({
         </mesh>
         <mesh ref={head} position={[0, 0.22, 0]}>
           <sphereGeometry args={[0.052, 24, 24]} />
-          <meshStandardMaterial color="#6b7a45" emissive="#6b7a45" emissiveIntensity={0.55} roughness={0.35} />
+          <meshStandardMaterial color="#ff3b30" emissive="#ff3b30" emissiveIntensity={0.55} roughness={0.35} />
         </mesh>
 
         <Html position={[0, 0.22, 0]} center occlude={[earth as React.RefObject<THREE.Object3D>]} zIndexRange={[30, 0]}>
@@ -368,7 +368,7 @@ function Globe({
             aria-expanded={open}
             aria-controls={controls}
             aria-label={pinAria}
-            className="pointer-events-auto relative block size-12 cursor-pointer rounded-full outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#6b7a45]"
+            className="pointer-events-auto relative block size-12 cursor-pointer rounded-full outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#ff3b30]"
           >
             <span className="absolute bottom-full left-1/2 mb-0.5 -translate-x-1/2 whitespace-nowrap rounded-full sm:bottom-auto sm:left-full sm:top-1/2 sm:mb-0 sm:ml-1 sm:-translate-y-1/2 sm:translate-x-0 bg-[#08090a] px-3 py-1.5 text-[12px] font-medium tracking-[0.01em] text-white shadow-[0_8px_24px_-10px_rgba(8,9,10,0.6)]">
               {pinLabel}
@@ -381,7 +381,7 @@ function Globe({
 }
 
 /**
- * Studio lighting: a white key from the upper right and a khaki-green bounce
+ * Studio lighting: a white key from the upper right and a cool blue bounce
  * from the lower left, with procedural reflections (no HDR file to fetch).
  * The reflections are skipped on phones: baking them costs a six-face render
  * pass, the most GPU-expensive thing in the scene.
@@ -391,11 +391,11 @@ function Lighting({ fullEnvironment }: { fullEnvironment: boolean }) {
     <>
       <ambientLight intensity={1.05} />
       <directionalLight position={[3.5, 4, 3]} intensity={2.6} color="#ffffff" />
-      <pointLight position={[-3, -1.5, 2]} intensity={2} color="#9bab6a" distance={11} decay={2} />
+      <pointLight position={[-3, -1.5, 2]} intensity={2} color="#8ec5ff" distance={11} decay={2} />
       {fullEnvironment && (
         <Environment resolution={128}>
           <Lightformer form="rect" intensity={2} position={[3, 2, 4]} scale={[3, 3, 1]} color="#ffffff" />
-          <Lightformer form="rect" intensity={1.1} position={[-3, -1, 3]} scale={[2, 4, 1]} color="#c5cfa0" />
+          <Lightformer form="rect" intensity={1.1} position={[-3, -1, 3]} scale={[2, 4, 1]} color="#cfe4ff" />
           <Lightformer form="ring" intensity={0.9} position={[0, 3, -3]} scale={5} color="#ffffff" />
         </Environment>
       )}

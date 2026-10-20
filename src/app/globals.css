@@ -37,10 +37,10 @@
   --ink-mute: #797d84;
   --ink-faint: #a6aab0;
 
-  /* ── Signal — Velhoura's single accent, used sparingly. ───────────── */
-  --ember: #6b7a45;
-  --ember-deep: #4e5b30;
-  --ember-wash: #f1f3e7;
+  /* ── Signal — Velhoura's functional accent (links, focus, hover): Apple blue. ───────────── */
+  --ember: #0071e3;
+  --ember-deep: #0058b0;
+  --ember-wash: #eaf3ff;
 
   /* Status only. */
   --patina: #10b981;

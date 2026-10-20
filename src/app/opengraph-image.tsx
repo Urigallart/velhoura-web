@@ -19,7 +19,7 @@ export const contentType = "image/png";
 
 const PAPER = "#ffffff";
 const INK = "#08090a";
-const SIGNAL = "#6b7a45";
+const SIGNAL = "#0071e3";
 const LINE = "#d6d6d2";
 
 export default function OpengraphImage() {
