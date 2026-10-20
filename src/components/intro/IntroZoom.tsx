@@ -150,12 +150,37 @@ export function IntroZoom({
 
   useEffect(() => {
     let frame = 0;
+    /**
+     * Once the camera has landed, the page belongs to the visitor. A small
+     * scroll up from the hero — a thumb resting, a trackpad nudge — must not
+     * throw them back into the office and freeze the buttons: within
+     * `RELEASE` of a window's height the zoom holds at the landing and the
+     * page eases back into place when the gesture ends. Only a deliberate
+     * pull past that runs the camera back out.
+     */
+    const RELEASE = 0.28;
+    let landed = false;
+    let settle = 0;
+    // Until when a pull re-armed from the top (see `arm`) skips the hold.
+    let pullUntil = 0;
 
     const update = () => {
       frame = 0;
       const g = geo.current;
       if (!g || !isPlaying()) return;
-      const p = clamp01(window.scrollY / g.z);
+      let p = clamp01(window.scrollY / g.z);
+      window.clearTimeout(settle);
+      if (landed && p < 1 && Date.now() > pullUntil) {
+        if (g.z - window.scrollY < g.vh * RELEASE) {
+          p = 1;
+          settle = window.setTimeout(() => {
+            if (landed && window.scrollY < g.z) window.scrollTo({ top: g.z, behavior: "smooth" });
+          }, 160);
+        } else {
+          landed = false;
+        }
+      }
+      if (p >= 0.999) landed = true;
       apply(p);
       setInRoom(p < 0.12);
       // Any scroll hands the screen back to the hero before the camera moves
@@ -190,6 +215,10 @@ export function IntroZoom({
       root.dataset.intro = "done";
       window.scrollTo({ top: g.z, behavior: "instant" });
       apply(1);
+      // Re-armed from the top of the page: the pull that follows is meant to
+      // go back into the office, so it does not wait for the release distance.
+      landed = false;
+      pullUntil = Date.now() + 1500;
     };
 
     const onWheel = (e: WheelEvent) => {
@@ -240,6 +269,7 @@ export function IntroZoom({
       window.removeEventListener("touchmove", onTouchMove);
       window.removeEventListener("keydown", onKey);
       if (frame) cancelAnimationFrame(frame);
+      window.clearTimeout(settle);
     };
   }, [apply, setPhase]);
 
