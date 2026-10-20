@@ -37,6 +37,21 @@ export type Product = {
    * leave unset for a product that doesn't have a live UI to show yet.
    */
   image?: string;
+  /**
+   * The longer story on the product page, as short titled blocks: the
+   * problem, what was built, and how it works. Facts only — nothing here
+   * should claim users, revenue or results the product does not have.
+   */
+  story?: { title: string; body: string }[];
+  /**
+   * Real screens for the product page. "phone" shots are portrait captures
+   * of a mobile layout (shown in a row); "desktop" ones are full-width.
+   */
+  gallery?: { src: string; kind: "phone" | "desktop"; caption: string }[];
+  /** What it is built with, as shown on the product page. */
+  stack?: string[];
+  /** Gradient for the product page headings and glows — one of the `[data-tone]` palettes in globals.css. */
+  tone?: "sky" | "violet" | "coral" | "green" | "teal" | "sun";
 };
 
 export const products: Product[] = [
@@ -59,6 +74,32 @@ export const products: Product[] = [
     href: "https://drivy-rho.vercel.app/",
     accent: "#e8a13a",
     image: "/products/roady.jpg",
+    tone: "violet",
+    story: [
+      {
+        title: "El reto",
+        body: "Preparar el teórico del carné suele ser repasar tests sueltos hasta memorizarlos. Se aprueba a base de repetir, se olvida igual de rápido y cuesta mantener la constancia durante semanas.",
+      },
+      {
+        title: "Qué construimos",
+        body: "Una app que organiza el temario como un camino: nueve temas divididos en lecciones cortas, con 247 preguntas al estilo del examen oficial y cada respuesta explicada. Al fallar, la pregunta se guarda en «Mis errores» para repasarla después.",
+      },
+      {
+        title: "Cómo engancha",
+        body: "La repetición espaciada vuelve a preguntarte lo que estás a punto de olvidar. Encima, una capa de juego: experiencia y niveles, rachas diarias, misiones, un reto del día, una mascota que acompaña y un indicador de lo preparado que estás para el examen real.",
+      },
+      {
+        title: "Producto completo",
+        body: "Cuentas de usuario, progreso sincronizado entre dispositivos, suscripción premium con Stripe y notificaciones. Se instala en el móvil como una app, sin pasar por las tiendas.",
+      },
+    ],
+    gallery: [
+      { src: "/products/roady/home.jpg", kind: "phone", caption: "Inicio: progreso hacia el examen y el tema en curso" },
+      { src: "/products/roady/home-path.jpg", kind: "phone", caption: "El camino de lecciones, con el reto del día y recompensas" },
+      { src: "/products/roady/feedback.jpg", kind: "phone", caption: "Cada respuesta se explica, con un tutor para dudas" },
+      { src: "/products/roady/onboarding.jpg", kind: "phone", caption: "Primeros pasos guiados por la mascota" },
+    ],
+    stack: ["React", "TypeScript", "Vite", "Supabase", "Stripe", "PWA"],
   },
   {
     slug: "gym-tracker",
@@ -79,6 +120,34 @@ export const products: Product[] = [
     href: "https://gym-tracker-teal-xi.vercel.app/",
     accent: "#ef5b3f",
     image: "/products/gym-tracker.jpg",
+    tone: "sky",
+    story: [
+      {
+        title: "El reto",
+        body: "Mucha gente apunta sus entrenamientos en una libreta o en notas del móvil. Funciona hasta que quieres saber si estás progresando, qué peso usaste la última vez o qué músculo llevas días sin trabajar.",
+      },
+      {
+        title: "Qué construimos",
+        body: "Una app de entrenamiento completa: rutinas por días de la semana, registro de series, repeticiones y peso, y una biblioteca propia de 642 ejercicios con su técnica y los músculos que trabajan. Cada ejercicio guarda tu historial, tu mejor marca y tu 1RM estimado.",
+      },
+      {
+        title: "Cómo ayuda a progresar",
+        body: "Cada día propone un reto concreto a partir de tus últimas sesiones, como superar por una repetición tu marca anterior. Las estadísticas muestran qué grupos musculares has trabajado sobre un modelo anatómico en 3D que puedes girar.",
+      },
+      {
+        title: "Constancia, con amigos",
+        body: "Logros desbloqueables, objetivos, seguimiento del peso corporal con fotos de progreso y retos con amigos para comparar quién entrena más.",
+      },
+    ],
+    gallery: [
+      { src: "/products/gym-tracker/dashboard.jpg", kind: "phone", caption: "Hoy: el entrenamiento que toca y el reto del día" },
+      { src: "/products/gym-tracker/stats.jpg", kind: "phone", caption: "Estadísticas sobre un modelo anatómico en 3D" },
+      { src: "/products/gym-tracker/exercise.jpg", kind: "phone", caption: "Ficha de ejercicio con marcas y evolución" },
+      { src: "/products/gym-tracker/library.jpg", kind: "phone", caption: "Biblioteca de 642 ejercicios, filtrable por músculo" },
+      { src: "/products/gym-tracker/my-routine.jpg", kind: "phone", caption: "La rutina repartida en la semana" },
+      { src: "/products/gym-tracker/achievements.jpg", kind: "phone", caption: "Logros que premian la constancia" },
+    ],
+    stack: ["Next.js", "TypeScript", "Supabase", "Three.js", "Recharts", "PWA"],
   },
   {
     slug: "velhoura-eyewear",
@@ -98,6 +167,7 @@ export const products: Product[] = [
     href: "https://velhoura.com/",
     accent: "#171717",
     image: "/products/velhoura-eyewear.jpg",
+    tone: "sun",
   },
   {
     slug: "zhestar",
@@ -116,6 +186,25 @@ export const products: Product[] = [
     href: "https://www.zhestar.es/",
     accent: "#dc2626",
     image: "/products/zhestar.jpg",
+    tone: "coral",
+    story: [
+      {
+        title: "El punto de partida",
+        body: "Una marca de ropa de gimnasio que todavía no ha lanzado su primera colección necesita algo antes que una tienda: una identidad reconocible y una forma de reunir a la gente que quiere estar el primer día.",
+      },
+      {
+        title: "Qué construimos",
+        body: "La identidad de la marca y una web de lanzamiento: una sola pantalla con fotografía de producto, el mensaje «the next drop is coming» y un aviso para enterarse del lanzamiento. Ligera, rápida y tan cuidada en el móvil como en el ordenador.",
+      },
+      {
+        title: "Lo que viene",
+        body: "La marca funcionará por drops, colecciones limitadas que salen en fechas concretas. Cuando llegue el primero, la web crecerá hacia una tienda online completa.",
+      },
+    ],
+    gallery: [
+      { src: "/products/zhestar/home.jpg", kind: "desktop", caption: "La web de lanzamiento en ordenador" },
+      { src: "/products/zhestar/mobile.jpg", kind: "phone", caption: "Y en móvil" },
+    ],
   },
   {
     slug: "simon-design",
@@ -135,6 +224,28 @@ export const products: Product[] = [
     href: "https://simondesign.vercel.app/",
     accent: "#0ea5e9",
     image: "/products/simon-design.jpg",
+    tone: "teal",
+    story: [
+      {
+        title: "El reto",
+        body: "Un equipo de diseño que trabaja con producto, luz y energía necesitaba contar su trabajo con la misma calma y precisión con la que diseña: sin ruido, dejando que los productos y las ideas hablen solos.",
+      },
+      {
+        title: "Qué construimos",
+        body: "Una web editorial. Abre con un mensaje claro y cuatro cifras que resumen el equipo, sigue con las últimas historias del estudio y la filosofía de trabajo, y termina con los premios recibidos y las personas detrás del diseño.",
+      },
+      {
+        title: "Los detalles",
+        body: "Tipografía grande y mucho aire, una paleta de azules fríos y grises, y una sección de premios donde las piezas se abren en abanico.",
+      },
+    ],
+    gallery: [
+      { src: "/products/simon-design/hero.jpg", kind: "desktop", caption: "Portada: el mensaje del equipo" },
+      { src: "/products/simon-design/stories.jpg", kind: "desktop", caption: "Cifras de un vistazo y las últimas historias" },
+      { src: "/products/simon-design/awards.jpg", kind: "desktop", caption: "Premios, con las piezas en abanico" },
+      { src: "/products/simon-design/philosophy.jpg", kind: "desktop", caption: "La filosofía de trabajo" },
+      { src: "/products/simon-design/team.jpg", kind: "desktop", caption: "Las personas detrás del diseño" },
+    ],
   },
 ];
 

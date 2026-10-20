@@ -123,7 +123,14 @@ export const teamEn: Record<string, { role: string; bio: string }> = {
 
 export const productsEn: Record<
   string,
-  { summary: string; description: string; highlights: string[] }
+  {
+    summary: string;
+    description: string;
+    highlights: string[];
+    story?: { title: string; body: string }[];
+    /** Gallery captions, in the same order as the Spanish gallery. */
+    captions?: string[];
+  }
 > = {
   roady: {
     summary:
@@ -136,6 +143,18 @@ export const productsEn: Record<
       "Streaks and gamified progress",
       "Account and subscription with Stripe",
     ],
+    story: [
+      { title: "The challenge", body: "Preparing for the driving theory test usually means grinding through loose practice tests until you memorise them. You pass by repetition, forget just as fast, and staying consistent for weeks is hard." },
+      { title: "What we built", body: "An app that lays the syllabus out as a path: nine topics split into short lessons, with 247 questions in the style of the official exam and every answer explained. Miss one and it is saved to \"My mistakes\" to review later." },
+      { title: "Why it sticks", body: "Spaced repetition asks you again about what you are about to forget. On top sits a game layer: experience and levels, daily streaks, missions, a daily challenge, a mascot that keeps you company and a gauge of how ready you are for the real exam." },
+      { title: "A complete product", body: "User accounts, progress synced across devices, a premium subscription with Stripe and notifications. It installs on the phone like an app, without going through the app stores." },
+    ],
+    captions: [
+      "Home: progress towards the exam and the current topic",
+      "The lesson path, with the daily challenge and rewards",
+      "Every answer is explained, with a tutor for questions",
+      "First steps, guided by the mascot",
+    ],
   },
   "gym-tracker": {
     summary:
@@ -147,6 +166,20 @@ export const productsEn: Record<
       "Calendar and per-session progress",
       "Achievements and challenges with friends",
       "Local AI assistant",
+    ],
+    story: [
+      { title: "The challenge", body: "Plenty of people log their workouts in a notebook or a notes app. It works until you want to know whether you are progressing, what weight you used last time or which muscle you have not trained in days." },
+      { title: "What we built", body: "A complete training app: routines spread across the week, logging of sets, reps and weight, and its own library of 642 exercises with technique and the muscles they work. Every exercise keeps your history, your best mark and your estimated 1RM." },
+      { title: "How it helps you progress", body: "Each day it suggests a concrete challenge based on your last sessions, such as beating your previous mark by one rep. The stats show which muscle groups you have trained on a 3D anatomical model you can rotate." },
+      { title: "Consistency, with friends", body: "Unlockable achievements, goals, body-weight tracking with progress photos and challenges with friends to compare who trains more." },
+    ],
+    captions: [
+      "Today: the workout that is due and the daily challenge",
+      "Stats on a 3D anatomical model",
+      "Exercise page with records and progress",
+      "A library of 642 exercises, filterable by muscle",
+      "The routine spread across the week",
+      "Achievements that reward consistency",
     ],
   },
   "velhoura-eyewear": {
@@ -170,6 +203,18 @@ export const productsEn: Record<
       "Studio stories",
       "Philosophy, awards and team",
     ],
+    story: [
+      { title: "The challenge", body: "A design team working on product, light and energy needed to tell its story with the same calm and precision it designs with: no noise, letting the products and ideas speak for themselves." },
+      { title: "What we built", body: "An editorial website. It opens with a clear message and four figures that sum up the team, moves on to the latest studio stories and the working philosophy, and ends with the awards received and the people behind the design." },
+      { title: "The details", body: "Large type and plenty of air, a palette of cool blues and greys, and an awards section where the pieces fan out." },
+    ],
+    captions: [
+      "Home: the team's message",
+      "Key figures at a glance and the latest stories",
+      "Awards, with the pieces fanned out",
+      "The working philosophy",
+      "The people behind the design",
+    ],
   },
   zhestar: {
     summary: "Gymwear brand in the making — the site for the first drop, counting down.",
@@ -179,6 +224,15 @@ export const productsEn: Record<
       "Brand identity",
       "Technical training wear",
       "Limited drop mechanic",
+    ],
+    story: [
+      { title: "The starting point", body: "A gymwear brand that has not yet launched its first collection needs something before a store: a recognisable identity and a way to gather the people who want to be there on day one." },
+      { title: "What we built", body: "The brand identity and a launch site: a single screen with product photography, the message \"the next drop is coming\" and a sign-up to hear about the launch. Light, fast and as polished on the phone as on desktop." },
+      { title: "What comes next", body: "The brand will work in drops, limited collections released on set dates. When the first one lands, the site will grow into a full online store." },
+    ],
+    captions: [
+      "The launch site on desktop",
+      "And on mobile",
     ],
   },
 };
