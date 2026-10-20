@@ -1,5 +1,6 @@
 import { Hero } from "@/components/sections/Hero";
 import { IntroZoom } from "@/components/intro/IntroZoom";
+import { LogosSection } from "@/components/sections/LogosSection";
 import { WorkSection } from "@/components/sections/WorkSection";
 import { ServicesSection } from "@/components/sections/ServicesSection";
 import { NfcSection } from "@/components/sections/NfcSection";
@@ -39,6 +40,7 @@ export function HomePage({ locale }: { locale: Locale }) {
       <ToolsSection locale={locale} />
       <GlobeSection />
       <WorkSection />
+      <LogosSection locale={locale} />
       <ServicesSection locale={locale} />
       <NfcSection locale={locale} />
       <ShowcaseSection />
