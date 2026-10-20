@@ -64,16 +64,17 @@ function latLonToVector(lat: number, lon: number, radius: number) {
 const wrapPi = (a: number) => Math.atan2(Math.sin(a), Math.cos(a));
 
 /**
- * Where the globe goes for each chapter, relative to its rest pose on Spain:
- * a turn (yaw), a tilt (pitch) and how close the camera comes. One: wide, on
- * Barcelona. Two: right in on the city. Three: pulled back and turned to the
- * far side — the products live online, not in one place. Four: home again.
+ * How the globe turns for each chapter, relative to its rest pose on Spain.
+ * It only turns — the camera never comes closer, so the planet is always whole
+ * in its frame. One: on Barcelona. Two: turned towards the Atlantic. Three:
+ * turned to the far side — the products live online, not in one place. Four:
+ * home again.
  */
 const JOURNEY = [
   { yaw: 0, pitch: 0, zoom: 1 },
-  { yaw: 0.04, pitch: 0.06, zoom: 1.9 },
-  { yaw: 2.5, pitch: -0.22, zoom: 0.88 },
-  { yaw: 0, pitch: 0, zoom: 1.08 },
+  { yaw: -1.1, pitch: 0.12, zoom: 1 },
+  { yaw: 2.5, pitch: -0.22, zoom: 1 },
+  { yaw: 0, pitch: 0, zoom: 1 },
 ];
 const REST = JOURNEY[0];
 
