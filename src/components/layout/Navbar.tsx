@@ -573,7 +573,7 @@ export function Navbar() {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
-                  className="fixed inset-0 z-[49] overflow-y-auto bg-white/90 md:hidden"
+                  className="fixed inset-0 z-[49] overflow-y-auto bg-white/55 md:hidden"
                   style={{ WebkitBackdropFilter: "blur(40px) saturate(1.8)", backdropFilter: "blur(40px) saturate(1.8)" }}
                 >
                   <nav className="mx-auto flex min-h-full max-w-[30rem] flex-col px-7 pb-10 pt-[6.5rem]" aria-label={t.mainMobile}>

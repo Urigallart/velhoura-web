@@ -828,3 +828,16 @@ html[data-intro="play"] .cookie-notice {
 html[data-menu="open"] .assistant-root {
   display: none;
 }
+
+/* With the phone menu open the page behind it is blurred for real (not only
+   by the sheet's own backdrop), so it never competes with the menu's type. */
+@media (max-width: 767px) {
+  main,
+  footer {
+    transition: filter 0.35s var(--e-out);
+  }
+  html[data-menu="open"] main,
+  html[data-menu="open"] footer {
+    filter: blur(16px) saturate(1.2);
+  }
+}
