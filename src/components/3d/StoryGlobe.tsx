@@ -5,12 +5,11 @@ import type { PointerEvent as ReactPointerEvent } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Environment, Html, Lightformer } from "@react-three/drei";
 import * as THREE from "three";
-import { Particles } from "./Particles";
 import { useHeroSceneValues } from "./scene-config";
 
 /**
- * The studio's globe: a large Earth turned to face Spain, with a pin on
- * Barcelona that opens the studio's story.
+ * The studio's globe: a pearl sphere with the continents drawn as a
+ * gradient of dots, turned to face Spain, with a pin on Barcelona.
  *
  * It rests on Spain. Dragging turns it anywhere, and a couple of seconds after
  * the hand lets go it eases back — a globe that always finds its way home,
@@ -118,13 +117,6 @@ export function StoryGlobe({ open, step, onPin, pinLabel, pinAria, controls }: S
     return () => io.disconnect();
   }, []);
 
-  const particleCount = useMemo(() => {
-    if (reducedMotion) return 0;
-    if (tier === "mobile") return Math.round(values.particleCount * 0.4);
-    if (tier === "tablet") return Math.round(values.particleCount * 0.7);
-    return values.particleCount;
-  }, [values.particleCount, tier, reducedMotion]);
-
   // The drag surface lies *under* the canvas, which is click-through, so the
   // pin's button (the one thing that opts back in) stays clickable while the
   // rest of the stage turns the globe. `pan-y` lets a finger still scroll the
@@ -186,7 +178,6 @@ export function StoryGlobe({ open, step, onPin, pinLabel, pinAria, controls }: S
           detail={tier === "desktop" ? "high" : "low"}
           reducedMotion={reducedMotion}
         />
-        <Particles count={particleCount} intro={1} />
       </Canvas>
     </div>
   );
@@ -225,13 +216,6 @@ function Globe({
   const offset = useRef({ yaw: 0, pitch: 0, idle: 0 });
   // The chapter's pose, eased towards its target every frame.
   const travel = useRef({ yaw: 0, pitch: 0, zoom: 1 });
-
-  const dayMap = useMemo(() => {
-    const texture = new THREE.TextureLoader().load("/textures/earth-daymap-2k.jpg");
-    texture.colorSpace = THREE.SRGBColorSpace;
-    texture.anisotropy = 4;
-    return texture;
-  }, []);
 
   const segments = detail === "high" ? 72 : 32;
   const earthGeometry = useMemo(
@@ -318,15 +302,18 @@ function Globe({
 
   return (
     <group ref={group}>
+      {/* The sphere itself: a soft pearl, so the colour is all in the land. */}
       <mesh ref={earth} geometry={earthGeometry}>
         <meshStandardMaterial
-          map={dayMap}
-          roughness={values.earthRoughness}
+          color="#f3f5fb"
+          roughness={0.5}
           metalness={0}
           transparent
           opacity={0}
         />
       </mesh>
+
+      <DotLand radius={EARTH_RADIUS} />
 
       {/* Thin Fresnel rim on a slightly larger backside sphere. */}
       <mesh geometry={atmosphereGeometry}>
@@ -381,6 +368,116 @@ function Globe({
 }
 
 /**
+ * Land as dots. The daymap is read once, in a canvas, only to learn which
+ * points of the sphere are land; every dot is then drawn as one instance, so
+ * the whole planet is two draw calls. Land takes a blue → violet → pink
+ * gradient across the surface; the sea is a faint grid of pale dots.
+ */
+function DotLand({ radius }: { radius: number }) {
+  const [points, setPoints] = useState<{ land: Float32Array; sea: Float32Array } | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    const img = new Image();
+    img.src = "/textures/earth-daymap-2k.jpg";
+    img.onload = () => {
+      if (cancelled) return;
+      const W = 1024;
+      const H = 512;
+      const canvas = document.createElement("canvas");
+      canvas.width = W;
+      canvas.height = H;
+      const ctx = canvas.getContext("2d", { willReadFrequently: true });
+      if (!ctx) return;
+      ctx.drawImage(img, 0, 0, W, H);
+      const px = ctx.getImageData(0, 0, W, H).data;
+
+      const isLand = (lat: number, lon: number) => {
+        const x = Math.min(W - 1, Math.max(0, Math.floor(((lon + 180) / 360) * W)));
+        const y = Math.min(H - 1, Math.max(0, Math.floor(((90 - lat) / 180) * H)));
+        const i = (y * W + x) * 4;
+        const r = px[i];
+        const g = px[i + 1];
+        const b = px[i + 2];
+        // Ocean is blue and fairly dark; everything else (green, sand, ice) is land.
+        return !(b > r + 12 && b >= g - 6 && r < 150);
+      };
+
+      const land: number[] = [];
+      const sea: number[] = [];
+      const rows = 110;
+      for (let r = 0; r <= rows; r++) {
+        const lat = -90 + (180 * r) / rows;
+        const n = Math.max(1, Math.round(rows * 2 * Math.cos(THREE.MathUtils.degToRad(lat))));
+        for (let k = 0; k < n; k++) {
+          const lon = -180 + (360 * (k + (r % 2) * 0.5)) / n;
+          const v = latLonToVector(lat, lon, radius * 1.004);
+          (isLand(lat, lon) ? land : sea).push(v.x, v.y, v.z);
+        }
+      }
+      setPoints({ land: new Float32Array(land), sea: new Float32Array(sea) });
+    };
+    return () => {
+      cancelled = true;
+    };
+  }, [radius]);
+
+  const landMesh = useRef<THREE.InstancedMesh>(null);
+  const seaMesh = useRef<THREE.InstancedMesh>(null);
+
+  useEffect(() => {
+    if (!points) return;
+    const dummy = new THREE.Object3D();
+    const up = new THREE.Vector3();
+    const stops = [new THREE.Color("#2f8cff"), new THREE.Color("#8b5cf6"), new THREE.Color("#ff5fa2")];
+    const tmp = new THREE.Color();
+
+    const fill = (mesh: THREE.InstancedMesh | null, arr: Float32Array, colour: boolean) => {
+      if (!mesh) return;
+      const count = arr.length / 3;
+      for (let i = 0; i < count; i++) {
+        const x = arr[i * 3];
+        const y = arr[i * 3 + 1];
+        const z = arr[i * 3 + 2];
+        up.set(x, y, z).normalize();
+        dummy.position.set(x, y, z);
+        dummy.lookAt(up.x * 4, up.y * 4, up.z * 4);
+        dummy.updateMatrix();
+        mesh.setMatrixAt(i, dummy.matrix);
+        if (colour) {
+          // A diagonal sweep across the surface: blue, then violet, then pink.
+          const t = THREE.MathUtils.clamp((up.x * 0.8 - up.y * 0.6 + 1) / 2, 0, 1);
+          if (t < 0.5) tmp.copy(stops[0]).lerp(stops[1], t * 2);
+          else tmp.copy(stops[1]).lerp(stops[2], (t - 0.5) * 2);
+          mesh.setColorAt(i, tmp);
+        }
+      }
+      mesh.count = count;
+      mesh.instanceMatrix.needsUpdate = true;
+      if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
+    };
+
+    fill(landMesh.current, points.land, true);
+    fill(seaMesh.current, points.sea, false);
+  }, [points]);
+
+  const max = (a?: Float32Array) => Math.max(1, (a?.length ?? 0) / 3);
+
+  return (
+    <>
+      <instancedMesh key={`land-${max(points?.land)}`} ref={landMesh} args={[undefined, undefined, max(points?.land)]}>
+        <circleGeometry args={[0.0105, 10]} />
+        <meshBasicMaterial toneMapped={false} />
+      </instancedMesh>
+      <instancedMesh key={`sea-${max(points?.sea)}`} ref={seaMesh} args={[undefined, undefined, max(points?.sea)]}>
+        <circleGeometry args={[0.0055, 8]} />
+        <meshBasicMaterial color="#d7def0" toneMapped={false} />
+      </instancedMesh>
+    </>
+  );
+}
+
+/**
  * Studio lighting: a white key from the upper right and a cool blue bounce
  * from the lower left, with procedural reflections (no HDR file to fetch).
  * The reflections are skipped on phones: baking them costs a six-face render
@@ -391,7 +488,7 @@ function Lighting({ fullEnvironment }: { fullEnvironment: boolean }) {
     <>
       <ambientLight intensity={1.05} />
       <directionalLight position={[3.5, 4, 3]} intensity={2.6} color="#ffffff" />
-      <pointLight position={[-3, -1.5, 2]} intensity={2} color="#8ec5ff" distance={11} decay={2} />
+      <pointLight position={[-3, -1.5, 2]} intensity={1.4} color="#c9b8ff" distance={11} decay={2} />
       {fullEnvironment && (
         <Environment resolution={128}>
           <Lightformer form="rect" intensity={2} position={[3, 2, 4]} scale={[3, 3, 1]} color="#ffffff" />
@@ -416,7 +513,7 @@ const ATMOSPHERE_FRAGMENT = /* glsl */ `
   uniform float opacity;
   void main() {
     float rim = pow(0.68 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 3.2);
-    vec3 glow = vec3(0.31, 0.56, 1.0);
+    vec3 glow = mix(vec3(0.42, 0.72, 1.0), vec3(0.93, 0.5, 0.95), clamp(vNormal.x * 0.5 + 0.5, 0.0, 1.0));
     gl_FragColor = vec4(glow, clamp(rim, 0.0, 1.0) * opacity);
   }
 `;

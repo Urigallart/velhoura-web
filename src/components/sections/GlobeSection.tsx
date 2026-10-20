@@ -142,6 +142,12 @@ export function GlobeSection() {
           {/* The globe stays put while the story scrolls past it. */}
           <div className="lg:sticky lg:top-24 lg:col-span-6 lg:self-start">
             <div className="relative mx-auto aspect-square w-full max-w-[640px]">
+              {/* A soft pastel glow behind the planet. */}
+              <div
+                aria-hidden="true"
+                className="absolute inset-[4%] rounded-full opacity-70 blur-[70px]"
+                style={{ background: "conic-gradient(from 200deg, #7fd8ff, #c9b8ff, #ffb3d1, #ffe9a8, #7fd8ff)" }}
+              />
               <StoryGlobeLoader
                 open={active >= 0}
                 step={active}
