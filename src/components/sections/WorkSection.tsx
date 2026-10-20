@@ -143,12 +143,21 @@ export function WorkSection() {
           ))}
 
           {/* The open slot: the next project in this grid. */}
-          <li>
+          <li
+            className={
+              // Fills what is left of the last row, so the grid never ends on a lone card.
+              shown.length % 3 === 0
+                ? "lg:col-span-3"
+                : shown.length % 3 === 1
+                  ? "lg:col-span-2"
+                  : undefined
+            }
+          >
             <Reveal delay={shown.length * 70} y={24} className="h-full">
               <button
                 type="button"
                 onClick={openContactModal}
-                className="group relative flex aspect-[4/3] h-full w-full flex-col justify-between overflow-hidden rounded-2xl border border-paper-raise/15 bg-night-raise p-6 text-left transition-colors duration-300 hover:border-paper-raise/30 sm:aspect-auto sm:min-h-full"
+                className="group relative flex aspect-[4/3] h-full w-full flex-col justify-between overflow-hidden rounded-2xl border border-paper-raise/15 bg-night-raise p-6 text-left transition-colors duration-300 hover:border-paper-raise/30 sm:aspect-auto sm:min-h-[12rem]"
               >
                 <span className="t-label !text-paper-raise/45">+1</span>
                 <span>
