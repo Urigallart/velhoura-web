@@ -592,9 +592,10 @@ html:not([data-intro-cards="sides"]) .intro-cards-sides {
 /* Chrome on Android tints the system navigation bar with the page's
    background. While the office is on screen that would be a white strip
    under a warm photo, so the ground takes the colour of the scene's lower
-   edge until the page itself takes over. */
-html[data-intro="play"],
-html[data-intro="play"] body {
+   edge — only while the room is in shot, so nothing of it shows under the
+   page when the camera lands and the URL bar slides away. */
+html[data-intro="play"][data-intro-room="on"],
+html[data-intro="play"][data-intro-room="on"] body {
   background-color: #a08574;
 }
 

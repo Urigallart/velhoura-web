@@ -50,8 +50,13 @@ export function Hero({
         /* Only on the laptop-screen copy: the real page has the header there. */
         <div
           className="absolute inset-x-0 top-7 z-[2] flex items-center justify-center gap-6"
-          // The zoom drives `--intro-logo` (0 → 1): the name slides off to the right.
-          style={{ transform: "translateX(calc(var(--intro-logo, 0) * var(--intro-vw, 100vw)))" }}
+          // The zoom drives `--intro-logo` (0 → 1): the name slides off to the right
+          // and fades. On a phone the name is wider than the window, so a slide of
+          // one window width alone would leave its left end showing at the edge.
+          style={{
+            transform: "translateX(calc(var(--intro-logo, 0) * var(--intro-vw, 100vw) * 1.6))",
+            opacity: "calc(1 - var(--intro-logo, 0))",
+          }}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/brand/logo-mark.png" alt="" width={305} height={256} className="h-[5.5rem] w-auto" />
