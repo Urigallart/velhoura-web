@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
+import { createPortal } from "react-dom";
 import { AnimatePresence, motion, useScroll, useSpring } from "motion/react";
 import { nav as navEs } from "@/data/site";
 import {
@@ -83,9 +84,22 @@ export function Navbar() {
   const [mobileServices, setMobileServices] = useState(false);
   const closeTimer = useRef<number | undefined>(undefined);
   const servicesRef = useRef<HTMLDivElement>(null);
+  // The dropdown is drawn straight into <body>, outside the header: a glass
+  // panel can only blur the page behind it when none of its ancestors is
+  // itself fading, clipped or filtered, and the header is all three at times.
+  const menuRef = useRef<HTMLDivElement>(null);
+  // False on the server and during hydration, true afterwards: <body> exists only then.
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
+  const [menuTop, setMenuTop] = useState(76);
 
   const openServices = () => {
     window.clearTimeout(closeTimer.current);
+    const r = servicesRef.current?.getBoundingClientRect();
+    if (r) setMenuTop(Math.round(r.bottom + 8));
     setServicesOpen(true);
   };
   const closeServicesSoon = () => {
@@ -99,7 +113,8 @@ export function Navbar() {
       if (e.key === "Escape") setServicesOpen(false);
     };
     const onDown = (e: PointerEvent) => {
-      if (!servicesRef.current?.contains(e.target as Node)) setServicesOpen(false);
+      const target = e.target as Node;
+      if (!servicesRef.current?.contains(target) && !menuRef.current?.contains(target)) setServicesOpen(false);
     };
     window.addEventListener("keydown", onKey);
     window.addEventListener("pointerdown", onDown);
@@ -333,77 +348,84 @@ export function Navbar() {
           />
         </div>
 
-        {/* Services dropdown: its own card under the pill (the pill clips). */}
+        {/* Services dropdown: its own glass card under the pill, in <body>. */}
+        {mounted &&
+          createPortal(
         <AnimatePresence>
-          {servicesOpen && (
-            <motion.div
-              id="services-menu"
-              key="services"
-              initial={{ opacity: 0, y: -8, scale: 0.98 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -6, scale: 0.98 }}
-              transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-              onPointerEnter={(e) => e.pointerType === "mouse" && openServices()}
-              onPointerLeave={(e) => e.pointerType === "mouse" && closeServicesSoon()}
-              className="absolute left-1/2 top-full mt-2 hidden w-[min(640px,calc(100vw-24px))] -translate-x-1/2 origin-top overflow-hidden rounded-3xl glass-panel p-3 md:block"
-            >
-              <div className="grid grid-cols-3 gap-1">
-                {(["brand", "web", "growth"] as const).map((area) => (
-                  <div key={area} className="rounded-2xl p-2">
-                    <p className="t-label px-3 pb-2 pt-1 !text-ember">{areaName[area]}</p>
-                    <ul>
-                      {servicePages
-                        .filter((p) => p.area === area)
-                        .map((p) => (
-                          <li key={p.slug}>
-                            <Link
-                              href={servicePath(locale, p.esSlug)}
-                              onClick={() => setServicesOpen(false)}
-                              className="group block rounded-xl px-3 py-2.5 transition-colors duration-200 hover:bg-paper-sunk"
-                            >
-                              <span className="block text-[0.875rem] font-medium tracking-[-0.01em] text-ink">
-                                {p.name}
-                              </span>
-                              <span className="mt-0.5 block font-sans text-[0.8125rem] text-ink-mute">
-                                {p.tag}
-                              </span>
-                            </Link>
-                          </li>
-                        ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-              <Link
-                href={nfcPath(locale)}
-                onClick={() => setServicesOpen(false)}
-                className="group mt-2 flex items-center justify-between gap-4 rounded-2xl border border-white/70 bg-white/45 px-5 py-3 transition-colors duration-200 hover:border-ember"
+            {servicesOpen && (
+              <motion.div
+                id="services-menu"
+                ref={menuRef}
+                style={{ top: menuTop }}
+                key="services"
+                initial={{ opacity: 0, y: -8, scale: 0.98 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -6, scale: 0.98 }}
+                transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+                onPointerEnter={(e) => e.pointerType === "mouse" && openServices()}
+                onPointerLeave={(e) => e.pointerType === "mouse" && closeServicesSoon()}
+                className="fixed left-1/2 z-[60] hidden w-[min(640px,calc(100vw-24px))] -translate-x-1/2 origin-top overflow-hidden rounded-3xl glass-panel p-3 md:block"
               >
-                <span className="flex items-center gap-3">
-                  <span className="rounded-full bg-ember px-2.5 py-0.5 text-[0.6875rem] font-semibold text-paper-raise">
-                    {nfcCopy.badge[locale]}
-                  </span>
-                  <span className="text-[0.875rem] font-medium tracking-[-0.01em] text-ink">
-                    {nfcCopy.bannerTitle[locale].replace(/^[^:]+:\s*/, "")}
-                  </span>
-                </span>
-                <span aria-hidden="true" className="text-ink transition-transform duration-300 group-hover:translate-x-1">→</span>
-              </Link>
-              <div className="mt-2 flex items-center justify-between rounded-2xl bg-ink/[0.05] px-5 py-3">
-                <span className="text-sm text-ink-soft">
-                  {t.blurb}
-                </span>
+                <div className="grid grid-cols-3 gap-1">
+                  {(["brand", "web", "growth"] as const).map((area) => (
+                    <div key={area} className="rounded-2xl p-2">
+                      <p className="t-label px-3 pb-2 pt-1 !text-ember">{areaName[area]}</p>
+                      <ul>
+                        {servicePages
+                          .filter((p) => p.area === area)
+                          .map((p) => (
+                            <li key={p.slug}>
+                              <Link
+                                href={servicePath(locale, p.esSlug)}
+                                onClick={() => setServicesOpen(false)}
+                                className="group block rounded-xl px-3 py-2.5 transition-colors duration-200 hover:bg-paper-sunk"
+                              >
+                                <span className="block text-[0.875rem] font-medium tracking-[-0.01em] text-ink">
+                                  {p.name}
+                                </span>
+                                <span className="mt-0.5 block font-sans text-[0.8125rem] text-ink-mute">
+                                  {p.tag}
+                                </span>
+                              </Link>
+                            </li>
+                          ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
                 <Link
-                  href={servicesIndexPath(locale)}
+                  href={nfcPath(locale)}
                   onClick={() => setServicesOpen(false)}
-                  className="font-sans text-[0.8125rem] font-semibold text-ember"
+                  className="group mt-2 flex items-center justify-between gap-4 rounded-2xl border border-white/70 bg-white/45 px-5 py-3 transition-colors duration-200 hover:border-ember"
                 >
-                  {t.all}
+                  <span className="flex items-center gap-3">
+                    <span className="rounded-full bg-ember px-2.5 py-0.5 text-[0.6875rem] font-semibold text-paper-raise">
+                      {nfcCopy.badge[locale]}
+                    </span>
+                    <span className="text-[0.875rem] font-medium tracking-[-0.01em] text-ink">
+                      {nfcCopy.bannerTitle[locale].replace(/^[^:]+:\s*/, "")}
+                    </span>
+                  </span>
+                  <span aria-hidden="true" className="text-ink transition-transform duration-300 group-hover:translate-x-1">→</span>
                 </Link>
-              </div>
-            </motion.div>
+                <div className="mt-2 flex items-center justify-between rounded-2xl bg-ink/[0.05] px-5 py-3">
+                  <span className="text-sm text-ink-soft">
+                    {t.blurb}
+                  </span>
+                  <Link
+                    href={servicesIndexPath(locale)}
+                    onClick={() => setServicesOpen(false)}
+                    className="font-sans text-[0.8125rem] font-semibold text-ember"
+                  >
+                    {t.all}
+                  </Link>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+            ,
+            document.body,
           )}
-        </AnimatePresence>
 
         {/* Mobile sheet — its own card under the pill, not a squeezed nav. */}
         <AnimatePresence initial={false}>
