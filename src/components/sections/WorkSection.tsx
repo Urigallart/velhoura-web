@@ -185,6 +185,43 @@ export function WorkSection() {
   );
 }
 
+/**
+ * Each project's mark as an app icon, in the corner of its card: a rounded
+ * tile (the iOS "squircle" radius) with a soft highlight, the logo inside.
+ * Projects without a logo of their own fall back to the studio's mark.
+ */
+const appIcons: Record<string, { src: string; bg: string; pad: string; invert?: boolean; bleed?: boolean }> = {
+  roady: { src: "/logos/roady.webp", bg: "bg-white", pad: "p-[17%]" },
+  "gym-tracker": { src: "/logos/gym-tracker-icon.webp", bg: "bg-white", pad: "p-[12%]" },
+  "velhoura-eyewear": { src: "/brand/logo-mark.png", bg: "bg-[#111317]", pad: "p-[22%]", invert: true },
+  zhestar: { src: "/logos/zhestar.webp", bg: "bg-white", pad: "p-[20%]" },
+  "simon-design": { src: "/brands/simon-electric.png", bg: "bg-white", pad: "p-[10%]" },
+  "maria-del-mar": { src: "/logos/mmr-icon.webp", bg: "bg-[#4e8276]", pad: "", bleed: true },
+};
+
+function AppIcon({ slug, name }: { slug: string; name: string }) {
+  const icon = appIcons[slug];
+  if (!icon) return null;
+  return (
+    <span
+      className={`absolute right-5 top-5 z-[2] block size-14 overflow-hidden rounded-[22.5%] shadow-[0_10px_24px_-8px_rgba(0,0,0,0.65),0_0_0_1px_rgba(255,255,255,0.14)] transition-transform duration-500 ease-[var(--e-out)] group-hover:scale-110 sm:right-6 sm:top-6 sm:size-16 ${icon.bg}`}
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={icon.src}
+        alt={name}
+        loading="lazy"
+        className={`size-full ${icon.bleed ? "object-cover" : `object-contain ${icon.pad}`}`}
+        style={icon.invert ? { filter: "brightness(0) invert(1)" } : undefined}
+      />
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/30 via-transparent to-black/10"
+      />
+    </span>
+  );
+}
+
 function WorkCard({
   product,
   t,
@@ -209,6 +246,8 @@ function WorkCard({
           className="object-cover object-top opacity-70 transition-opacity duration-500 group-hover:opacity-90"
         />
       )}
+      <AppIcon slug={product.slug} name={product.name} />
+
       {/* Readability: the image falls to night under the text. */}
       <span
         aria-hidden="true"
