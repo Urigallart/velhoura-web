@@ -48,9 +48,23 @@ export function AboutSection({ locale = "es" }: { locale?: Locale }) {
                   </span>
                 </div>
 
+                {/* The partner's own half of the duo figure, standing in the corner. */}
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none absolute bottom-0 right-3 h-[10.5rem] w-[3.4rem] overflow-hidden sm:right-5 sm:h-[12rem] sm:w-[3.9rem]"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/team/duo.webp"
+                    alt=""
+                    loading="lazy"
+                    className={`absolute bottom-0 h-full w-auto max-w-none ${i % 2 === 0 ? "left-0" : "right-0"}`}
+                  />
+                </span>
+
                 <h3 className="mt-4 text-[clamp(1.375rem,2vw,1.625rem)] font-semibold leading-none tracking-[-0.035em]">{member.name}</h3>
-                <p className="mt-1.5 text-[0.8125rem] font-medium opacity-70">{member.role}</p>
-                <p className="t-body mt-3 max-w-[40ch] text-[0.8125rem] leading-relaxed !text-current opacity-80">
+                <p className="mt-1.5 pr-16 text-[0.8125rem] font-medium opacity-70 sm:pr-20">{member.role}</p>
+                <p className="t-body mt-3 max-w-[40ch] pr-14 text-[0.8125rem] leading-relaxed !text-current opacity-80 sm:pr-16">
                   {member.bio}
                 </p>
 
