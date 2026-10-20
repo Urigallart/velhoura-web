@@ -32,30 +32,30 @@ export function AboutSection({ locale = "es" }: { locale?: Locale }) {
       <div className="shell">
         <SectionHeading align="center" tone="sun" lines={t.lines} subtitle={t.body} />
 
-        <div className="mt-14 grid gap-5 md:mt-20 md:grid-cols-2">
+        <div className="mx-auto mt-10 grid max-w-[52rem] gap-3 md:mt-16 md:grid-cols-2 md:gap-4">
           {team.map((member, i) => (
             <Reveal key={member.id} delay={i * 120} variant="lift" y={34}>
               <article
-                className={`group relative h-full overflow-hidden rounded-[2rem] p-8 text-ink transition-[transform,box-shadow] duration-500 ease-[var(--e-out)] hover:-translate-y-1.5 hover:shadow-[0_30px_60px_-30px_rgba(8,9,10,0.35)] sm:p-10 ${i % 2 === 0 ? "bg-gradient-to-br from-[#0d2b5e] to-[#1f58c7] !text-white" : "bg-gradient-to-br from-[#ffe6d6] to-[#ffb892]"}`}
+                className={`group relative h-full overflow-hidden rounded-[1.5rem] p-5 text-ink transition-[transform,box-shadow] duration-500 ease-[var(--e-out)] hover:-translate-y-1 hover:shadow-[0_24px_50px_-30px_rgba(8,9,10,0.35)] sm:p-6 ${i % 2 === 0 ? "bg-gradient-to-br from-[#0d2b5e] to-[#1f58c7] !text-white" : "bg-gradient-to-br from-[#ffe6d6] to-[#ffb892]"}`}
               >
                 {/* Ember hairline across the top, drawn in on hover — the same
                     gesture the product cards use, so the page has one idea of
                     what "this is interactive" looks like. */}
                 {/* The monogram stands in until there is a portrait to use. */}
-                <div className={`flex size-16 items-center justify-center rounded-full ${i % 2 === 0 ? "bg-white/15" : "bg-white/60"}`}>
-                  <span className="font-sans text-lg font-semibold tracking-tight">
+                <div className={`flex size-11 items-center justify-center rounded-full ${i % 2 === 0 ? "bg-white/15" : "bg-white/60"}`}>
+                  <span className="font-sans text-[0.9375rem] font-semibold tracking-tight">
                     {member.monogram}
                   </span>
                 </div>
 
-                <h3 className="mt-7 text-[clamp(1.75rem,2.6vw,2.25rem)] font-semibold leading-none tracking-[-0.04em]">{member.name}</h3>
-                <p className="mt-2 text-[0.9375rem] font-medium opacity-70">{member.role}</p>
-                <p className="t-body mt-5 max-w-[38ch] text-[0.9375rem] !text-current opacity-80">
+                <h3 className="mt-4 text-[clamp(1.375rem,2vw,1.625rem)] font-semibold leading-none tracking-[-0.035em]">{member.name}</h3>
+                <p className="mt-1.5 text-[0.8125rem] font-medium opacity-70">{member.role}</p>
+                <p className="t-body mt-3 max-w-[40ch] text-[0.8125rem] leading-relaxed !text-current opacity-80">
                   {member.bio}
                 </p>
 
                 {member.href && (
-                  <div className="mt-6">
+                  <div className="mt-4">
                     <ArrowLink href={member.href}>{t.portfolio}</ArrowLink>
                   </div>
                 )}
