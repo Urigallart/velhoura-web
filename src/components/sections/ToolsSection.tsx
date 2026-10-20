@@ -68,31 +68,31 @@ function ToolTile({ tool, duplicate }: { tool: Tool; duplicate?: boolean }) {
   return (
     <li
       aria-hidden={duplicate || undefined}
-      className="marquee-item flex w-[116px] shrink-0 flex-col items-center gap-3 py-3"
+      className="marquee-item flex w-[76px] shrink-0 flex-col items-center gap-2 py-2 sm:w-[116px] sm:gap-3 sm:py-3"
     >
       {tool.icon ? (
         <svg
           viewBox="0 0 24 24"
           role="img"
           aria-label={tool.name}
-          className="size-9"
+          className="size-6 sm:size-9"
           fill={`#${tool.icon.hex}`}
         >
           <path d={tool.icon.path} />
         </svg>
       ) : tool.logo ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={tool.logo} alt={tool.name} className="h-9 w-auto max-w-[84px] object-contain" />
+        <img src={tool.logo} alt={tool.name} className="h-6 w-auto max-w-[56px] object-contain sm:h-9 sm:max-w-[84px]" />
       ) : (
         <span
           role="img"
           aria-label={tool.name}
-          className="grid size-9 place-items-center rounded-[10px] bg-ink font-sans text-[0.8125rem] font-semibold tracking-tight text-paper"
+          className="grid size-6 place-items-center rounded-[8px] bg-ink font-sans text-[0.625rem] font-semibold tracking-tight text-paper sm:size-9 sm:rounded-[10px] sm:text-[0.8125rem]"
         >
           {tool.mono}
         </span>
       )}
-      <span className="whitespace-nowrap text-xs font-medium tracking-[-0.01em] text-ink-soft">
+      <span className="whitespace-nowrap text-[0.6875rem] font-medium tracking-[-0.01em] text-ink-soft sm:text-xs">
         {tool.name}
       </span>
     </li>

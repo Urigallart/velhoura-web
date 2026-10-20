@@ -636,11 +636,18 @@ html:not([data-intro-cards="row"]) .intro-desk {
 }
 
 .marquee-track {
+  --g: 12px;
   display: flex;
-  gap: 24px;
+  gap: var(--g);
   width: max-content;
   padding-inline: 12px;
   animation: v-marquee 48s linear infinite;
+}
+
+@media (min-width: 640px) {
+  .marquee-track {
+    --g: 24px;
+  }
 }
 
 /* The second strip runs the other way, and a little slower. */
@@ -656,7 +663,7 @@ html:not([data-intro-cards="row"]) .intro-desk {
 
 @keyframes v-marquee {
   to {
-    transform: translate3d(calc(-50% - 12px), 0, 0);
+    transform: translate3d(calc(-50% - var(--g) / 2), 0, 0);
   }
 }
 
