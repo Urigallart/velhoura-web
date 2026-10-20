@@ -79,7 +79,7 @@ export function CookieNotice() {
           animate={{ opacity: 1, y: 0 }}
           exit={reduced ? { opacity: 0 } : { opacity: 0, y: 16 }}
           transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed inset-x-4 bottom-4 z-[90] mx-auto max-w-[440px] rounded-2xl border border-line bg-paper-raise p-5 shadow-[0_30px_70px_-30px_rgba(8,9,10,0.35)] sm:inset-x-auto sm:left-6 sm:bottom-6"
+          className="cookie-notice fixed inset-x-4 bottom-4 z-[90] mx-auto max-w-[440px] rounded-2xl border border-line bg-paper-raise p-5 shadow-[0_30px_70px_-30px_rgba(8,9,10,0.35)] sm:inset-x-auto sm:left-6 sm:bottom-6"
         >
           <p className="text-[0.9375rem] font-medium text-ink">{t.title}</p>
           <p className="mt-1.5 text-[0.8125rem] leading-relaxed text-ink-soft">{t.body}</p>

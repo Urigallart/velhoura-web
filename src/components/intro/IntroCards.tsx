@@ -213,7 +213,7 @@ function Head({
       >
         {eyebrow}
       </span>
-      <span className="mt-1.5 text-[clamp(19px,1.55vw,26px)] font-semibold leading-[1.1] tracking-[-0.025em]">
+      <span className="intro-title mt-1.5 text-[clamp(19px,1.55vw,26px)] font-semibold leading-[1.1] tracking-[-0.025em]">
         {title}
       </span>
       {pitch && (
@@ -234,7 +234,7 @@ function OfferCard({ preview, onPreview }: Props) {
   return (
     <Shell>
       <Head eyebrow={t.offerEyebrow} title={t.offerTitle} />
-      <span className="mt-1 text-[13px] leading-snug text-ink-soft">
+      <span className="intro-hint mt-1 text-[13px] leading-snug text-ink-soft">
         <span className="pointer-coarse:hidden">{t.hover}</span>
         <span className="hidden pointer-coarse:inline">{t.tap}</span>{" "}
         {t.onScreen}
@@ -242,7 +242,7 @@ function OfferCard({ preview, onPreview }: Props) {
       {/* Leaving the list gives the screen back to the hero. */}
       <ul
         onPointerLeave={(e) => e.pointerType === "mouse" && onPreview(null)}
-        className="mt-3 flex min-h-0 flex-1 flex-col justify-end gap-1"
+        className="intro-list mt-3 flex min-h-0 flex-1 flex-col justify-end gap-1"
       >
         {plans.filter((p) => isPreviewId(p.id)).map((p) => {
           const id = p.id as PreviewId;
@@ -306,7 +306,7 @@ function PriceCard({ onPreview }: Props) {
       <div
         role="radiogroup"
         aria-label={t.priceGroup}
-        className="mt-3 flex flex-wrap gap-1.5"
+        className="intro-chips mt-3 flex flex-wrap gap-1.5"
       >
         {plans.map((p) => {
           const on = picked.id === p.id;
@@ -330,7 +330,7 @@ function PriceCard({ onPreview }: Props) {
         })}
       </div>
 
-      <span className="mt-auto pt-3">
+      <span className="intro-price mt-auto pt-3">
         <span className="block text-[11px] font-medium text-ink-mute">
           {picked.pricePrefix ?? t.quote}
         </span>
@@ -340,7 +340,7 @@ function PriceCard({ onPreview }: Props) {
         >
           {picked.price}
         </span>
-        <span className="mt-2 line-clamp-2 block text-[12.5px] leading-snug text-ink-soft">
+        <span className="intro-features mt-2 line-clamp-2 block text-[12.5px] leading-snug text-ink-soft">
           {picked.features.slice(0, 3).join(" · ")}
         </span>
       </span>
@@ -353,7 +353,7 @@ function PriceCard({ onPreview }: Props) {
             message: t.message(picked.name, priceOf(picked)),
           })
         }
-        className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-full bg-ink px-4 py-2.5 text-[14px] font-medium text-paper transition-colors hover:bg-ember"
+        className="intro-ask mt-3 inline-flex w-full items-center justify-center gap-2 rounded-full bg-ink px-4 py-2.5 text-[14px] font-medium text-paper transition-colors hover:bg-ember"
       >
         {t.askQuote} <span aria-hidden="true">→</span>
       </button>
@@ -483,7 +483,7 @@ export function IntroCards(props: Props) {
           {cards.map((card, i) => (
             <div
               key={i}
-              className="anim-rise h-full w-[min(76vw,280px)] shrink-0 snap-center"
+              className="intro-card-slot anim-rise h-full w-[min(76vw,280px)] shrink-0 snap-center"
               style={{ "--d": `${650 + i * 90}ms` } as React.CSSProperties}
             >
               {card}

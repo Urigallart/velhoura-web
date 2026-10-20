@@ -665,8 +665,66 @@ html:not([data-intro-cards="sides"]) .intro-cards-sides {
 }
 
 /* The chat launcher stays out of the way while the office intro plays. */
-html[data-intro="play"] .assistant-root {
+html[data-intro="play"] .assistant-root,
+html[data-intro="play"] .cookie-notice {
   display: none;
+}
+
+/* ── Intro cards in a row (phones and narrow windows) ─────────────────
+   Under the laptop the row only gets what's left of the screen, which on
+   a small phone is barely 200px. Each slot is a size container, so the
+   cards drop their secondary lines and tighten up as their height shrinks
+   instead of letting the list grow up over the title. */
+.intro-card-slot {
+  container-type: size;
+}
+@container (max-height: 290px) {
+  .intro-hint,
+  .intro-features {
+    display: none;
+  }
+  .intro-title {
+    font-size: 18px;
+  }
+  .intro-list {
+    justify-content: flex-start;
+    margin-top: 10px;
+    gap: 3px;
+  }
+  .intro-list button {
+    padding-block: 6px;
+    font-size: 13.5px;
+  }
+  .intro-chips {
+    margin-top: 8px;
+    gap: 4px;
+  }
+  .intro-chips button {
+    padding: 2px 10px;
+    font-size: 12px;
+  }
+  .intro-price {
+    padding-top: 6px;
+  }
+  .intro-price > span:nth-child(2) {
+    font-size: 28px;
+  }
+  .intro-ask {
+    margin-top: 8px;
+    padding-block: 7px;
+    font-size: 13.5px;
+  }
+}
+@container (max-height: 225px) {
+  .intro-card-slot > * {
+    padding: 12px 14px;
+  }
+  .intro-list button {
+    padding-block: 4px;
+  }
+  .intro-price > span:first-child {
+    display: none;
+  }
 }
 
 @media (max-width: 639px) {
