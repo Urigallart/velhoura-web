@@ -1,87 +1,145 @@
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import type { Locale } from "@/i18n/locale";
+import { cn } from "@/lib/utils";
 
 const copy = {
   es: {
-    label: "La diferencia",
     lines: ["Un equipo.", "*Un responsable.*"],
-    themLabel: "Lo habitual",
-    themTitle: "Tres proveedores, tres versiones.",
-    themBody: "El logo lo hizo uno, la web otro y los anuncios un tercero. Cuando algo no funciona, cada uno señala al de al lado.",
-    usTitle: "Una sola visión.",
-    usTitleMuted: "De la marca a la última campaña.",
-    usBody: "Quien diseña tu marca es quien construye tu web y quien prepara tus campañas. Todo encaja porque sale de las mismas manos, y si algo hay que cambiar, lo cambiamos sin pasar la pelota a nadie.",
-    usNote: "Un único contacto para todo lo digital de tu negocio.",
+    subtitle: "Así nos comparamos con las otras dos formas habituales de hacer una web.",
+    cols: ["Velhoura", "Agencias grandes", "Plantillas y hacerlo tú"],
+    rows: [
+      ["Precio publicado antes de empezar", true, false, true],
+      ["Diseño a medida", true, true, false],
+      ["Un único contacto para todo", true, false, false],
+      ["Hablas con quien diseña y programa", true, false, false],
+      ["Propuesta por escrito con el alcance", true, true, false],
+      ["Sin dedicarle tú el tiempo", true, true, false],
+      ["Pensado para el presupuesto de una pyme", true, false, true],
+    ] as [string, boolean, boolean, boolean][],
+    note: "Comparativa general: cada agencia y cada herramienta es distinta.",
+    yes: "Sí",
+    no: "No",
   },
   en: {
-    label: "The difference",
     lines: ["One team.", "*One owner.*"],
-    themLabel: "The usual way",
-    themTitle: "Three suppliers, three versions.",
-    themBody: "One did the logo, another the website and a third the ads. When something doesn't work, each points at the next.",
-    usTitle: "One vision.",
-    usTitleMuted: "From the brand to the latest campaign.",
-    usBody: "The people who design your brand are the ones who build your website and prepare your campaigns. Everything fits because it comes from the same hands, and if something needs changing, we change it without passing the buck.",
-    usNote: "One contact for everything digital in your business.",
+    subtitle: "How we compare with the other two usual ways of getting a website.",
+    cols: ["Velhoura", "Large agencies", "Templates and DIY"],
+    rows: [
+      ["Price published before you start", true, false, true],
+      ["Custom design", true, true, false],
+      ["One contact for everything", true, false, false],
+      ["You talk to who designs and builds", true, false, false],
+      ["Written proposal with the scope", true, true, false],
+      ["No time needed from you", true, true, false],
+      ["Built for a small business budget", true, false, true],
+    ] as [string, boolean, boolean, boolean][],
+    note: "A general comparison: every agency and every tool is different.",
+    yes: "Yes",
+    no: "No",
   },
 };
 
+function Mark({ on, yes, no }: { on: boolean; yes: string; no: string }) {
+  return on ? (
+    <span
+      role="img"
+      aria-label={yes}
+      className="grid size-8 place-items-center rounded-full bg-[#1fb86a] text-white"
+    >
+      <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" className="size-4">
+        <path d="M3.5 8.5l3 3 6-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    </span>
+  ) : (
+    <span
+      role="img"
+      aria-label={no}
+      className="grid size-8 place-items-center rounded-full bg-ink/8 text-ink/40"
+    >
+      <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" className="size-3.5">
+        <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+      </svg>
+    </span>
+  );
+}
+
 /**
- * The argument, set as two panels side by side: the usual way of buying
- * digital work against ours. The difference is legible before a word is
- * read, because one of them keeps going.
+ * The argument as a comparison: three ways of getting a website, seven
+ * things a business owner cares about, a tick or a cross in each cell. The
+ * Velhoura column is the one with colour, so the eye lands there first.
  */
 export function DifferentiationSection({ locale = "es" }: { locale?: Locale }) {
   const t = copy[locale];
   return (
     <section className="band">
       <div className="shell">
-        <SectionHeading
-          align="center"
-          tone="teal"
-          index="07"
-          label={t.label}
-          lines={t.lines}
-        />
+        <SectionHeading align="center" tone="teal" lines={t.lines} subtitle={t.subtitle} />
 
-        <div className="mt-14 grid gap-4 md:mt-20 md:grid-cols-2">
-          {/* Them */}
-          <Reveal className="overflow-hidden rounded-[2rem] bg-paper-sunk">
-            <div className="flex h-full flex-col p-8 sm:p-11">
-              <p className="t-label">{t.themLabel}</p>
-              <p className="t-h2 mt-7 text-ink-mute">{t.themTitle}</p>
-              <div className="mt-auto pt-12">
-                <p className="text-sm text-ink-faint">
-                  {t.themBody}
-                </p>
-              </div>
-            </div>
-          </Reveal>
+        <Reveal className="mt-14 md:mt-20">
+          <div className="overflow-x-auto rounded-[2rem] bg-paper-sunk p-3 sm:p-4">
+            <table className="w-full min-w-[640px] border-separate border-spacing-0 text-left">
+              <thead>
+                <tr>
+                  <th scope="col" className="w-[38%] px-5 pb-4 pt-3" />
+                  {t.cols.map((c, i) => (
+                    <th
+                      key={c}
+                      scope="col"
+                      className={cn(
+                        "px-3 pb-4 pt-3 text-center text-[0.9375rem] font-semibold tracking-[-0.01em]",
+                        i === 0
+                          ? "rounded-t-3xl bg-gradient-to-b from-[#a5f0e4] to-[#bfe0ff] text-[1.0625rem] text-ink"
+                          : "text-ink/60",
+                      )}
+                    >
+                      {c}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {t.rows.map(([label, a, b, c], r) => {
+                  const last = r === t.rows.length - 1;
+                  return (
+                    <tr key={label}>
+                      <th
+                        scope="row"
+                        className={cn(
+                          "bg-paper-raise px-5 py-4 text-[0.9375rem] font-medium text-ink",
+                          r === 0 && "rounded-tl-2xl",
+                          last && "rounded-bl-2xl",
+                          !last && "border-b border-ink/8",
+                        )}
+                      >
+                        {label}
+                      </th>
+                      {[a, b, c].map((on, i) => (
+                        <td
+                          key={i}
+                          className={cn(
+                            "px-3 py-4 text-center",
+                            i === 0 ? "bg-gradient-to-b from-[#bfe0ff] to-[#d9ccff]/70" : "bg-paper-raise",
+                            i === 2 && r === 0 && "rounded-tr-2xl",
+                            i === 2 && last && "rounded-br-2xl",
+                            i === 0 && last && "rounded-b-3xl",
+                            !last && (i === 0 ? "border-b border-white/40" : "border-b border-ink/8"),
+                          )}
+                        >
+                          <span className="inline-grid">
+                            <Mark on={on} yes={t.yes} no={t.no} />
+                          </span>
+                        </td>
+                      ))}
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </Reveal>
 
-          {/* Us */}
-          <Reveal delay={140} className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-[#bff3f0] via-[#c4e3ff] to-[#dccfff] text-ink">
-            {/* One ember hairline down the shared edge — the whole section's
-                colour budget, spent on the boundary between the two ideas. */}
-            <div className="flex h-full flex-col p-8 sm:p-11">
-              <p className="text-[0.9375rem] font-semibold text-ink">Velhoura</p>
-              <p className="t-h2 mt-7 text-balance">
-                {t.usTitle}{" "}
-                <span className="text-ink/55">{t.usTitleMuted}</span>
-              </p>
-
-              <p className="t-body mt-9 max-w-[46ch] !text-ink/80">
-                {t.usBody}
-              </p>
-
-              <div className="mt-auto pt-12">
-                <p className="text-sm text-ink/55">
-                  {t.usNote}
-                </p>
-              </div>
-            </div>
-          </Reveal>
-        </div>
+        <p className="mt-6 text-center text-[0.8125rem] text-ink-mute">{t.note}</p>
       </div>
     </section>
   );

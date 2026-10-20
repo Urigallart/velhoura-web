@@ -1,15 +1,16 @@
 import Link from "next/link";
 import { ButtonLink } from "@/components/ui/Button";
+import { ServiceArt } from "@/components/sections/ServiceArt";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { getServices, servicesIndexPath } from "@/data/localized";
 import type { Locale } from "@/i18n/locale";
 
-/** One colour per area: warm for brand, blue for web, green for growth. */
+/** One colour per area: amber for brand, mint for web, pink for growth. */
 const tones: Record<string, string> = {
-  brand: "bg-gradient-to-br from-[#ffd3b0] to-[#ff8f9f]",
-  web: "bg-gradient-to-br from-[#c4e3ff] to-[#7db6ff]",
-  growth: "bg-gradient-to-br from-[#ecfb95] to-[#9be34a]",
+  brand: "bg-gradient-to-br from-[#ffe9a3] to-[#ffb04d]",
+  web: "bg-gradient-to-br from-[#b4f5e6] to-[#4fd1c5]",
+  growth: "bg-gradient-to-br from-[#ffd0e6] to-[#f77fb5]",
 };
 
 const copy = {
@@ -57,15 +58,15 @@ export function ServicesSection({ locale = "es" }: { locale?: Locale }) {
               <article
                 className={`group relative flex h-full flex-col overflow-hidden rounded-[2rem] p-8 text-ink transition-[transform,box-shadow] duration-500 ease-[var(--e-out)] hover:-translate-y-1.5 hover:shadow-[0_30px_60px_-30px_rgba(8,9,10,0.35)] sm:p-10 ${tones[service.id] ?? "bg-paper-sunk"}`}
               >
-                <h3 className="text-[clamp(2rem,3vw,2.5rem)] font-semibold leading-[1] tracking-[-0.045em]">{service.name}</h3>
+                <ServiceArt id={service.id} />
+                <h3 className="mt-8 text-[clamp(2rem,3vw,2.5rem)] font-semibold leading-[1] tracking-[-0.045em]">{service.name}</h3>
                 <p className="t-lead mt-4 text-pretty !text-ink">
                   {service.promise}
                 </p>
-                <p className="t-body mt-4 text-[0.9375rem] !text-ink/75">{service.body}</p>
 
-                <ul className="mt-8 divide-y divide-ink/15 border-t border-ink/15">
+                <ul className="mt-7 divide-y divide-ink/15 border-t border-ink/15">
                   {service.items.map((item) => (
-                    <li key={item.name} className="py-4">
+                    <li key={item.name} className="py-3.5">
                       <div className="flex items-baseline justify-between gap-4">
                         <h4 className="text-[0.9375rem] font-medium tracking-[-0.01em] text-ink">
                           {item.href ? (
@@ -85,9 +86,6 @@ export function ServicesSection({ locale = "es" }: { locale?: Locale }) {
                           </span>
                         )}
                       </div>
-                      <p className="mt-1 text-sm leading-relaxed text-ink/60">
-                        {item.detail}
-                      </p>
                     </li>
                   ))}
                 </ul>
