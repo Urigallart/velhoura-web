@@ -46,7 +46,8 @@ export function Footer() {
         <div className="grid gap-12 md:grid-cols-12">
           <div className="md:col-span-5">
             <p className="flex items-center gap-2 font-sans text-sm font-semibold text-ink">
-              <span aria-hidden="true" className="size-1.5 rounded-full bg-ember" />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/brand/logo-mark.png" alt="" width={305} height={256} className="h-6 w-auto" />
               Velhoura
             </p>
             <p className="t-body mt-5 max-w-[36ch] text-sm">
