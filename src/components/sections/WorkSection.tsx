@@ -186,7 +186,7 @@ export function WorkSection() {
         {/* The marks of the projects, as app icons: no heading, the icons say it. */}
         <ul
           aria-label={t.marks}
-          className="mt-12 flex flex-wrap items-start justify-center gap-x-4 gap-y-6 sm:mt-20 sm:gap-x-12 sm:gap-y-8"
+          className="mt-12 flex flex-nowrap items-start justify-between gap-1 sm:mt-20 sm:flex-wrap sm:justify-center sm:gap-x-12 sm:gap-y-8"
         >
           {products
             .filter((p) => appIcons[p.slug] && p.slug !== "velhoura-eyewear")
@@ -196,10 +196,10 @@ export function WorkSection() {
                   <Link
                     href={localePath(locale, `/products/${p.slug}`)}
                     aria-label={t.open(p.name)}
-                    className="group flex w-[64px] flex-col items-center gap-2 sm:w-[104px] sm:gap-3"
+                    className="group flex w-[3.75rem] flex-col items-center gap-1.5 sm:w-[104px] sm:gap-3"
                   >
                     <IconTile slug={p.slug} name={p.name} />
-                    <span className="text-center text-[0.6875rem] font-medium leading-tight text-paper-raise/65 sm:text-[0.8125rem] transition-colors duration-300 group-hover:text-paper-raise">
+                    <span className="text-center text-[0.625rem] font-medium leading-tight text-paper-raise/65 sm:text-[0.8125rem] transition-colors duration-300 group-hover:text-paper-raise">
                       {p.name}
                     </span>
                   </Link>
@@ -218,7 +218,7 @@ function IconTile({ slug, name }: { slug: string; name: string }) {
   if (!icon) return null;
   return (
     <span
-      className={`relative block size-[3.5rem] overflow-hidden rounded-[22.5%] shadow-[0_18px_36px_-14px_rgba(0,0,0,0.8),0_0_0_1px_rgba(255,255,255,0.16)] transition-transform duration-500 ease-[var(--e-out)] group-hover:-translate-y-1.5 group-hover:scale-105 sm:size-[6.25rem] ${icon.bg}`}
+      className={`relative block size-[2.75rem] overflow-hidden rounded-[22.5%] shadow-[0_18px_36px_-14px_rgba(0,0,0,0.8),0_0_0_1px_rgba(255,255,255,0.16)] transition-transform duration-500 ease-[var(--e-out)] group-hover:-translate-y-1.5 group-hover:scale-105 sm:size-[6.25rem] ${icon.bg}`}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
