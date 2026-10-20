@@ -202,8 +202,8 @@ export const products: Product[] = [
       },
     ],
     gallery: [
-      { src: "/products/zhestar/home.jpg", kind: "desktop", caption: "La web de lanzamiento en ordenador" },
-      { src: "/products/zhestar/mobile.jpg", kind: "phone", caption: "Y en móvil" },
+      { src: "/products/zhestar/home.jpg", kind: "desktop", caption: "La portada de la tienda, preparada para el primer drop" },
+      { src: "/products/zhestar/mobile.jpg", kind: "phone", caption: "La web de lanzamiento en móvil" },
     ],
   },
   {
