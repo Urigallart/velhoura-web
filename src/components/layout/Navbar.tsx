@@ -210,8 +210,11 @@ export function Navbar() {
   // Lock the page while the mobile sheet is open.
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
+    // Lets the chat launcher step aside while the full-screen menu is open.
+    if (menuOpen) document.documentElement.setAttribute("data-menu", "open");
     return () => {
       document.body.style.overflow = "";
+      document.documentElement.removeAttribute("data-menu");
     };
   }, [menuOpen]);
 
@@ -555,171 +558,180 @@ export function Navbar() {
             document.body,
           )}
 
-        {/* Mobile sheet — its own card under the pill, not a squeezed nav. */}
-        <AnimatePresence initial={false}>
-          {menuOpen && (
-            <motion.div
-              id="mobile-menu"
-              key="sheet"
-              initial={{ opacity: 0, y: -10, height: 0 }}
-              animate={{ opacity: 1, y: 0, height: "auto" }}
-              exit={{ opacity: 0, y: -10, height: 0 }}
-              transition={{ duration: 0.42, ease: [0.16, 1, 0.3, 1] }}
-              className="mx-auto mt-2 w-full overflow-hidden rounded-3xl glass-panel md:hidden"
-            >
-              <nav className="flex flex-col px-5 py-3" aria-label={t.mainMobile}>
-                <LanguageSwitch
-                  locale={locale}
-                  pathname={pathname}
-                  label={t.language}
-                  className="mb-2 self-start"
-                  onNavigate={() => setMenuOpen(false)}
-                />
-                {nav.map((item, i) => (
-                  <motion.div
-                    key={item.href}
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{
-                      delay: 0.08 + i * 0.05,
-                      duration: 0.5,
-                      ease: [0.16, 1, 0.3, 1],
-                    }}
-                  >
-                    {item.href.endsWith("#services") ? (
-                      <div className="border-b border-line">
-                        <button
-                          type="button"
-                          aria-expanded={mobileServices}
-                          onClick={() => setMobileServices((v) => !v)}
-                          className="flex w-full items-center justify-between py-4 text-lg font-medium tracking-tight text-ink"
-                        >
-                          {item.label}
-                          <span className="t-label t-num">
-                            {mobileServices ? "-" : "+"}
-                          </span>
-                        </button>
-                        {mobileServices && (
-                          <ul className="pb-3">
-                            {servicePages.map((p) => (
-                              <li key={p.slug}>
-                                <Link
-                                  href={servicePath(locale, p.esSlug)}
-                                  onClick={() => setMenuOpen(false)}
-                                  className="flex items-center justify-between py-2 text-[0.9375rem] text-ink-soft"
-                                >
-                                  {p.name}
-                                  <span className="font-sans text-[0.8125rem] text-ink-mute">
-                                    {p.tag}
-                                  </span>
-                                </Link>
-                              </li>
-                            ))}
-                            <li>
-                              <Link
-                                href={nfcPath(locale)}
-                                onClick={() => setMenuOpen(false)}
-                                className="flex items-center justify-between py-2 text-[0.9375rem] text-ink-soft"
-                              >
-                                {nfcCopy.bannerTitle[locale].replace(/^[^:]+:\s*/, "")}
-                                <span className="rounded-full bg-ember px-2 py-0.5 text-[0.6875rem] font-semibold text-paper-raise">
-                                  {nfcCopy.badge[locale]}
-                                </span>
-                              </Link>
-                            </li>
-                            <li>
-                              <Link
-                                href={servicesIndexPath(locale)}
-                                onClick={() => setMenuOpen(false)}
-                                className="block py-2 font-sans text-[0.8125rem] font-semibold text-ember"
-                              >
-                                {t.all}
-                              </Link>
-                            </li>
-                          </ul>
-                        )}
-                      </div>
-                    ) : item.href.endsWith("#pricing") ? (
-                      <div className="border-b border-line">
-                        <button
-                          type="button"
-                          aria-expanded={mobilePrices}
-                          onClick={() => setMobilePrices((v) => !v)}
-                          className="flex w-full items-center justify-between py-4 text-lg font-medium tracking-tight text-ink"
-                        >
-                          {item.label}
-                          <span className="t-label t-num">{mobilePrices ? "-" : "+"}</span>
-                        </button>
-                        {mobilePrices && (
-                          <ul className="pb-3">
-                            {plans.map((pl) => (
-                              <li key={pl.id}>
-                                <Link
-                                  href={planPath(locale, pl.id)}
-                                  onClick={() => setMenuOpen(false)}
-                                  className="flex items-center justify-between py-2 text-[0.9375rem] text-ink-soft"
-                                >
-                                  <span className="flex items-center gap-2.5">
-                                    <span
-                                      aria-hidden="true"
-                                      className="size-3 rounded-full"
-                                      style={{ background: planColour[pl.id as PlanId] }}
-                                    />
-                                    {pl.name}
-                                  </span>
-                                  <span className="font-sans text-[0.8125rem] text-ink-mute">
-                                    {pl.pricePrefix ? `${pl.pricePrefix} ${pl.price}` : pl.price}
-                                  </span>
-                                </Link>
-                              </li>
-                            ))}
-                            <li>
-                              <Link
-                                href={item.href}
-                                onClick={() => setMenuOpen(false)}
-                                className="block py-2 font-sans text-[0.8125rem] font-semibold text-ember"
-                              >
-                                {planUi.mainPrices[locale]} →
-                              </Link>
-                            </li>
-                          </ul>
-                        )}
-                      </div>
-                    ) : (
-                      <Link
-                        href={item.href}
-                        onClick={() => setMenuOpen(false)}
-                        className="flex items-center justify-between border-b border-line py-4 text-lg font-medium tracking-tight text-ink"
-                      >
-                        {item.label}
-                        <span className="t-label t-num">
-                          {String(i + 1).padStart(2, "0")}
-                        </span>
-                      </Link>
-                    )}
-                  </motion.div>
-                ))}
-
-                <button
-                  type="button"
-                  onClick={() => {
-                    setMenuOpen(false);
-                    openContactModal();
-                  }}
-                  className="group my-4 inline-flex h-12 items-center justify-center gap-2.5 rounded-full bg-ink py-1 pl-6 pr-1.5 text-[0.9375rem] font-medium text-paper"
+        {/* Mobile menu: a full-screen sheet in <body>, Apple style. Big type,
+            one line per section, sub-lists that open in place, the language
+            switch and the call to action at the foot. The pill stays on top
+            of it as the way out. */}
+        {mounted &&
+          createPortal(
+            <AnimatePresence>
+              {menuOpen && (
+                <motion.div
+                  id="mobile-menu"
+                  key="sheet"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
+                  className="fixed inset-0 z-[49] overflow-y-auto bg-white/90 md:hidden"
+                  style={{ WebkitBackdropFilter: "blur(40px) saturate(1.8)", backdropFilter: "blur(40px) saturate(1.8)" }}
                 >
-                  {t.start}
-                  <span
-                    aria-hidden="true"
-                    className="flex size-9 items-center justify-center rounded-full bg-paper/15"
-                  >
-                    <DiagonalArrow />
-                  </span>
-                </button>
-              </nav>
-            </motion.div>
+                  <nav className="mx-auto flex min-h-full max-w-[30rem] flex-col px-7 pb-10 pt-[6.5rem]" aria-label={t.mainMobile}>
+                    <ul className="flex flex-col">
+                      {nav.map((item, i) => {
+                        const isServices = item.href.endsWith("#services");
+                        const isPrices = item.href.endsWith("#pricing");
+                        const big =
+                          "flex w-full items-center justify-between py-[0.4rem] text-left text-[clamp(1.875rem,9.2vw,2.5rem)] font-semibold leading-[1.1] tracking-[-0.035em] text-ink";
+                        const open = isServices ? mobileServices : isPrices ? mobilePrices : false;
+                        return (
+                          <motion.li
+                            key={item.href}
+                            initial={{ opacity: 0, y: 18 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.06 + i * 0.05, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                          >
+                            {isServices || isPrices ? (
+                              <>
+                                <button
+                                  type="button"
+                                  aria-expanded={open}
+                                  onClick={() => (isServices ? setMobileServices((v) => !v) : setMobilePrices((v) => !v))}
+                                  className={big}
+                                >
+                                  {item.label}
+                                  <svg
+                                    viewBox="0 0 16 16"
+                                    aria-hidden="true"
+                                    className={cn("size-5 text-ink-mute transition-transform duration-300 ease-[var(--e-out)]", open && "rotate-180")}
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="1.75"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                  >
+                                    <path d="M4 6l4 4 4-4" />
+                                  </svg>
+                                </button>
+                                <AnimatePresence initial={false}>
+                                  {open && (
+                                    <motion.div
+                                      initial={{ height: 0, opacity: 0 }}
+                                      animate={{ height: "auto", opacity: 1 }}
+                                      exit={{ height: 0, opacity: 0 }}
+                                      transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                                      className="overflow-hidden"
+                                    >
+                                      {isServices ? (
+                                        <ul className="pb-3 pt-1">
+                                          {servicePages.map((p) => (
+                                            <li key={p.slug}>
+                                              <Link
+                                                href={servicePath(locale, p.esSlug)}
+                                                onClick={() => setMenuOpen(false)}
+                                                className="flex items-baseline justify-between gap-4 py-2 text-[1.25rem] font-medium tracking-[-0.02em] text-ink"
+                                              >
+                                                {p.name}
+                                                <span className="text-[0.8125rem] font-normal tracking-normal text-ink-mute">{p.tag}</span>
+                                              </Link>
+                                            </li>
+                                          ))}
+                                          <li>
+                                            <Link
+                                              href={nfcPath(locale)}
+                                              onClick={() => setMenuOpen(false)}
+                                              className="mt-2 flex items-center justify-between gap-3 rounded-2xl bg-ember-wash px-4 py-3 text-[1.0625rem] font-medium text-ink"
+                                            >
+                                              {nfcCopy.bannerTitle[locale].replace(/^[^:]+:\s*/, "")}
+                                              <span className="rounded-full bg-ember px-2.5 py-0.5 text-[0.6875rem] font-semibold text-paper-raise">
+                                                {nfcCopy.badge[locale]}
+                                              </span>
+                                            </Link>
+                                          </li>
+                                          <li>
+                                            <Link
+                                              href={servicesIndexPath(locale)}
+                                              onClick={() => setMenuOpen(false)}
+                                              className="block py-3 text-[1rem] font-semibold text-ember"
+                                            >
+                                              {t.all}
+                                            </Link>
+                                          </li>
+                                        </ul>
+                                      ) : (
+                                        <div className="pb-3 pt-1">
+                                          <div className="grid grid-cols-2 gap-2">
+                                            {plans.map((pl) => (
+                                              <Link
+                                                key={pl.id}
+                                                href={planPath(locale, pl.id)}
+                                                onClick={() => setMenuOpen(false)}
+                                                style={{ background: planColour[pl.id as PlanId] }}
+                                                className="flex min-h-[5.5rem] flex-col justify-between rounded-2xl p-3.5 text-ink"
+                                              >
+                                                <span className="text-[1.0625rem] font-semibold tracking-[-0.02em]">{pl.name}</span>
+                                                <span className="text-[0.875rem] font-semibold">
+                                                  {pl.pricePrefix ? `${pl.pricePrefix} ${pl.price}` : pl.price}
+                                                </span>
+                                              </Link>
+                                            ))}
+                                          </div>
+                                          <Link
+                                            href={item.href}
+                                            onClick={() => setMenuOpen(false)}
+                                            className="block py-3 text-[1rem] font-semibold text-ember"
+                                          >
+                                            {planUi.mainPrices[locale]} →
+                                          </Link>
+                                        </div>
+                                      )}
+                                    </motion.div>
+                                  )}
+                                </AnimatePresence>
+                              </>
+                            ) : (
+                              <Link href={item.href} onClick={() => setMenuOpen(false)} className={big}>
+                                {item.label}
+                              </Link>
+                            )}
+                          </motion.li>
+                        );
+                      })}
+                    </ul>
+
+                    <motion.div
+                      initial={{ opacity: 0, y: 14 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.06 + nav.length * 0.05, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                      className="mt-auto flex flex-col gap-5 pt-10"
+                    >
+                      <LanguageSwitch
+                        locale={locale}
+                        pathname={pathname}
+                        label={t.language}
+                        className="self-start"
+                        onNavigate={() => setMenuOpen(false)}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setMenuOpen(false);
+                          openContactModal();
+                        }}
+                        className="group inline-flex h-14 items-center justify-center gap-2.5 rounded-full bg-ink py-1 pl-7 pr-1.5 text-[1rem] font-medium text-paper"
+                      >
+                        {t.start}
+                        <span aria-hidden="true" className="flex size-11 items-center justify-center rounded-full bg-paper/15">
+                          <DiagonalArrow />
+                        </span>
+                      </button>
+                    </motion.div>
+                  </nav>
+                </motion.div>
+              )}
+            </AnimatePresence>,
+            document.body,
           )}
-        </AnimatePresence>
       </div>
     </header>
   );
