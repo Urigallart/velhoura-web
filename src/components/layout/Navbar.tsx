@@ -175,8 +175,8 @@ export function Navbar() {
             "relative mx-auto flex w-fit max-w-full items-center gap-1 overflow-hidden rounded-full border p-1.5",
             "transition-[background-color,border-color,box-shadow] duration-500 ease-[var(--e-out)]",
             condensed || menuOpen
-              ? "border-line bg-paper/85 shadow-[0_10px_34px_-14px_rgba(8,9,10,0.22)] backdrop-blur-xl backdrop-saturate-150"
-              : "border-line/70 bg-paper/60 shadow-[0_6px_22px_-16px_rgba(8,9,10,0.2)] backdrop-blur-lg",
+              ? "glass-bar-strong"
+              : "glass-bar",
           )}
         >
           <Link
@@ -345,7 +345,7 @@ export function Navbar() {
               transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
               onPointerEnter={(e) => e.pointerType === "mouse" && openServices()}
               onPointerLeave={(e) => e.pointerType === "mouse" && closeServicesSoon()}
-              className="absolute left-1/2 top-full mt-2 hidden w-[min(640px,calc(100vw-24px))] -translate-x-1/2 origin-top overflow-hidden rounded-3xl border border-line bg-paper/95 p-3 shadow-[0_24px_60px_-24px_rgba(8,9,10,0.35)] backdrop-blur-xl md:block"
+              className="absolute left-1/2 top-full mt-2 hidden w-[min(640px,calc(100vw-24px))] -translate-x-1/2 origin-top overflow-hidden rounded-3xl glass-panel p-3 md:block"
             >
               <div className="grid grid-cols-3 gap-1">
                 {(["brand", "web", "growth"] as const).map((area) => (
@@ -377,7 +377,7 @@ export function Navbar() {
               <Link
                 href={nfcPath(locale)}
                 onClick={() => setServicesOpen(false)}
-                className="group mt-2 flex items-center justify-between gap-4 rounded-2xl border border-line bg-ember-wash px-5 py-3 transition-colors duration-200 hover:border-ember"
+                className="group mt-2 flex items-center justify-between gap-4 rounded-2xl border border-white/70 bg-white/45 px-5 py-3 transition-colors duration-200 hover:border-ember"
               >
                 <span className="flex items-center gap-3">
                   <span className="rounded-full bg-ember px-2.5 py-0.5 text-[0.6875rem] font-semibold text-paper-raise">
@@ -389,7 +389,7 @@ export function Navbar() {
                 </span>
                 <span aria-hidden="true" className="text-ink transition-transform duration-300 group-hover:translate-x-1">→</span>
               </Link>
-              <div className="mt-2 flex items-center justify-between rounded-2xl bg-paper-sunk px-5 py-3">
+              <div className="mt-2 flex items-center justify-between rounded-2xl bg-ink/[0.05] px-5 py-3">
                 <span className="text-sm text-ink-soft">
                   {t.blurb}
                 </span>
@@ -415,7 +415,7 @@ export function Navbar() {
               animate={{ opacity: 1, y: 0, height: "auto" }}
               exit={{ opacity: 0, y: -10, height: 0 }}
               transition={{ duration: 0.42, ease: [0.16, 1, 0.3, 1] }}
-              className="mx-auto mt-2 w-full overflow-hidden rounded-3xl border border-line bg-paper/95 shadow-[0_18px_50px_-20px_rgba(8,9,10,0.28)] backdrop-blur-xl md:hidden"
+              className="mx-auto mt-2 w-full overflow-hidden rounded-3xl glass-panel md:hidden"
             >
               <nav className="flex flex-col px-5 py-3" aria-label={t.mainMobile}>
                 <LanguageSwitch
