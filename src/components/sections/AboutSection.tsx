@@ -48,29 +48,23 @@ export function AboutSection({ locale = "es" }: { locale?: Locale }) {
                   </span>
                 </div>
 
-                {/* Each partner's figure, standing in the corner: Oriol's own picture,
-                    and Ian's half of the picture of the two of them. */}
-                {i === 0 ? (
-                  <span
-                    aria-hidden="true"
-                    className="pointer-events-none absolute bottom-0 right-3 h-[10.5rem] sm:right-5 sm:h-[12rem]"
-                  >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src="/team/oriol.webp" alt="" loading="lazy" className="h-full w-auto" />
-                  </span>
-                ) : (
-                  <span
-                    aria-hidden="true"
-                    className="pointer-events-none absolute bottom-0 right-3 h-[10.5rem] w-[3.4rem] overflow-hidden sm:right-5 sm:h-[12rem] sm:w-[3.9rem]"
-                  >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src="/team/duo.webp" alt="" loading="lazy" className="absolute bottom-0 right-0 h-full w-auto max-w-none" />
-                  </span>
-                )}
+                {/* Each partner's own figure, standing in the corner. */}
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none absolute bottom-0 right-3 h-[10.5rem] sm:right-5 sm:h-[12rem]"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={i === 0 ? "/team/oriol.webp" : "/team/ian.webp"}
+                    alt=""
+                    loading="lazy"
+                    className="h-full w-auto"
+                  />
+                </span>
 
                 <h3 className="mt-4 text-[clamp(1.375rem,2vw,1.625rem)] font-semibold leading-none tracking-[-0.035em]">{member.name}</h3>
-                <p className={`mt-1.5 text-[0.8125rem] font-medium opacity-70 ${i === 0 ? "pr-24 sm:pr-28" : "pr-16 sm:pr-20"}`}>{member.role}</p>
-                <p className={`t-body mt-3 max-w-[40ch] text-[0.8125rem] leading-relaxed !text-current opacity-80 ${i === 0 ? "pr-[5.5rem] sm:pr-24" : "pr-14 sm:pr-16"}`}>
+                <p className={`mt-1.5 text-[0.8125rem] font-medium opacity-70 pr-24 sm:pr-28`}>{member.role}</p>
+                <p className={`t-body mt-3 max-w-[40ch] text-[0.8125rem] leading-relaxed !text-current opacity-80 pr-[5.5rem] sm:pr-24`}>
                   {member.bio}
                 </p>
 
