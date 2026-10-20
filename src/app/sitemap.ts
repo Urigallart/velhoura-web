@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { getProducts, getServicePages, servicePath } from "@/data/localized";
 import { nfcPath } from "@/data/nfc";
+import { planIds, planPath } from "@/data/planPages";
 import { site } from "@/data/site";
 
 /**
@@ -27,6 +28,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       pair(servicePath("es", p.esSlug), servicePath("en", p.esSlug), 0.9),
     ),
     ...pair(nfcPath("es"), nfcPath("en"), 0.8),
+    ...planIds.flatMap((id) => pair(planPath("es", id), planPath("en", id), 0.9)),
     ...getProducts("es").flatMap((p) =>
       pair(`/products/${p.slug}`, `/en/products/${p.slug}`, 0.8),
     ),

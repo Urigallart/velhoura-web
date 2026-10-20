@@ -8,6 +8,8 @@ import { Reveal } from "@/components/ui/Reveal";
 import { ButtonAction } from "@/components/ui/Button";
 import type { Plan } from "@/data/plans";
 import { detailCopy, getPlanDetail } from "@/data/planDetails";
+import { planPath, planUi } from "@/data/planPages";
+import Link from "next/link";
 import { estimatePlan, formatEstimate, getPlanQuiz } from "@/data/planQuiz";
 import { useLocale } from "@/i18n/useLocale";
 import type { Locale } from "@/i18n/locale";
@@ -242,6 +244,13 @@ function PlanDialog({
                 <ButtonAction arrow size="lg" className="mt-8 w-full" onClick={() => setView("form")}>
                   {t.cta}
                 </ButtonAction>
+                <Link
+                  href={planPath(locale, plan.id)}
+                  onClick={onClose}
+                  className="mt-4 block text-center text-[0.9375rem] font-medium text-ink-soft underline decoration-line-strong underline-offset-4 transition-colors duration-300 hover:text-ink hover:decoration-ink"
+                >
+                  {planUi.fullPage[locale]} →
+                </Link>
               </>
             )}
           </motion.div>

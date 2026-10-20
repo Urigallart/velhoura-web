@@ -1,4 +1,5 @@
 import type { Locale } from "@/i18n/locale";
+import { planIdFromSlug, planPath } from "./planPages";
 import { faqs as faqsEs, type Faq } from "./faq";
 import { plans as plansEs, type Plan } from "./plans";
 import { processSteps as processEs, type ProcessStep } from "./process";
@@ -181,6 +182,11 @@ export function alternatePath(pathname: string, to: Locale): string {
     if (path === "/") return "/en";
     if (path === "/servicios") return "/en/services";
     if (path === "/servicios/tarjetas-nfc") return "/en/services/nfc-review-cards";
+    const plan = path.match(/^\/precios\/([^/]+)$/);
+    if (plan) {
+      const id = planIdFromSlug("es", plan[1]);
+      return id ? planPath("en", id) : "/en#pricing";
+    }
     const service = path.match(/^\/servicios\/([^/]+)$/);
     if (service) return servicePath("en", service[1]);
     const product = path.match(/^\/products\/([^/]+)$/);
@@ -191,6 +197,11 @@ export function alternatePath(pathname: string, to: Locale): string {
   if (path === "/en") return "/";
   if (path === "/en/services") return "/servicios";
   if (path === "/en/services/nfc-review-cards") return "/servicios/tarjetas-nfc";
+  const planEn = path.match(/^\/en\/pricing\/([^/]+)$/);
+  if (planEn) {
+    const id = planIdFromSlug("en", planEn[1]);
+    return id ? planPath("es", id) : "/#pricing";
+  }
   const service = path.match(/^\/en\/services\/([^/]+)$/);
   if (service) {
     const es = Object.entries(servicePagesEn).find(

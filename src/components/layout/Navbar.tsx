@@ -10,6 +10,7 @@ import {
   alternatePath,
   areaNames,
   getNav,
+  getPlans,
   getServicePages,
   servicePath,
   servicesIndexPath,
@@ -44,6 +45,7 @@ const copy = {
 };
 import { openContactModal } from "@/lib/contactModal";
 import { nfcCopy, nfcPath } from "@/data/nfc";
+import { planColour, planPath, planUi, type PlanId } from "@/data/planPages";
 import { cn } from "@/lib/utils";
 
 /** The `id`s the nav tracks, in page order. */
@@ -73,6 +75,7 @@ export function Navbar() {
     href: localePath(locale, item.href),
   }));
   const servicePages = getServicePages(locale);
+  const plans = getPlans(locale);
   const areaName = areaNames[locale];
   const [condensed, setCondensed] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -96,11 +99,31 @@ export function Navbar() {
   );
   const [menuTop, setMenuTop] = useState(76);
 
+  // The prices dropdown works the same way, and only one of the two is open.
+  const [pricesOpen, setPricesOpen] = useState(false);
+  const [mobilePrices, setMobilePrices] = useState(false);
+  const pricesMenuRef = useRef<HTMLDivElement>(null);
+  const pricesTimer = useRef<number | undefined>(undefined);
+
   const openServices = () => {
+    window.clearTimeout(closeTimer.current);
+    window.clearTimeout(pricesTimer.current);
+    const r = servicesRef.current?.getBoundingClientRect();
+    if (r) setMenuTop(Math.round(r.bottom + 8));
+    setPricesOpen(false);
+    setServicesOpen(true);
+  };
+  const openPrices = () => {
+    window.clearTimeout(pricesTimer.current);
     window.clearTimeout(closeTimer.current);
     const r = servicesRef.current?.getBoundingClientRect();
     if (r) setMenuTop(Math.round(r.bottom + 8));
-    setServicesOpen(true);
+    setServicesOpen(false);
+    setPricesOpen(true);
+  };
+  const closePricesSoon = () => {
+    window.clearTimeout(pricesTimer.current);
+    pricesTimer.current = window.setTimeout(() => setPricesOpen(false), 160);
   };
   const closeServicesSoon = () => {
     window.clearTimeout(closeTimer.current);
@@ -108,13 +131,23 @@ export function Navbar() {
   };
 
   useEffect(() => {
-    if (!servicesOpen) return;
+    if (!servicesOpen && !pricesOpen) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setServicesOpen(false);
+      if (e.key === "Escape") {
+        setServicesOpen(false);
+        setPricesOpen(false);
+      }
     };
     const onDown = (e: PointerEvent) => {
       const target = e.target as Node;
-      if (!servicesRef.current?.contains(target) && !menuRef.current?.contains(target)) setServicesOpen(false);
+      if (
+        !servicesRef.current?.contains(target) &&
+        !menuRef.current?.contains(target) &&
+        !pricesMenuRef.current?.contains(target)
+      ) {
+        setServicesOpen(false);
+        setPricesOpen(false);
+      }
     };
     window.addEventListener("keydown", onKey);
     window.addEventListener("pointerdown", onDown);
@@ -122,7 +155,7 @@ export function Navbar() {
       window.removeEventListener("keydown", onKey);
       window.removeEventListener("pointerdown", onDown);
     };
-  }, [servicesOpen]);
+  }, [servicesOpen, pricesOpen]);
 
   const { scrollYProgress } = useScroll();
   const progress = useSpring(scrollYProgress, {
@@ -261,6 +294,48 @@ export function Navbar() {
                       className={cn(
                         "relative size-3 transition-transform duration-300 ease-[var(--e-out)]",
                         servicesOpen && "rotate-180",
+                      )}
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.75"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M4 6l4 4 4-4" />
+                    </svg>
+                  </button>
+                );
+              }
+              if (id === "pricing") {
+                return (
+                  <button
+                    key={item.href}
+                    type="button"
+                    aria-expanded={pricesOpen}
+                    aria-controls="prices-menu"
+                    onClick={() => (pricesOpen ? setPricesOpen(false) : openPrices())}
+                    onPointerEnter={(e) => e.pointerType === "mouse" && openPrices()}
+                    onPointerLeave={(e) => e.pointerType === "mouse" && closePricesSoon()}
+                    className={cn(
+                      "relative flex items-center gap-1.5 rounded-full px-4 py-2 text-[0.875rem] transition-colors duration-300",
+                      isActive || pricesOpen ? "text-ink" : "text-ink-soft hover:text-ink",
+                    )}
+                  >
+                    {(isActive || pricesOpen) && (
+                      <motion.span
+                        layoutId="nav-marker"
+                        aria-hidden="true"
+                        className="absolute inset-0 rounded-full bg-paper-sunk"
+                        transition={{ type: "spring", stiffness: 360, damping: 32 }}
+                      />
+                    )}
+                    <span className="relative">{item.label}</span>
+                    <svg
+                      viewBox="0 0 16 16"
+                      aria-hidden="true"
+                      className={cn(
+                        "relative size-3 transition-transform duration-300 ease-[var(--e-out)]",
+                        pricesOpen && "rotate-180",
                       )}
                       fill="none"
                       stroke="currentColor"
@@ -427,6 +502,59 @@ export function Navbar() {
             document.body,
           )}
 
+        {/* Prices dropdown: one tile per plan, in the plan's own colour. */}
+        {mounted &&
+          createPortal(
+            <AnimatePresence>
+              {pricesOpen && (
+                <motion.div
+                  id="prices-menu"
+                  ref={pricesMenuRef}
+                  style={{ top: menuTop }}
+                  key="prices"
+                  initial={{ opacity: 0, y: -8, scale: 0.98 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -6, scale: 0.98 }}
+                  transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+                  onPointerEnter={(e) => e.pointerType === "mouse" && openPrices()}
+                  onPointerLeave={(e) => e.pointerType === "mouse" && closePricesSoon()}
+                  className="fixed left-1/2 z-[60] hidden w-[min(560px,calc(100vw-24px))] -translate-x-1/2 origin-top overflow-hidden rounded-3xl glass-panel p-3 md:block"
+                >
+                  <div className="grid grid-cols-2 gap-2">
+                    {plans.map((pl) => (
+                      <Link
+                        key={pl.id}
+                        href={planPath(locale, pl.id)}
+                        onClick={() => setPricesOpen(false)}
+                        style={{ background: planColour[pl.id as PlanId] }}
+                        className="group flex min-h-[6.5rem] flex-col justify-between rounded-2xl p-4 text-ink transition-transform duration-300 ease-[var(--e-out)] hover:-translate-y-0.5"
+                      >
+                        <span className="flex items-center justify-between">
+                          <span className="text-[1.125rem] font-semibold tracking-[-0.02em]">{pl.name}</span>
+                          <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+                        </span>
+                        <span className="text-[0.9375rem] font-semibold">
+                          {pl.pricePrefix ? `${pl.pricePrefix} ${pl.price}` : pl.price}
+                        </span>
+                      </Link>
+                    ))}
+                  </div>
+                  <div className="mt-2 flex items-center justify-between rounded-2xl bg-ink/[0.05] px-5 py-3">
+                    <span className="text-sm text-ink-soft">{planUi.menuBlurb[locale]}</span>
+                    <Link
+                      href={localePath(locale, "/#pricing")}
+                      onClick={() => setPricesOpen(false)}
+                      className="font-sans text-[0.8125rem] font-semibold text-ember"
+                    >
+                      {planUi.mainPrices[locale]} →
+                    </Link>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>,
+            document.body,
+          )}
+
         {/* Mobile sheet — its own card under the pill, not a squeezed nav. */}
         <AnimatePresence initial={false}>
           {menuOpen && (
@@ -506,6 +634,52 @@ export function Navbar() {
                                 className="block py-2 font-sans text-[0.8125rem] font-semibold text-ember"
                               >
                                 {t.all}
+                              </Link>
+                            </li>
+                          </ul>
+                        )}
+                      </div>
+                    ) : item.href.endsWith("#pricing") ? (
+                      <div className="border-b border-line">
+                        <button
+                          type="button"
+                          aria-expanded={mobilePrices}
+                          onClick={() => setMobilePrices((v) => !v)}
+                          className="flex w-full items-center justify-between py-4 text-lg font-medium tracking-tight text-ink"
+                        >
+                          {item.label}
+                          <span className="t-label t-num">{mobilePrices ? "-" : "+"}</span>
+                        </button>
+                        {mobilePrices && (
+                          <ul className="pb-3">
+                            {plans.map((pl) => (
+                              <li key={pl.id}>
+                                <Link
+                                  href={planPath(locale, pl.id)}
+                                  onClick={() => setMenuOpen(false)}
+                                  className="flex items-center justify-between py-2 text-[0.9375rem] text-ink-soft"
+                                >
+                                  <span className="flex items-center gap-2.5">
+                                    <span
+                                      aria-hidden="true"
+                                      className="size-3 rounded-full"
+                                      style={{ background: planColour[pl.id as PlanId] }}
+                                    />
+                                    {pl.name}
+                                  </span>
+                                  <span className="font-sans text-[0.8125rem] text-ink-mute">
+                                    {pl.pricePrefix ? `${pl.pricePrefix} ${pl.price}` : pl.price}
+                                  </span>
+                                </Link>
+                              </li>
+                            ))}
+                            <li>
+                              <Link
+                                href={item.href}
+                                onClick={() => setMenuOpen(false)}
+                                className="block py-2 font-sans text-[0.8125rem] font-semibold text-ember"
+                              >
+                                {planUi.mainPrices[locale]} →
                               </Link>
                             </li>
                           </ul>
