@@ -1,154 +1,136 @@
-"use client";
-
-import { useRef } from "react";
-import { motion, useScroll, useSpring, useTransform } from "motion/react";
-import { SectionHeading } from "@/components/ui/SectionHeading";
+import type { ReactNode } from "react";
+import { Reveal } from "@/components/ui/Reveal";
 import { getProcess } from "@/data/localized";
-import { useLocale } from "@/i18n/useLocale";
+import type { Locale } from "@/i18n/locale";
+import { cn } from "@/lib/utils";
 
 const copy = {
   es: {
-    label: "Cómo trabajamos",
-    lines: ["Cuatro pasos,", "*sin sorpresas.*"],
+    lines: ["Cuatro pasos,", "sin sorpresas."],
     subtitle: "El mismo recorrido para una web, una marca o una campaña. Siempre sabes en qué punto está tu proyecto.",
   },
   en: {
-    label: "How we work",
-    lines: ["Four steps,", "*no surprises.*"],
+    lines: ["Four steps,", "no surprises."],
     subtitle: "The same path for a website, a brand or a campaign. You always know where your project stands.",
   },
 };
 
+/** One loud colour per step, as in the pricing cards; ink text on all four. */
+const looks = [
+  { bg: "bg-gradient-to-br from-[#bfe0ff] to-[#7db6ff]", glow: "bg-[#ffffff]/40" },
+  { bg: "bg-gradient-to-br from-[#e0ccff] to-[#b894ff]", glow: "bg-[#ffffff]/40" },
+  { bg: "bg-gradient-to-br from-[#ffb199] to-[#ff7a8c]", glow: "bg-[#ffffff]/35" },
+  { bg: "bg-gradient-to-br from-[#e8fa8a] to-[#b6ec5a]", glow: "bg-[#ffffff]/45" },
+];
+
+/** One glyph per step, drawn in ink on the card's own colour. */
+const glyphs: ReactNode[] = [
+  // Listen: speech bubbles
+  <>
+    <path d="M10 14h30a4 4 0 0 1 4 4v14a4 4 0 0 1-4 4H26l-9 8v-8h-7a4 4 0 0 1-4-4V18a4 4 0 0 1 4-4z" />
+    <path d="M16 23h18M16 29h11" />
+  </>,
+  // Propose: document with a check
+  <>
+    <path d="M14 6h20l10 10v34H14z" />
+    <path d="M34 6v10h10" />
+    <path d="M21 32l5 5 9-10" />
+  </>,
+  // Build: layers
+  <>
+    <path d="M28 8l22 11-22 11L6 19z" />
+    <path d="M6 30l22 11 22-11" />
+    <path d="M6 41l22 11 22-11" />
+  </>,
+  // Launch and improve: rising line
+  <>
+    <path d="M6 46l14-16 10 8 20-26" />
+    <path d="M38 12h12v12" />
+  </>,
+];
+
 /**
- * How a project runs.
- *
- * A single line is drawn by scroll progress through the section and each phase
- * lights as the line reaches it. The scroll value drives one spring, which
- * drives one `scaleY` and a handful of opacity transforms — the DOM is never
- * rewritten while scrolling, so the whole thing runs on the compositor.
- *
- * The indices are set at headline size rather than as mono eyebrows: they are
- * the section's rhythm, and at that scale a reader can find their place in it
- * from across the room.
- *
- * On mobile the track sits on the left edge; on desktop it runs down the
- * gutter between the index column and the copy.
+ * How a project runs, as four tall colour cards: a big numeral, a glyph, the
+ * step's name and one line about it. Four across on a wide screen, two by two
+ * on a tablet, and a swipeable row on a phone.
  */
-export function ProcessSection() {
-  const locale = useLocale();
+export function ProcessSection({ locale = "es" }: { locale?: Locale }) {
   const t = copy[locale];
-  const processSteps = getProcess(locale);
-  const trackRef = useRef<HTMLDivElement>(null);
-
-  const { scrollYProgress } = useScroll({
-    target: trackRef,
-    // Start filling as the track enters the lower third, finish before it leaves.
-    offset: ["start 78%", "end 55%"],
-  });
-
-  const progress = useSpring(scrollYProgress, {
-    stiffness: 90,
-    damping: 26,
-    mass: 0.35,
-  });
+  const steps = getProcess(locale);
 
   return (
-    <section id="process" className="band">
+    <section id="process" className="band overflow-hidden">
       <div className="shell">
-        <SectionHeading
-          index="05"
-          label={t.label}
-          lines={t.lines}
-          subtitle={t.subtitle}
-        />
-
-        <div ref={trackRef} className="relative mt-16 md:mt-24">
-          {/* The rail. */}
-          <div
-            aria-hidden="true"
-            className="absolute left-[7px] top-2 bottom-2 w-px bg-line md:left-[calc(16.6667%-0.5px)]"
-          />
-
-          {/* The line that fills with scroll. */}
-          <motion.div
-            aria-hidden="true"
-            style={{ scaleY: progress }}
-            className="absolute left-[7px] top-2 bottom-2 w-px origin-top bg-gradient-to-b from-ember via-ember to-ink md:left-[calc(16.6667%-0.5px)]"
-          />
-
-          <ol className="space-y-16 md:space-y-28">
-            {processSteps.map((step, i) => (
-              <Step
-                key={step.index}
-                step={step}
-                i={i}
-                total={processSteps.length}
-                progress={progress}
-              />
-            ))}
-          </ol>
+        <div className="mx-auto max-w-4xl text-center">
+          <Reveal y={12}>
+            <h2 className="text-balance text-[clamp(2.5rem,7vw,5.75rem)] font-semibold leading-[0.95] tracking-[-0.05em]">
+              {t.lines[0]}
+              <br />
+              <span className="bg-gradient-to-r from-[#7db6ff] via-[#b894ff] to-[#ff7a8c] bg-clip-text text-transparent">
+                {t.lines[1]}
+              </span>
+            </h2>
+          </Reveal>
+          <Reveal delay={160}>
+            <p className="t-lead mx-auto mt-7 max-w-[52ch] text-pretty">{t.subtitle}</p>
+          </Reveal>
         </div>
       </div>
+
+      <div className="shell mt-14 md:mt-20">
+        {/* Phone: a row you swipe, bleeding off both edges of the screen. */}
+        <ol
+          className={cn(
+            "no-scrollbar -mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-4",
+            "md:mx-0 md:grid md:snap-none md:grid-cols-2 md:overflow-visible md:px-0 md:pb-0 lg:grid-cols-4",
+          )}
+        >
+          {steps.map((step, i) => {
+            const look = looks[i % looks.length];
+            return (
+              <li key={step.index} className="w-[78vw] max-w-[22rem] shrink-0 snap-center md:w-auto md:max-w-none">
+                <Reveal delay={i * 90} variant="lift" y={30} className="h-full">
+                  <div
+                    className={cn(
+                      "group relative flex h-full min-h-[27rem] flex-col overflow-hidden rounded-[2rem] p-7 text-ink sm:p-8 md:min-h-[30rem]",
+                      "transition-transform duration-500 ease-[var(--e-out)] hover:-translate-y-1.5",
+                      look.bg,
+                    )}
+                  >
+                    {/* A soft highlight in the corner, like light on glass. */}
+                    <span
+                      aria-hidden="true"
+                      className={cn("absolute -right-16 -top-16 size-56 rounded-full blur-3xl", look.glow)}
+                    />
+
+                    <span className="relative text-[clamp(4.5rem,8vw,6.5rem)] font-semibold leading-[0.8] tracking-[-0.06em] text-ink/90">
+                      {i + 1}
+                    </span>
+
+                    <svg
+                      viewBox="0 0 56 56"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      aria-hidden="true"
+                      className="relative mt-8 size-14 text-ink transition-transform duration-500 ease-[var(--e-out)] group-hover:scale-110"
+                    >
+                      {glyphs[i % glyphs.length]}
+                    </svg>
+
+                    <div className="relative mt-auto pt-10">
+                      <h3 className="text-[1.75rem] font-semibold leading-[1.02] tracking-[-0.04em]">{step.title}</h3>
+                      <p className="mt-3 text-[0.9375rem] leading-relaxed text-ink/75">{step.body}</p>
+                    </div>
+                  </div>
+                </Reveal>
+              </li>
+            );
+          })}
+        </ol>
+      </div>
     </section>
-  );
-}
-
-function Step({
-  step,
-  i,
-  total,
-  progress,
-}: {
-  step: ReturnType<typeof getProcess>[number];
-  i: number;
-  total: number;
-  progress: ReturnType<typeof useSpring>;
-}) {
-  // Where this phase sits along the rail, 0..1.
-  const at = i / (total - 1);
-  const ramp = 0.14;
-
-  const active = useTransform(progress, [Math.max(at - ramp, 0), at], [0, 1], {
-    clamp: true,
-  });
-
-  const dotScale = useTransform(active, [0, 1], [1, 1.7]);
-  const textOpacity = useTransform(active, [0, 1], [0.32, 1]);
-  // The index goes further than the copy: nearly gone before its turn, fully
-  // present after it, so the eye is pulled down the page by the numbers.
-  const indexOpacity = useTransform(active, [0, 1], [0.16, 1]);
-
-  return (
-    <li className="relative grid grid-cols-[auto_1fr] gap-x-6 md:grid-cols-12 md:gap-x-10">
-      {/* Index column (desktop) */}
-      <div className="hidden md:col-span-2 md:block">
-        <motion.p
-          style={{ opacity: indexOpacity }}
-          className="t-h2 t-num -mt-2 text-ink"
-        >
-          {step.index}
-        </motion.p>
-      </div>
-
-      {/* Node on the rail */}
-      <div className="relative flex justify-center pt-[7px] md:col-span-1 md:justify-start md:pt-3">
-        <motion.span
-          style={{ scale: dotScale }}
-          className="relative z-10 block size-[15px] shrink-0 rounded-full border border-line bg-paper md:-ml-[7px]"
-        >
-          <motion.span
-            style={{ opacity: active }}
-            className="absolute inset-[3px] rounded-full bg-ember"
-          />
-        </motion.span>
-      </div>
-
-      {/* Copy */}
-      <motion.div style={{ opacity: textOpacity }} className="md:col-span-9">
-        <p className="t-label t-num md:hidden">{step.index}</p>
-        <h3 className="t-h2 mt-1 md:mt-0">{step.title}</h3>
-        <p className="t-body mt-4 max-w-[46ch]">{step.body}</p>
-      </motion.div>
-    </li>
   );
 }

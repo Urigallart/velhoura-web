@@ -44,7 +44,7 @@ export function HomePage({ locale }: { locale: Locale }) {
       <ShowcaseSection />
       <PricingSection locale={locale} />
       <WhySection locale={locale} />
-      <ProcessSection />
+      <ProcessSection locale={locale} />
       <VisionSection locale={locale} />
       <DifferentiationSection locale={locale} />
       <AboutSection locale={locale} />
