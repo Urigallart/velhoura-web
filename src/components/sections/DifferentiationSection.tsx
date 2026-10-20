@@ -45,9 +45,9 @@ function Mark({ on, yes, no }: { on: boolean; yes: string; no: string }) {
     <span
       role="img"
       aria-label={yes}
-      className="grid size-8 place-items-center rounded-full bg-[#1fb86a] text-white"
+      className="grid size-6 place-items-center rounded-full bg-[#1fb86a] text-white sm:size-8"
     >
-      <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" className="size-4">
+      <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" className="size-3 sm:size-4">
         <path d="M3.5 8.5l3 3 6-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     </span>
@@ -55,9 +55,9 @@ function Mark({ on, yes, no }: { on: boolean; yes: string; no: string }) {
     <span
       role="img"
       aria-label={no}
-      className="grid size-8 place-items-center rounded-full bg-[#ff3b30] text-white"
+      className="grid size-6 place-items-center rounded-full bg-[#ff3b30] text-white sm:size-8"
     >
-      <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" className="size-3.5">
+      <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" className="size-2.5 sm:size-3.5">
         <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
       </svg>
     </span>
@@ -77,19 +77,19 @@ export function DifferentiationSection({ locale = "es" }: { locale?: Locale }) {
         <SectionHeading align="center" tone="teal" lines={t.lines} subtitle={t.subtitle} />
 
         <Reveal className="mt-14 md:mt-20">
-          <div className="overflow-x-auto rounded-[2rem] bg-paper-sunk p-3 sm:p-4">
-            <table className="w-full min-w-[640px] border-separate border-spacing-0 text-left">
+          <div className="rounded-[1.5rem] bg-paper-sunk p-1.5 sm:rounded-[2rem] sm:p-4">
+            <table className="w-full table-fixed border-separate border-spacing-0 text-left">
               <thead>
                 <tr>
-                  <th scope="col" className="w-[38%] px-5 pb-4 pt-3" />
+                  <th scope="col" className="w-[40%] px-2 pb-3 pt-2 sm:w-[38%] sm:px-5 sm:pb-4 sm:pt-3" />
                   {t.cols.map((c, i) => (
                     <th
                       key={c}
                       scope="col"
                       className={cn(
-                        "px-3 pb-4 pt-3 text-center text-[0.9375rem] font-semibold tracking-[-0.01em]",
+                        "px-1 pb-3 pt-2 text-center align-bottom text-[0.6875rem] leading-tight font-semibold tracking-[-0.01em] sm:px-3 sm:pb-4 sm:pt-3 sm:text-[0.9375rem]",
                         i === 0
-                          ? "rounded-t-3xl bg-gradient-to-b from-[#a5f0e4] to-[#bfe0ff] text-[1.0625rem] text-ink"
+                          ? "rounded-t-2xl bg-gradient-to-b from-[#a5f0e4] to-[#bfe0ff] text-[0.8125rem] text-ink sm:rounded-t-3xl sm:text-[1.0625rem]"
                           : "text-ink/60",
                       )}
                     >
@@ -106,7 +106,7 @@ export function DifferentiationSection({ locale = "es" }: { locale?: Locale }) {
                       <th
                         scope="row"
                         className={cn(
-                          "bg-paper-raise px-5 py-4 text-[0.9375rem] font-medium text-ink",
+                          "bg-paper-raise px-3 py-3 text-[0.75rem] leading-snug font-medium text-ink sm:px-5 sm:py-4 sm:text-[0.9375rem]",
                           r === 0 && "rounded-tl-2xl",
                           last && "rounded-bl-2xl",
                           !last && "border-b border-ink/8",
@@ -118,7 +118,7 @@ export function DifferentiationSection({ locale = "es" }: { locale?: Locale }) {
                         <td
                           key={i}
                           className={cn(
-                            "px-3 py-4 text-center",
+                            "px-1 py-3 text-center sm:px-3 sm:py-4",
                             i === 0 ? "bg-gradient-to-b from-[#bfe0ff] to-[#d9ccff]/70" : "bg-paper-raise",
                             i === 2 && r === 0 && "rounded-tr-2xl",
                             i === 2 && last && "rounded-br-2xl",
