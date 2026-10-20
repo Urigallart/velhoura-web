@@ -29,7 +29,7 @@ const copy = {
 export function VisionSection({ locale = "es" }: { locale?: Locale }) {
   const t = copy[locale];
   return (
-    <section className="grain grain-invert relative isolate overflow-hidden border-y border-night bg-night py-[clamp(128px,20vw,272px)] text-paper-raise">
+    <section className="grain grain-invert relative isolate overflow-hidden border-y border-night bg-night py-[clamp(128px,20vw,272px)] text-paper-raise" data-tone="sky">
       {/* Ember wash — the hero's substrate in negative. */}
       <div
         aria-hidden="true"

@@ -697,3 +697,23 @@ html[data-intro="play"] .assistant-root {
     margin-top: 14px;
   }
 }
+
+/* ══ Section tones ═════════════════════════════════════════════════
+   Each section picks a gradient for its emphasised words, chosen for what
+   the section is about: blue for the technical and trustworthy, violet for
+   the creative, coral for the energetic, green for growth and results, teal
+   for method, warm yellow for people. `[data-tone]` goes on the section or
+   on `SectionHeading`; `.t-em` (the `*words*` in a headline) takes the colour. */
+[data-tone] .t-em {
+  background-image: linear-gradient(90deg, var(--g1), var(--g2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+[data-tone="sky"] { --g1: #7db6ff; --g2: #4a63d6; }
+[data-tone="violet"] { --g1: #c29bff; --g2: #7a4df0; }
+[data-tone="coral"] { --g1: #ffa07a; --g2: #ff4d7d; }
+[data-tone="green"] { --g1: #a8e63c; --g2: #0a9d4d; }
+[data-tone="teal"] { --g1: #3cc8d8; --g2: #0a7a9e; }
+[data-tone="sun"] { --g1: #ffc83d; --g2: #ff6a3a; }

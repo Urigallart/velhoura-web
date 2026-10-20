@@ -28,55 +28,31 @@ export function AboutSection({ locale = "es" }: { locale?: Locale }) {
   const t = copy[locale];
   const team = getTeam(locale);
   return (
-    <section id="about" className="band bg-paper-off">
+    <section id="about" className="band">
       <div className="shell">
-        <div className="grid gap-y-10 md:grid-cols-12 md:gap-x-10">
-          <div className="md:col-span-6">
-            <SectionHeading
-              index="08"
-              label={t.label}
-              lines={t.lines}
-            />
-          </div>
-
-          <div className="flex items-end md:col-span-6">
-            <Reveal delay={160}>
-              <p className="t-body max-w-[44ch]">
-                {t.body}
-              </p>
-            </Reveal>
-          </div>
-        </div>
+        <SectionHeading align="center" tone="sun" lines={t.lines} subtitle={t.body} />
 
         <div className="mt-14 grid gap-5 md:mt-20 md:grid-cols-2">
           {team.map((member, i) => (
             <Reveal key={member.id} delay={i * 120} variant="lift" y={34}>
-              <article className="group relative h-full overflow-hidden rounded-2xl border border-line bg-paper p-8 transition-[transform,border-color,box-shadow] duration-500 ease-[var(--e-out)] hover:-translate-y-1.5 hover:border-line-strong hover:shadow-[0_26px_58px_-32px_rgba(8,9,10,0.24)] sm:p-10">
+              <article
+                className={`group relative h-full overflow-hidden rounded-[2rem] p-8 text-ink transition-[transform,box-shadow] duration-500 ease-[var(--e-out)] hover:-translate-y-1.5 hover:shadow-[0_30px_60px_-30px_rgba(8,9,10,0.35)] sm:p-10 ${i % 2 === 0 ? "bg-gradient-to-br from-[#c4e3ff] to-[#7db6ff]" : "bg-gradient-to-br from-[#e3d3ff] to-[#b894ff]"}`}
+              >
                 {/* Ember hairline across the top, drawn in on hover — the same
                     gesture the product cards use, so the page has one idea of
                     what "this is interactive" looks like. */}
-                <span
-                  aria-hidden="true"
-                  className="absolute inset-x-0 top-0 h-px w-0 bg-ember transition-[width] duration-700 ease-[var(--e-out)] group-hover:w-full"
-                />
-
                 {/* The monogram stands in until there is a portrait to use. */}
-                <div className="flex size-16 items-center justify-center rounded-full border border-line bg-paper-sunk transition-colors duration-500 group-hover:border-line-strong">
-                  <span className="font-sans text-lg font-medium tracking-tight text-ink-soft">
+                <div className="flex size-16 items-center justify-center rounded-full bg-white/60">
+                  <span className="font-sans text-lg font-semibold tracking-tight text-ink">
                     {member.monogram}
                   </span>
                 </div>
 
-                <h3 className="t-h3 mt-7">{member.name}</h3>
-                <p className="t-label mt-2 !text-ember">{member.role}</p>
-                <p className="t-body mt-5 max-w-[38ch] text-[0.9375rem]">
+                <h3 className="mt-7 text-[clamp(1.75rem,2.6vw,2.25rem)] font-semibold leading-none tracking-[-0.04em]">{member.name}</h3>
+                <p className="mt-2 text-[0.9375rem] font-medium text-ink/70">{member.role}</p>
+                <p className="t-body mt-5 max-w-[38ch] text-[0.9375rem] !text-ink/80">
                   {member.bio}
                 </p>
-
-                <span
-                  aria-hidden="true"
-                  className="mt-9 block h-px w-10 bg-line-strong transition-[width] duration-700 ease-[var(--e-out)] group-hover:w-24"
-                />
 
                 {member.href && (
                   <div className="mt-6">

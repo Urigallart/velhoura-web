@@ -48,17 +48,7 @@ export function PricingSection({ locale = "es" }: { locale?: Locale }) {
       className="pt-[clamp(56px,6vw,96px)] pb-[clamp(92px,13vw,184px)]"
     >
       <div className="shell">
-        <div className="grid gap-y-8 md:grid-cols-12 md:gap-x-10">
-          <div className="md:col-span-7">
-            <SectionHeading index="04" label={t.label} lines={t.lines} />
-          </div>
-
-          <div className="flex items-end md:col-span-5">
-            <Reveal delay={180}>
-              <p className="t-body max-w-[44ch]">{t.intro}</p>
-            </Reveal>
-          </div>
-        </div>
+        <SectionHeading align="center" tone="coral" lines={t.lines} subtitle={t.intro} />
 
         <div data-pricing-grid className="mt-12 md:mt-14">
           <PricingGrid plans={plans} />

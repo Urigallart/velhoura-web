@@ -38,7 +38,7 @@ export function ContactSection() {
     <section
       id="contact"
       className="band grain relative isolate overflow-hidden"
-    >
+     data-tone="coral">
       {/* Ground: an ember bloom low in the frame, so the page ends warm. */}
       <div
         aria-hidden="true"
@@ -51,7 +51,7 @@ export function ContactSection() {
         <div className="mx-auto max-w-3xl text-center">
 <MaskedTitle
             lines={t.lines}
-            className="t-h1 mt-8 text-balance"
+            className="text-balance text-[clamp(2.5rem,7vw,5.75rem)] font-semibold leading-[0.95] tracking-[-0.05em]"
             stagger={110}
           />
 

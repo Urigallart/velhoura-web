@@ -5,6 +5,13 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { getServices, servicesIndexPath } from "@/data/localized";
 import type { Locale } from "@/i18n/locale";
 
+/** One colour per area: warm for brand, blue for web, green for growth. */
+const tones: Record<string, string> = {
+  brand: "bg-gradient-to-br from-[#ffd3b0] to-[#ff8f9f]",
+  web: "bg-gradient-to-br from-[#c4e3ff] to-[#7db6ff]",
+  growth: "bg-gradient-to-br from-[#ecfb95] to-[#9be34a]",
+};
+
 const copy = {
   es: {
     label: "Servicios",
@@ -34,25 +41,9 @@ export function ServicesSection({ locale = "es" }: { locale?: Locale }) {
   const t = copy[locale];
   const services = getServices(locale);
   return (
-    <section id="services" className="band bg-paper-off">
+    <section id="services" className="band">
       <div className="shell">
-        <div className="grid gap-y-10 md:grid-cols-12 md:gap-x-10">
-          <div className="md:col-span-7">
-            <SectionHeading
-              index="02"
-              label={t.label}
-              lines={t.lines}
-            />
-          </div>
-
-          <div className="flex items-end md:col-span-5">
-            <Reveal delay={180}>
-              <p className="t-body max-w-[44ch]">
-                {t.intro}
-              </p>
-            </Reveal>
-          </div>
-        </div>
+        <SectionHeading align="center" tone="violet" lines={t.lines} subtitle={t.intro} />
 
         <div className="mt-14 grid gap-5 md:mt-20 lg:grid-cols-3">
           {services.map((service, i) => (
@@ -63,20 +54,16 @@ export function ServicesSection({ locale = "es" }: { locale?: Locale }) {
               y={34}
               className="h-full"
             >
-              <article className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-paper p-8 transition-[transform,border-color,box-shadow] duration-500 ease-[var(--e-out)] hover:-translate-y-1.5 hover:border-line-strong hover:shadow-[0_26px_58px_-32px_rgba(8,9,10,0.24)] sm:p-10">
-                <span
-                  aria-hidden="true"
-                  className="absolute inset-x-0 top-0 h-px w-0 bg-ember transition-[width] duration-700 ease-[var(--e-out)] group-hover:w-full"
-                />
-
-                <p className="t-label t-num !text-ember">{service.index}</p>
-                <h3 className="t-h2 mt-4">{service.name}</h3>
+              <article
+                className={`group relative flex h-full flex-col overflow-hidden rounded-[2rem] p-8 text-ink transition-[transform,box-shadow] duration-500 ease-[var(--e-out)] hover:-translate-y-1.5 hover:shadow-[0_30px_60px_-30px_rgba(8,9,10,0.35)] sm:p-10 ${tones[service.id] ?? "bg-paper-sunk"}`}
+              >
+                <h3 className="text-[clamp(2rem,3vw,2.5rem)] font-semibold leading-[1] tracking-[-0.045em]">{service.name}</h3>
                 <p className="t-lead mt-4 text-pretty !text-ink">
                   {service.promise}
                 </p>
-                <p className="t-body mt-4 text-[0.9375rem]">{service.body}</p>
+                <p className="t-body mt-4 text-[0.9375rem] !text-ink/75">{service.body}</p>
 
-                <ul className="mt-8 divide-y divide-line border-t border-line">
+                <ul className="mt-8 divide-y divide-ink/15 border-t border-ink/15">
                   {service.items.map((item) => (
                     <li key={item.name} className="py-4">
                       <div className="flex items-baseline justify-between gap-4">
@@ -84,7 +71,7 @@ export function ServicesSection({ locale = "es" }: { locale?: Locale }) {
                           {item.href ? (
                             <Link
                               href={item.href}
-                              className="u-draw transition-colors duration-300 hover:text-ember"
+                              className="u-draw transition-colors duration-300 hover:text-ink/60"
                             >
                               {item.name}
                             </Link>
@@ -93,12 +80,12 @@ export function ServicesSection({ locale = "es" }: { locale?: Locale }) {
                           )}
                         </h4>
                         {item.from && (
-                          <span className="shrink-0 font-sans text-xs text-ink-mute">
+                          <span className="shrink-0 font-sans text-xs text-ink/60">
                             {item.from}
                           </span>
                         )}
                       </div>
-                      <p className="mt-1 text-sm leading-relaxed text-ink-mute">
+                      <p className="mt-1 text-sm leading-relaxed text-ink/60">
                         {item.detail}
                       </p>
                     </li>

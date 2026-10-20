@@ -131,6 +131,8 @@ export function ShowcaseSection() {
     <section className="band-tight bg-paper-off">
       <div className="shell">
         <SectionHeading
+          align="center"
+          tone="green"
           index="03"
           label={t.label}
           lines={t.lines}

@@ -35,7 +35,7 @@ export function ToolsSection({ locale = "es" }: { locale?: Locale }) {
   return (
     <section className="band bg-paper-off">
       <div className="shell">
-        <SectionHeading label={t.label} lines={t.lines} subtitle={t.subtitle} />
+        <SectionHeading align="center" tone="sky" label={t.label} lines={t.lines} subtitle={t.subtitle} />
       </div>
 
       <Reveal delay={150} className="mt-12 md:mt-16">

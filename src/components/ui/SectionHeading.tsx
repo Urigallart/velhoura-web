@@ -3,10 +3,11 @@ import { Reveal } from "./Reveal";
 import { MaskedTitle } from "./MaskedTitle";
 import { cn } from "@/lib/utils";
 
+export type Tone = "sky" | "violet" | "coral" | "green" | "teal" | "sun";
+
 type SectionHeadingProps = {
-  /** Two-digit section index, set in the signal — the page's running order. */
+  /** Kept so every caller compiles; no eyebrow is drawn any more. */
   index?: string;
-  /** Short name of the section, e.g. "Products". */
   label?: string;
   /** Headline, split into masked lines. Wrap a word in `*` to mark emphasis. */
   lines: string[];
@@ -14,13 +15,16 @@ type SectionHeadingProps = {
   className?: string;
   titleClassName?: string;
   align?: "left" | "center";
+  /** The gradient the emphasised words take: see `[data-tone]` in globals.css. */
+  tone?: Tone;
   /** Mask whole lines (default) or individual words. */
   split?: "line" | "word";
 };
 
 /**
- * A section's headline. `index` and `label` are still accepted so every
- * caller keeps compiling, but no eyebrow is drawn: the headline stands alone.
+ * A section's headline, set large. The words between asterisks are painted
+ * with the section's tone — a gradient picked for what the section is about —
+ * so each part of the page has its own colour while the type stays the same.
  */
 export function SectionHeading({
   lines,
@@ -28,16 +32,21 @@ export function SectionHeading({
   className,
   titleClassName,
   align = "left",
+  tone = "sky",
   split = "line",
 }: SectionHeadingProps) {
   return (
     <div
-      className={cn(align === "center" && "mx-auto max-w-3xl text-center", className)}
+      data-tone={tone}
+      className={cn(align === "center" && "mx-auto max-w-4xl text-center", className)}
     >
       <MaskedTitle
         lines={lines}
         split={split}
-        className={cn("t-h1 text-balance", titleClassName)}
+        className={cn(
+          "text-balance text-[clamp(2.5rem,7vw,5.75rem)] font-semibold leading-[0.95] tracking-[-0.05em]",
+          titleClassName,
+        )}
       />
 
       {subtitle && (
@@ -45,7 +54,7 @@ export function SectionHeading({
           <p
             className={cn(
               "t-lead mt-7 max-w-xl text-pretty",
-              align === "center" && "mx-auto",
+              align === "center" && "mx-auto max-w-[52ch]",
             )}
           >
             {subtitle}

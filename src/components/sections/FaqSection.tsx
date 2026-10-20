@@ -28,37 +28,27 @@ export function FaqSection({ locale = "es" }: { locale?: Locale }) {
   };
 
   return (
-    <section id="faq" className="band bg-paper-off">
+    <section id="faq" className="band bg-paper-sunk">
       <div className="shell">
-        <div className="grid gap-y-10 md:grid-cols-12 md:gap-x-10">
-          <div className="md:col-span-5">
-            <SectionHeading
-              index="09"
-              label={t.label}
-              lines={t.lines}
-            />
-          </div>
+        <SectionHeading align="center" tone="sky" lines={t.lines} />
 
-          <div className="md:col-span-7">
-            <div className="divide-y divide-line border-y border-line">
-              {faqs.map((f, i) => (
-                <Reveal key={f.q} delay={i * 60} y={12}>
-                  <details className="group py-6">
-                    <summary className="flex cursor-pointer list-none items-center justify-between gap-6 text-left [&::-webkit-details-marker]:hidden">
-                      <h3 className="t-h3 text-pretty">{f.q}</h3>
-                      <span
-                        aria-hidden="true"
-                        className="grid size-8 shrink-0 place-items-center rounded-full border border-line text-ink-soft transition-[transform,border-color,color] duration-300 ease-[var(--e-out)] group-open:rotate-45 group-open:border-ember group-open:text-ember"
-                      >
-                        +
-                      </span>
-                    </summary>
-                    <p className="t-body mt-4 max-w-[60ch]">{f.a}</p>
-                  </details>
-                </Reveal>
-              ))}
-            </div>
-          </div>
+        <div className="mx-auto mt-12 max-w-3xl space-y-3 md:mt-16">
+          {faqs.map((f, i) => (
+            <Reveal key={f.q} delay={i * 60} y={12}>
+              <details className="group rounded-3xl bg-paper-raise px-7 py-6 transition-shadow duration-300 open:shadow-[0_24px_50px_-32px_rgba(8,9,10,0.3)]">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-6 text-left [&::-webkit-details-marker]:hidden">
+                  <h3 className="text-[1.125rem] font-semibold leading-snug tracking-[-0.02em] text-pretty">{f.q}</h3>
+                  <span
+                    aria-hidden="true"
+                    className="grid size-9 shrink-0 place-items-center rounded-full bg-paper-sunk text-[1.25rem] leading-none text-ink transition-[transform,background-color] duration-300 ease-[var(--e-out)] group-open:rotate-45 group-open:bg-[#dcf56a]"
+                  >
+                    +
+                  </span>
+                </summary>
+                <p className="t-body mt-4 max-w-[60ch]">{f.a}</p>
+              </details>
+            </Reveal>
+          ))}
         </div>
       </div>
 

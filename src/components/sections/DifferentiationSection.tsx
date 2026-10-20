@@ -38,14 +38,16 @@ export function DifferentiationSection({ locale = "es" }: { locale?: Locale }) {
     <section className="band">
       <div className="shell">
         <SectionHeading
+          align="center"
+          tone="teal"
           index="07"
           label={t.label}
           lines={t.lines}
         />
 
-        <div className="mt-14 grid gap-px overflow-hidden rounded-2xl border border-line bg-line md:mt-20 md:grid-cols-2">
+        <div className="mt-14 grid gap-4 md:mt-20 md:grid-cols-2">
           {/* Them */}
-          <Reveal className="bg-paper-off">
+          <Reveal className="overflow-hidden rounded-[2rem] bg-paper-sunk">
             <div className="flex h-full flex-col p-8 sm:p-11">
               <p className="t-label">{t.themLabel}</p>
               <p className="t-h2 mt-7 text-ink-mute">{t.themTitle}</p>
@@ -58,26 +60,22 @@ export function DifferentiationSection({ locale = "es" }: { locale?: Locale }) {
           </Reveal>
 
           {/* Us */}
-          <Reveal delay={140} className="relative bg-paper-raise">
+          <Reveal delay={140} className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-[#bff3f0] via-[#c4e3ff] to-[#dccfff] text-ink">
             {/* One ember hairline down the shared edge — the whole section's
                 colour budget, spent on the boundary between the two ideas. */}
-            <span
-              aria-hidden="true"
-              className="absolute inset-y-0 left-0 hidden w-px bg-gradient-to-b from-transparent via-ember to-transparent md:block"
-            />
             <div className="flex h-full flex-col p-8 sm:p-11">
-              <p className="t-label !text-ember">Velhoura</p>
+              <p className="text-[0.9375rem] font-semibold text-ink">Velhoura</p>
               <p className="t-h2 mt-7 text-balance">
                 {t.usTitle}{" "}
-                <span className="text-ink-mute">{t.usTitleMuted}</span>
+                <span className="text-ink/55">{t.usTitleMuted}</span>
               </p>
 
-              <p className="t-body mt-9 max-w-[46ch]">
+              <p className="t-body mt-9 max-w-[46ch] !text-ink/80">
                 {t.usBody}
               </p>
 
               <div className="mt-auto pt-12">
-                <p className="text-sm text-ink-faint">
+                <p className="text-sm text-ink/55">
                   {t.usNote}
                 </p>
               </div>

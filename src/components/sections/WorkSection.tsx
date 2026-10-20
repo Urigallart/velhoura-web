@@ -65,7 +65,7 @@ export function WorkSection() {
     <section
       id="products"
       className="grain grain-invert relative isolate overflow-hidden bg-night py-[clamp(88px,11vw,152px)] text-paper-raise"
-    >
+     data-tone="violet">
       <div className="shell">
         {/* Heading row: claim on the left, pitch and action on the right. */}
         <div className="grid gap-y-10 md:grid-cols-12 md:gap-x-10">
