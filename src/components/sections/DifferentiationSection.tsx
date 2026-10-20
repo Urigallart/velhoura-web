@@ -55,7 +55,7 @@ function Mark({ on, yes, no }: { on: boolean; yes: string; no: string }) {
     <span
       role="img"
       aria-label={no}
-      className="grid size-8 place-items-center rounded-full bg-ink/8 text-ink/40"
+      className="grid size-8 place-items-center rounded-full bg-[#ff3b30] text-white"
     >
       <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" className="size-3.5">
         <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
