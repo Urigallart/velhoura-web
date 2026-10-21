@@ -114,7 +114,7 @@ const organizationLd = {
   name: site.name,
   url: site.url,
   logo: `${site.url}/icon.png`,
-  image: `${site.url}/opengraph-image`,
+  image: `${site.url}/opengraph-image.png`,
   description: site.description,
   slogan: site.tagline,
   email: contact.email,
