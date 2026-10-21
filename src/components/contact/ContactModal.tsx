@@ -7,6 +7,7 @@ import { onOpenContactModal, type ContactPrefill } from "@/lib/contactModal";
 import { sendContact } from "@/lib/sendContact";
 import { useLocale } from "@/i18n/useLocale";
 import { ProjectQuiz, type QuizSubmission } from "./ProjectQuiz";
+import { getTopic } from "@/data/formTopics";
 import { PrivacyConsent } from "./PrivacyConsent";
 
 type Status = "idle" | "submitting" | "sent" | "error";
@@ -185,8 +186,20 @@ export function ContactModal() {
     });
   }
 
+  const topic = getTopic(prefill?.topic, locale);
+
   function onQuizSubmit(submission: QuizSubmission) {
-    void send({ ...submission, kind: "quiz" });
+    // A topic's form says up front what it was about, and the estimate the
+    // visitor saw, so the email reads on its own.
+    const head = topic
+      ? [
+          { question: locale === "en" ? "Form" : "Formulario", answer: topic.eyebrow },
+          ...(submission.estimate
+            ? [{ question: locale === "en" ? "Estimated price shown on the site" : "Precio estimado que vio en la web", answer: submission.estimate }]
+            : []),
+        ]
+      : [];
+    void send({ ...submission, answers: [...head, ...submission.answers], kind: "quiz" });
   }
 
   async function send(fields: Record<string, unknown>) {
@@ -266,6 +279,14 @@ export function ContactModal() {
               <ProjectQuiz
                 key={formKey}
                 locale={locale}
+                {...(topic
+                  ? {
+                      questions: topic.questions,
+                      projectType: topic.projectType,
+                      eyebrow: topic.eyebrow,
+                      estimate: topic.estimate,
+                    }
+                  : null)}
                 prefillMessage={prefill?.message}
                 submitting={status === "submitting"}
                 errorMessage={status === "error" ? errorMessage : null}

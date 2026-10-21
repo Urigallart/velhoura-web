@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { TopicButton } from "@/components/contact/TopicButton";
+import { topicForService } from "@/data/formTopics";
 import { ButtonLink } from "@/components/ui/Button";
 import { MaskedTitle } from "@/components/ui/MaskedTitle";
 import { Reveal } from "@/components/ui/Reveal";
@@ -13,7 +15,7 @@ import {
   type LocalizedServicePage,
 } from "@/data/localized";
 import { site } from "@/data/site";
-import { localePath, type Locale } from "@/i18n/locale";
+import type { Locale } from "@/i18n/locale";
 
 const copy = {
   es: {
@@ -88,6 +90,7 @@ export function ServicePageView({
     .filter((s) => s !== undefined);
   const processSteps = getProcess(locale);
   const areaName = areaNames[locale];
+  const topic = topicForService[page.esSlug] ?? "web";
 
   const ld = [
     {
@@ -147,9 +150,8 @@ export function ServicePageView({
               </Reveal>
               <Reveal delay={300}>
                 <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:gap-4">
-                  <ButtonLink href="#empezar" size="lg" arrow>
-                    {t.ask}
-                  </ButtonLink>
+                  {/* This service's own questions, not the general form. */}
+                  <TopicButton topic={topic}>{t.ask}</TopicButton>
                   <ButtonLink href="#incluye" variant="outline" size="lg">
                     {t.includesCta}
                   </ButtonLink>
@@ -336,9 +338,7 @@ export function ServicePageView({
           </Reveal>
           <Reveal delay={300}>
             <div className="mt-10 flex justify-center">
-              <ButtonLink href={localePath(locale, "/#contact")} size="lg" arrow>
-                {t.closeCta}
-              </ButtonLink>
+              <TopicButton topic={topic}>{t.ask}</TopicButton>
             </div>
           </Reveal>
         </div>

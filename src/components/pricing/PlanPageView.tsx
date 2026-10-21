@@ -98,7 +98,7 @@ export function PlanPageView({ id, locale }: { id: PlanId; locale: Locale }) {
                   </div>
 
                   <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-                    <PlanCta locale={locale} planName={plan.name} />
+                    <PlanCta locale={locale} planId={plan.id} />
                     <a
                       href="#incluye"
                       className="inline-flex h-12 items-center justify-center gap-2 rounded-full border border-ink/25 px-6 text-[0.9375rem] font-medium transition-colors duration-300 hover:border-ink hover:bg-ink hover:text-paper-raise"
@@ -227,7 +227,7 @@ export function PlanPageView({ id, locale }: { id: PlanId; locale: Locale }) {
                 <p className="mt-5 max-w-[52ch] text-[0.9375rem] leading-relaxed text-ink/75">{dc.notIncluded}</p>
               </div>
               <div className="md:col-span-5 md:justify-self-end">
-                <PlanCta locale={locale} planName={plan.name} />
+                <PlanCta locale={locale} planId={plan.id} />
               </div>
             </div>
           </Reveal>
@@ -302,7 +302,7 @@ export function PlanPageView({ id, locale }: { id: PlanId; locale: Locale }) {
               />
               <p className="mx-auto mt-6 max-w-[44ch] text-paper-raise/70">{planUi.closeLead[locale]}</p>
               <div className="mt-8 flex justify-center">
-                <PlanCta locale={locale} planName={plan.name} variant="light" />
+                <PlanCta locale={locale} planId={plan.id} variant="light" />
               </div>
             </div>
           </Reveal>

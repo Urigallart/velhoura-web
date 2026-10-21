@@ -10,7 +10,17 @@ const OPEN_EVENT = "velhoura:open-contact-modal";
 export type ContactPrefill = {
   projectType?: string;
   message?: string;
+  /**
+   * Which form to show — a plan or a service (see `data/formTopics.ts`).
+   * Without one the general project questionnaire opens.
+   */
+  topic?: string;
 };
+
+/** Opens the form for one plan or service. */
+export function openContactTopic(topic: string) {
+  window.dispatchEvent(new CustomEvent(OPEN_EVENT, { detail: { topic } }));
+}
 
 /**
  * Takes no arguments on purpose: it is handed straight to `onClick` in
