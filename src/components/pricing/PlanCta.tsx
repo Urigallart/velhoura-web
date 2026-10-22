@@ -2,25 +2,26 @@
 
 import { planUi } from "@/data/planPages";
 import type { Locale } from "@/i18n/locale";
-import { openContactModalWith } from "@/lib/contactModal";
+import { openContactTopic } from "@/lib/contactModal";
 import { cn } from "@/lib/utils";
 
-/** Opens the contact form with the plan already named. */
+/** Opens the plan's own form, with its questions and price estimate. */
 export function PlanCta({
   locale,
-  planName,
+  planId,
   variant = "dark",
   children,
 }: {
   locale: Locale;
-  planName: string;
+  /** Opens this plan's own form (questions and estimate). */
+  planId: string;
   variant?: "dark" | "light";
   children?: React.ReactNode;
 }) {
   return (
     <button
       type="button"
-      onClick={() => openContactModalWith({ message: planUi.prefill(planName, locale) })}
+      onClick={() => openContactTopic(planId)}
       className={cn(
         "inline-flex h-12 items-center gap-2 rounded-full px-6 text-[0.9375rem] font-medium transition-colors duration-300",
         variant === "dark"

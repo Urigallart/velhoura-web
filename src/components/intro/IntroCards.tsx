@@ -7,7 +7,7 @@ import type { Plan } from "@/data/plans";
 import { getPlans } from "@/data/localized";
 import { useLocale } from "@/i18n/useLocale";
 import { team } from "@/data/team";
-import { openContactModal, openContactModalWith } from "@/lib/contactModal";
+import { openContactModal, openContactTopic } from "@/lib/contactModal";
 import { cn } from "@/lib/utils";
 import { isPreviewId, type PreviewId } from "./ScreenPreviews";
 
@@ -64,9 +64,6 @@ const copy = {
     priceGroup: "Tipo de web",
     quote: "Presupuesto",
     askQuote: "Pedir presupuesto",
-    projectType: "Web o tienda online",
-    message: (name: string, price: string) =>
-      `Hola, me interesa el plan ${name} (${price}). `,
     proofEyebrow: (n: number) => `${n} en producción`,
     proofTitle: "Lo hacemos para nosotros",
     proofPitch: "Productos propios, de la idea al lanzamiento.",
@@ -95,9 +92,6 @@ const copy = {
     priceGroup: "Type of website",
     quote: "Quote",
     askQuote: "Request a quote",
-    projectType: "Website or online store",
-    message: (name: string, price: string) =>
-      `Hi, I'm interested in the ${name} plan (${price}). `,
     proofEyebrow: (n: number) => `${n} in production`,
     proofTitle: "We build for ourselves",
     proofPitch: "Our own products, from idea to launch.",
@@ -110,9 +104,6 @@ const copy = {
     enter: "Scroll to enter",
   },
 };
-
-const priceOf = (p: Plan) =>
-  p.pricePrefix ? `${p.pricePrefix} ${p.price}` : p.price;
 
 const live = products.filter((p) => p.status === "LIVE");
 const withImages = products.filter((p) => p.image);
@@ -348,10 +339,8 @@ function PriceCard({ onPreview }: Props) {
       <button
         type="button"
         onClick={() =>
-          openContactModalWith({
-            projectType: t.projectType,
-            message: t.message(picked.name, priceOf(picked)),
-          })
+          // The picked plan's own form, with its questions and estimate.
+          openContactTopic(picked.id)
         }
         className="intro-ask mt-3 inline-flex w-full items-center justify-center gap-2 rounded-full bg-ink px-4 py-2.5 text-[14px] font-medium text-paper transition-colors hover:bg-ember"
       >
