@@ -60,7 +60,7 @@ export const contact = {
   /** Where the studio is, as it should read on the page. */
   area: "Barcelona · Toda España y en remoto",
   socials: [
-    { label: "Instagram", href: "" },
+    { label: "Instagram", href: "https://www.instagram.com/velhoura.agency/" },
     { label: "LinkedIn", href: "" },
     { label: "GitHub", href: "" },
   ],
