@@ -195,9 +195,9 @@ export const productsEn: Record<
   },
   "simon-design": {
     summary:
-      "An editorial website for a design team: figures, stories, philosophy, awards and team.",
+      "An editorial website for a design team, built during an internship: figures, stories, philosophy, awards and team.",
     description:
-      "Simon Design is an editorial website for a design team working on product, light and energy. A home page with a clear message and key figures at a glance, a section of studio stories, the working philosophy, awards received and the people on the team, with typography and rhythm made for calm reading.",
+      "Simon Design is an editorial website for a design team working on product, light and energy, built during an internship. A home page with a clear message and key figures at a glance, a section of studio stories, the working philosophy, awards received and the people on the team, with typography and rhythm made for calm reading.",
     highlights: [
       "Editorial home page with figures",
       "Studio stories",
