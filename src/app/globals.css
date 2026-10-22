@@ -667,6 +667,26 @@ html:not([data-intro-cards="row"]) .intro-desk {
   animation-play-state: paused;
 }
 
+/* ── Intro performance ────────────────────────────────────────────────
+   While the camera flies into the laptop, nothing else should be asking
+   the browser for work. The tools marquee sits below the fold and would
+   otherwise keep ticking every frame; the scroll cue stops once the room
+   is out of shot; and the header's frosted glass — a backdrop blur that
+   has to be recomputed every frame over a moving scene, costly on phones —
+   becomes plain near-opaque white until the page takes over. */
+html[data-intro="play"] .marquee-track {
+  animation-play-state: paused;
+}
+html[data-intro="play"]:not([data-intro-room="on"]) .anim-nudge {
+  animation-play-state: paused;
+}
+html[data-intro="play"] .glass-bar,
+html[data-intro="play"] .glass-bar-strong {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  background: rgba(255, 255, 255, 0.92);
+}
+
 @keyframes v-marquee {
   to {
     transform: translate3d(calc(-50% - var(--g) / 2), 0, 0);
