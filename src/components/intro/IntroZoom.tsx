@@ -39,6 +39,24 @@ const clamp01 = (n: number) => Math.min(1, Math.max(0, n));
 const easeInOut = (t: number) =>
   t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 
+/**
+ * Per-frame writes, deduplicated. Setting a style to the value it already has
+ * still dirties the element's style, and a custom property re-resolves for
+ * the whole subtree below it — so every write is skipped when nothing changed,
+ * and values are rounded so sub-pixel jitter doesn't count as a change.
+ */
+const written = new WeakMap<HTMLElement, Map<string, string>>();
+function write(el: HTMLElement | null, prop: string, value: string) {
+  if (!el) return;
+  let m = written.get(el);
+  if (!m) written.set(el, (m = new Map()));
+  if (m.get(prop) === value) return;
+  m.set(prop, value);
+  if (prop.startsWith("--")) el.style.setProperty(prop, value);
+  else el.style.setProperty(prop, value);
+}
+const r3 = (n: number) => String(Math.round(n * 1000) / 1000);
+
 /** Only the gate (first load of `/`) arms the intro; client navigations skip it. */
 const isPlaying = () => {
   const s = document.documentElement.dataset.intro;
@@ -88,6 +106,10 @@ export function IntroZoom({
   const apply = useCallback((p: number) => {
     const g = geo.current;
     if (!g || !scene.current) return;
+    // Looked up here rather than held in refs: the name lives inside the
+    // hero copy and the header is a separate tree.
+    const logo = scene.current.querySelector<HTMLElement>("[data-intro-logo]");
+    const navEl = document.querySelector<HTMLElement>(".site-nav");
 
     // Scale grows exponentially so every stretch of scroll reads as the same
     // amount of forward motion; the easing shapes the progress itself.
@@ -104,33 +126,33 @@ export function IntroZoom({
     scene.current.style.transform = `translate3d(${tx}px, ${ty}px, 0) scale(${s})`;
 
     // The name on the glass slides off to the right as the camera goes in.
-    scene.current.style.setProperty(
-      "--intro-logo",
-      String(Math.pow(clamp01(p / 0.4), 1.6)),
-    );
+    // Set on the name itself: on the scene it would re-resolve the whole
+    // hero copy's styles every frame.
+    write(logo, "--intro-logo", r3(Math.pow(clamp01(p / 0.4), 1.6)));
 
-    if (shade.current) shade.current.style.opacity = String(1 - e);
+    write(shade.current, "opacity", r3(1 - e));
 
     // Phones: the desktop picture holds while the camera is in the room,
     // then gives way to the live phone layout well before the landing.
-    if (deskImg.current) {
-      deskImg.current.style.opacity = String(1 - clamp01((p - 0.3) / 0.18));
-    }
+    write(deskImg.current, "opacity", r3(1 - clamp01((p - 0.3) / 0.18)));
 
     // The cards and the cue belong to the room: they step aside and fade in
     // the first stretch, before the camera is anywhere near the glass.
     if (overlay.current) {
       const o = clamp01(p / 0.2);
-      overlay.current.style.opacity = String(1 - o);
-      overlay.current.style.setProperty("--intro-out", String(o));
+      write(overlay.current, "opacity", r3(1 - o));
+      write(overlay.current, "--intro-out", r3(o));
     }
 
     // The header stays with the page for most of the way back out: it only
     // fades once the camera has pulled well back towards the room, so a
     // small scroll up from the top of the page never takes it away.
+    // On the header itself, never on <html>: a custom property on the root
+    // re-resolves the styles of the entire page, and doing that every frame
+    // was most of the zoom's cost.
     const root = document.documentElement;
     const nav = clamp01((p - 0.35) / 0.3);
-    root.style.setProperty("--intro-nav", String(nav));
+    write(navEl, "--intro-nav", r3(nav));
     const navOn = nav > 0.5 ? "on" : "off";
     if (root.dataset.introNav !== navOn) root.dataset.introNav = navOn;
 
@@ -171,6 +193,11 @@ export function IntroZoom({
       delete root.dataset.introNav;
       delete root.dataset.introRoom;
       root.style.removeProperty("--intro-nav");
+        {
+          const navEl = document.querySelector<HTMLElement>(".site-nav");
+          navEl?.style.removeProperty("--intro-nav");
+          if (navEl) written.get(navEl)?.delete("--intro-nav");
+        }
       window.scrollTo({ top: y, behavior: "instant" });
     };
 
@@ -312,6 +339,11 @@ export function IntroZoom({
         delete root.dataset.introNav;
         delete root.dataset.introRoom;
         root.style.removeProperty("--intro-nav");
+        {
+          const navEl = document.querySelector<HTMLElement>(".site-nav");
+          navEl?.style.removeProperty("--intro-nav");
+          if (navEl) written.get(navEl)?.delete("--intro-nav");
+        }
       }, 0);
     };
   }, []);

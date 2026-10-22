@@ -49,6 +49,7 @@ export function Hero({
       {!interactive && (
         /* Only on the laptop-screen copy: the real page has the header there. */
         <div
+          data-intro-logo
           className="absolute inset-x-0 top-7 z-[2] flex items-center justify-center gap-6"
           // The zoom drives `--intro-logo` (0 → 1): the name slides off to the right
           // and fades. On a phone the name is wider than the window, so a slide of

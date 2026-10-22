@@ -61,9 +61,19 @@ export const contact = {
   area: "Barcelona · Toda España y en remoto",
   socials: [
     { label: "Instagram", href: "https://www.instagram.com/velhoura.agency/" },
-    { label: "LinkedIn", href: "" },
+    { label: "LinkedIn", href: "https://www.linkedin.com/company/velhoura/" },
     { label: "GitHub", href: "" },
   ],
+} as const;
+
+/**
+ * The client payments page (pay by code). Deliberately quiet: a line in the
+ * footer and at the foot of the Prices menu, for clients who have a code.
+ */
+export const paymentsLink = {
+  href: { es: "/gestiones", en: "/en/payments" },
+  label: { es: "Gestiones y pagos", en: "Payments" },
+  menu: { es: "¿Tienes un código de pago?", en: "Have a payment code?" },
 } as const;
 
 /** Only the channels that actually exist. */
