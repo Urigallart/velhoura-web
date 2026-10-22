@@ -210,9 +210,9 @@ export const products: Product[] = [
     slug: "simon-design",
     name: "Simon Design",
     summary:
-      "Web editorial para un equipo de diseño: cifras, historias, filosofía, premios y equipo.",
+      "Web editorial para un equipo de diseño, realizada durante unas prácticas: cifras, historias, filosofía, premios y equipo.",
     description:
-      "Simon Design es una web editorial para un equipo de diseño de producto, luz y energía. Una portada con un mensaje claro y cifras de un vistazo, una sección de historias del estudio, la filosofía de trabajo, los premios recibidos y las personas del equipo, con una tipografía y un ritmo pensados para leerse con calma.",
+      "Simon Design es una web editorial para un equipo de diseño de producto, luz y energía, realizada durante unas prácticas. Una portada con un mensaje claro y cifras de un vistazo, una sección de historias del estudio, la filosofía de trabajo, los premios recibidos y las personas del equipo, con una tipografía y un ritmo pensados para leerse con calma.",
     category: "WEB",
     status: "LIVE",
     year: "2026",

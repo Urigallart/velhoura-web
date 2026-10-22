@@ -246,7 +246,6 @@ const appIcons: Record<string, { src: string; bg: string; pad: string; invert?: 
   "gym-tracker": { src: "/logos/gym-tracker-icon.webp", bg: "bg-white", pad: "p-[12%]" },
   "velhoura-eyewear": { src: "/brand/logo-mark.png", bg: "bg-[#111317]", pad: "p-[22%]", invert: true },
   zhestar: { src: "/logos/zhestar.webp", bg: "bg-white", pad: "p-[20%]" },
-  "simon-design": { src: "/brands/simon-electric.png", bg: "bg-white", pad: "p-[10%]" },
   "maria-del-mar": { src: "/logos/mmr-icon.webp", bg: "bg-[#4e8276]", pad: "", bleed: true },
 };
 
