@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { activeSocials, contact, legalLinks, site } from "@/data/site";
+import { activeSocials, contact, legalLinks, paymentsLink, site } from "@/data/site";
 import { getNav } from "@/data/localized";
 import { localePath } from "@/i18n/locale";
 import { useLocale } from "@/i18n/useLocale";
@@ -112,6 +112,14 @@ export function Footer() {
           </p>
 
           <ul className="flex flex-wrap gap-x-6 gap-y-2">
+            <li>
+              <Link
+                href={paymentsLink.href[locale]}
+                className="group inline-flex text-xs text-ink-mute transition-colors duration-300 hover:text-ink"
+              >
+                <span className="u-draw">{paymentsLink.label[locale]}</span>
+              </Link>
+            </li>
             {legalLinks.map((l) => (
               <li key={l.href}>
                 <Link

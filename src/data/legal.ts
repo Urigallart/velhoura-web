@@ -44,6 +44,12 @@ export const processors = [
     data: "Los datos que nos envías a través del formulario",
     country: "Estados Unidos",
   },
+  {
+    name: "Stripe Payments Europe, Ltd.",
+    role: "Cobro de los proyectos en la página de gestiones y pagos",
+    data: "Nombre, email, datos de pago y el importe del proyecto (los datos de la tarjeta los recoge y guarda Stripe, no nosotros)",
+    country: "Irlanda (UE)",
+  },
 ] as const;
 
 /** How long contact-form data is kept if no project is contracted. */

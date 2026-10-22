@@ -435,6 +435,43 @@ export const docs: Record<"notice" | "privacy" | "cookies" | "terms", LegalDoc> 
         ),
       },
       {
+        heading: "Formas de pago",
+        body: (
+          <>
+            <p>
+              Cuando el presupuesto está aceptado te enviamos un código de pago
+              personal. Con él, en la página de{" "}
+              <Link href="/gestiones">gestiones y pagos</Link>, puedes elegir entre
+              las formas de pago que te ofrezcamos para ese proyecto:
+            </p>
+            <ul>
+              <li>
+                <strong>Pago único:</strong> el importe total al empezar.
+              </li>
+              <li>
+                <strong>Dos pagos:</strong> el 50 % al empezar y el 50 % restante a la
+                entrega del proyecto.
+              </li>
+              <li>
+                <strong>Cuota mensual con permanencia:</strong> el importe total
+                repartido en cuotas mensuales durante el periodo de permanencia que
+                se indique (normalmente 12 meses). Te comprometes a mantener la
+                suscripción durante todo ese periodo; si la cancelas antes, deberás
+                abonar las cuotas pendientes hasta completarlo. Terminada la
+                permanencia, la suscripción continúa como servicio de mantenimiento
+                por la misma cuota hasta que nos pidas cancelarla, con efecto al
+                final del mes en curso.
+              </li>
+            </ul>
+            <p>
+              Los pagos se procesan con Stripe; no guardamos los datos de tu
+              tarjeta. Si un pago o una cuota no se completa, podremos pausar el
+              trabajo o el servicio hasta que se regularice.
+            </p>
+          </>
+        ),
+      },
+      {
         heading: "Plazos y colaboración",
         body: (
           <p>
