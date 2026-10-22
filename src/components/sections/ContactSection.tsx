@@ -4,6 +4,7 @@ import { ButtonAction } from "@/components/ui/Button";
 import { MaskedTitle } from "@/components/ui/MaskedTitle";
 import { Reveal } from "@/components/ui/Reveal";
 import { activeSocials, contact } from "@/data/site";
+import { SocialLinks } from "@/components/layout/SocialLinks";
 import { openContactModal } from "@/lib/contactModal";
 import { getArea } from "@/data/localized";
 import { useLocale } from "@/i18n/useLocale";
@@ -113,20 +114,7 @@ export function ContactSection() {
 
           {activeSocials.length > 0 && (
             <Reveal delay={440}>
-              <ul className="mt-14 flex items-center justify-center gap-8">
-                {activeSocials.map((s) => (
-                  <li key={s.label}>
-                    <a
-                      href={s.href}
-                      target="_blank"
-                      rel="noreferrer noopener"
-                      className="group inline-flex text-sm text-ink-soft transition-colors duration-300 hover:text-ink"
-                    >
-                      <span className="u-draw">{s.label}</span>
-                    </a>
-                  </li>
-                ))}
-              </ul>
+              <SocialLinks size="lg" className="mt-14 justify-center" />
             </Reveal>
           )}
         </div>

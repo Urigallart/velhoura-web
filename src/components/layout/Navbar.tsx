@@ -505,6 +505,14 @@ export function Navbar() {
                     {t.all}
                   </Link>
                 </div>
+                <Link
+                  href={paymentsLink.href[locale]}
+                  onClick={() => setServicesOpen(false)}
+                  className="mt-1 flex items-center justify-between rounded-2xl px-5 py-2.5 text-[0.8125rem] text-ink-mute transition-colors hover:text-ink"
+                >
+                  <span>{paymentsLink.menu[locale]}</span>
+                  <span className="font-semibold">{paymentsLink.label[locale]} →</span>
+                </Link>
               </motion.div>
             )}
           </AnimatePresence>
@@ -670,6 +678,15 @@ export function Navbar() {
                                               className="block py-3 text-[1rem] font-semibold text-ember"
                                             >
                                               {t.all}
+                                            </Link>
+                                          </li>
+                                          <li>
+                                            <Link
+                                              href={paymentsLink.href[locale]}
+                                              onClick={() => setMenuOpen(false)}
+                                              className="block pb-2 text-[0.875rem] text-ink-mute"
+                                            >
+                                              {paymentsLink.menu[locale]} <span className="font-semibold text-ink">{paymentsLink.label[locale]} →</span>
                                             </Link>
                                           </li>
                                         </ul>

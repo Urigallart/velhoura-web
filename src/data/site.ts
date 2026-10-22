@@ -61,7 +61,7 @@ export const contact = {
   area: "Barcelona · Toda España y en remoto",
   socials: [
     { label: "Instagram", href: "https://www.instagram.com/velhoura.agency/" },
-    { label: "LinkedIn", href: "" },
+    { label: "LinkedIn", href: "https://www.linkedin.com/company/velhoura/" },
     { label: "GitHub", href: "" },
   ],
 } as const;

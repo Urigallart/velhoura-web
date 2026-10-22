@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { activeSocials, contact, legalLinks, paymentsLink, site } from "@/data/site";
 import { getNav } from "@/data/localized";
+import { SocialLinks } from "./SocialLinks";
 import { localePath } from "@/i18n/locale";
 import { useLocale } from "@/i18n/useLocale";
 
@@ -74,20 +75,7 @@ export function Footer() {
           {activeSocials.length > 0 && (
             <div className="md:col-span-2">
               <p className="t-label">Social</p>
-              <ul className="mt-5 space-y-3">
-                {activeSocials.map((s) => (
-                  <li key={s.label}>
-                    <a
-                      href={s.href}
-                      target="_blank"
-                      rel="noreferrer noopener"
-                      className="group inline-flex text-sm text-ink-soft transition-colors duration-300 hover:text-ink"
-                    >
-                      <span className="u-draw">{s.label}</span>
-                    </a>
-                  </li>
-                ))}
-              </ul>
+              <SocialLinks className="mt-5" />
             </div>
           )}
 
