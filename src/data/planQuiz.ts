@@ -257,8 +257,8 @@ const business: QuizQuestion[] = [
     },
     options: [
       p("basic", "Con que esté bien hecha me vale", "As long as it's built right, that's enough"),
-      p("local", "Quiero salir cuando buscan en mi zona", "I want to show up in local searches", [40, 60]),
-      p("strong", "Es clave, quiero competir por búsquedas", "It's key, I want to compete for searches", [90, 150]),
+      p("local", "Quiero salir cuando buscan en mi zona", "I want to show up in local searches"),
+      p("strong", "Es clave, quiero competir por búsquedas", "It's key, I want to compete for searches"),
     ],
   },
   care,
