@@ -228,7 +228,7 @@ export const planUi = {
   includes: { es: ["Todo lo que", "*incluye.*"], en: ["Everything", "*included.*"] },
   ideal: { es: ["Es para ti", "*si…*"], en: ["It's for you", "*if…*"] },
   needsTitle: t("Qué necesitamos de ti", "What we need from you"),
-  needsLead: t("Para empezar basta con una conversación. Cuanto de esto tengas a mano, más rápido avanzamos.", "A conversation is enough to start. The more of this you have at hand, the faster we go."),
+  needsLead: t("Empezamos con un primer contacto y tratamos los 4 puntos principales:", "We start with a first conversation and go through the 4 main points:"),
   example: { es: ["Un ejemplo", "*de este plan.*"], en: ["An example", "*of this plan.*"] },
   process: { es: ["Cómo", "*lo hacemos.*"], en: ["How", "*we do it.*"] },
   priceTitle: t("Precio", "Price"),
