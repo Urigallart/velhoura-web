@@ -7,7 +7,7 @@ const copy = {
   es: {
     badge: "Agencia de diseño web · Toda España y online",
     lines: ["Creamos tu marca.", "Construimos tu web.", "Te traemos clientes"],
-    lead: "Diseño web para pymes y autónomos: una marca que se recuerda, una página web o tienda online que convierte visitas en clientes, y SEO y Google Ads para que te encuentre quien ya te está buscando. Un solo equipo desde Barcelona, de principio a fin.",
+    lead: "Diseño web para pymes y autónomos: una página web o tienda online que convierte visitas en clientes, y SEO y Google Ads para que te encuentre quien ya te está buscando. Un solo equipo desde Barcelona, de principio a fin.",
     primary: "Cuéntanos tu negocio",
     secondary: "Ver servicios",
     small: "Precios orientativos publicados. Primera conversación sin compromiso.",
@@ -15,7 +15,7 @@ const copy = {
   en: {
     badge: "Web design agency · Worldwide, remote",
     lines: ["We shape your brand.", "We build your site.", "We bring you clients"],
-    lead: "Web design for small businesses and freelancers: a brand people remember, a website or online store that turns visits into customers, and SEO and Google Ads so the people already looking for you find you. One team from Barcelona, start to finish.",
+    lead: "Web design for small businesses and freelancers: a website or online store that turns visits into customers, and SEO and Google Ads so the people already looking for you find you. One team from Barcelona, start to finish.",
     primary: "Tell us about your business",
     secondary: "See services",
     small: "Indicative prices published. First conversation, no strings attached.",
