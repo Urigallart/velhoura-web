@@ -6,13 +6,13 @@ import type { Locale } from "@/i18n/locale";
 const copy = {
   es: {
     label: "Herramientas",
-    lines: ["Con lo que", "*trabajamos.*"],
+    lines: ["Tecnología con la que", "*trabajamos.*"],
     subtitle: "Diseño UX/UI, inteligencia artificial, marketing y desarrollo: las plataformas que usamos a diario para diseñar, construir y hacer crecer tu negocio.",
     aria: "Herramientas y marcas con las que trabajamos",
   },
   en: {
     label: "Tools",
-    lines: ["What we", "*work with.*"],
+    lines: ["Technology we", "*work with.*"],
     subtitle: "UX/UI design, artificial intelligence, marketing and development: the platforms we use every day to design, build and grow your business.",
     aria: "Tools and brands we work with",
   },
