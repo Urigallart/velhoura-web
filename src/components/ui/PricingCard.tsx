@@ -1,9 +1,11 @@
 "use client";
 
 import { useRef, useState } from "react";
+import Link from "next/link";
 import { ButtonAction } from "@/components/ui/Button";
 import type { Plan } from "@/data/plans";
 import { detailCopy } from "@/data/planDetails";
+import { planPath } from "@/data/planPages";
 import { useLocale } from "@/i18n/useLocale";
 import { cn } from "@/lib/utils";
 
@@ -151,17 +153,15 @@ export function PricingCard({
         {plan.cta}
       </ButtonAction>
 
-      <button
-        type="button"
-        onClick={(e) => {
-          e.stopPropagation();
-          onDetails();
-        }}
+      {/* A real link: it goes to the plan's own page. */}
+      <Link
+        href={planPath(locale, plan.id)}
+        onClick={(e) => e.stopPropagation()}
         className="mt-3 inline-flex items-center justify-center gap-1.5 self-center text-[0.875rem] font-medium underline decoration-ink/30 underline-offset-4 transition-colors duration-300 hover:decoration-ink"
       >
         {t.seeMore}
         <span aria-hidden="true">+</span>
-      </button>
+      </Link>
     </div>
   );
 }

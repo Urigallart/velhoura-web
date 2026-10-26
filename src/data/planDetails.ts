@@ -21,7 +21,7 @@ type ById = Record<string, Detail>;
 const es: ById = {
   landing: {
     idealFor: [
-      "Profesionales y autónomos que necesitan estar en internet",
+      "Profesionales y autónomos que necesitan presencia en internet",
       "Lanzar un producto, servicio o evento",
       "Validar una idea antes de invertir más",
     ],
@@ -87,7 +87,7 @@ const es: ById = {
 const en: ById = {
   landing: {
     idealFor: [
-      "Professionals and freelancers who need to be online",
+      "Professionals and freelancers who need an online presence",
       "Launching a product, service or event",
       "Testing an idea before investing more",
     ],
