@@ -74,6 +74,7 @@ export const designTools: Tool[] = [
   { name: "Roady", logo: "/logos/roady.webp" },
   { name: "Gym Tracker", logo: "/logos/gym-tracker-icon.webp" },
   { name: "Zhestar", logo: "/logos/zhestar.webp" },
+  { name: "Miko's", logo: "/logos/mikos.webp" },
 ];
 
 /** AI, marketing, commerce and development. */
