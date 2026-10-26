@@ -9,7 +9,7 @@ import { useLocale } from "@/i18n/useLocale";
 
 const copy = {
   es: {
-    blurb: "Agencia digital con base en Barcelona. Marca, web y captación de clientes para negocios de toda España y de fuera, hechas por un mismo equipo.",
+    blurb: "Agencia digital con base en Barcelona. Marca, web y captación de clientes para negocios, hechas por un mismo equipo.",
     sections: "Secciones",
     navigation: "Navegación",
     contact: "Contacto",

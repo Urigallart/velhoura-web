@@ -14,7 +14,7 @@ const copy = {
   es: {
     label: "Servicios",
     lines: ["Todo lo digital", "de tu negocio,", "*en un solo sitio.*"],
-    lead: "Marca, web y captación de clientes para pymes de toda España y de fuera. Contrata un servicio suelto o combínalos: los hacemos encajar porque los hace el mismo equipo.",
+    lead: "Marca, web y captación de clientes para pymes. Contrata un servicio suelto o combínalos: los hacemos encajar porque los hace el mismo equipo.",
     custom: "Presupuesto a medida",
     see: "Ver servicio →",
     closeLines: ["¿No sabes", "*por dónde empezar?*"],
