@@ -23,7 +23,7 @@ const es: ById = {
     idealFor: [
       "Profesionales y autónomos que necesitan presencia en internet",
       "Lanzar un producto, servicio o evento",
-      "Validar una idea antes de invertir más",
+      "Validar una idea antes de seguir invirtiendo",
     ],
     includes: [
       { title: "Diseño personalizado", body: "Una página hecha para tu negocio, no una plantilla genérica." },
@@ -89,7 +89,7 @@ const en: ById = {
     idealFor: [
       "Professionals and freelancers who need an online presence",
       "Launching a product, service or event",
-      "Testing an idea before investing more",
+      "Testing an idea before investing further",
     ],
     includes: [
       { title: "Custom design", body: "A page made for your business, not a generic template." },

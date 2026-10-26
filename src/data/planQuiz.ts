@@ -130,7 +130,7 @@ const landing: QuizQuestion[] = [
       p("present", "Presentar mi negocio o mis servicios", "Introduce my business or services"),
       p("launch", "Lanzar un producto o servicio nuevo", "Launch a new product or service"),
       p("event", "Un evento o una campaña concreta", "An event or a specific campaign"),
-      p("validate", "Validar una idea antes de invertir más", "Test an idea before investing more"),
+      p("validate", "Validar una idea antes de seguir invirtiendo", "Test an idea before investing further"),
     ],
   },
   {
