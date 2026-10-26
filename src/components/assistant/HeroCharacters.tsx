@@ -4,6 +4,7 @@ import { characters } from "@/data/characters";
 import { ui } from "@/data/assistant";
 import type { Locale } from "@/i18n/locale";
 import { openAssistant } from "@/lib/assistant";
+import { RotatingHint } from "./RotatingHint";
 
 /**
  * The partners, standing at the side of the first screen. Pressing one opens
@@ -45,7 +46,7 @@ export function HeroCharacters({
           className="group pointer-events-auto relative block h-full cursor-pointer"
         >
           <span className="absolute -top-9 left-0 z-[3] whitespace-nowrap rounded-2xl rounded-bl-sm border border-line bg-paper-raise px-3.5 py-2 text-[0.8125rem] font-medium text-ink shadow-[0_12px_30px_-16px_rgba(8,9,10,0.4)] transition-colors duration-300 group-hover:border-ink">
-            {t.hint}
+            <RotatingHint locale={locale} />
           </span>
           {figure}
         </button>

@@ -134,7 +134,7 @@ export const topics: Topic[] = [
       en: ["wordpress", "wp", "edit it myself", "edit my site", "content management", "cms"],
     },
     answer: {
-      es: "No trabajamos con WordPress ni con plantillas: programamos cada web desde cero con tecnología moderna como **React** y **Next.js**, la misma de esta página. Son webs más rápidas y seguras, y si necesitas actualizar contenidos te dejamos un panel sencillo para cambiar textos e imágenes tú mismo.",
+      es: "No trabajamos con WordPress ni con plantillas: programamos cada web desde cero con tecnología moderna como **React** y **Next.js**, la misma de esta página. Son webs más rápidas y seguras, y si necesitas actualizar contenidos te dejamos un panel sencillo para cambiar textos e imágenes tú mismo.",
       en: "We don't use WordPress or templates: we code every site from scratch with modern technology like **React** and **Next.js**, the same as this site. They're faster and more secure, and if you need to update content we leave you a simple dashboard to change text and images yourself.",
     },
     next: ["prices", "services"],
@@ -321,6 +321,13 @@ export const ui = {
     open: "Abrir chat",
     contactCta: "Contar mi proyecto",
     hint: "Pregúntanos lo que quieras",
+    hints: [
+      "Pregúntanos lo que quieras",
+      "¿Cuánto cuesta una web?",
+      "¿Cómo trabajamos?",
+      "¿Cuánto tarda un proyecto?",
+      "¿Qué necesitas para empezar?",
+    ],
     nudges: ["¿Tienes alguna duda?", "¿Quieres saber cuánto cuesta?", "¿Te contamos cómo trabajamos?"],
     typing: "Escribiendo…",
     greeting:
@@ -335,6 +342,13 @@ export const ui = {
     open: "Open chat",
     contactCta: "Tell us about my project",
     hint: "Ask us anything",
+    hints: [
+      "Ask us anything",
+      "How much does a website cost?",
+      "How do we work?",
+      "How long does a project take?",
+      "What do you need to get started?",
+    ],
     nudges: ["Any questions?", "Want to know what it costs?", "Shall we tell you how we work?"],
     typing: "Typing…",
     greeting:

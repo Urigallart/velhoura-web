@@ -7,6 +7,7 @@ import { useLocale } from "@/i18n/useLocale";
 import { answer, answerTopic, onOpenAssistant, type Reply } from "@/lib/assistant";
 import { openContactModal } from "@/lib/contactModal";
 import { cn } from "@/lib/utils";
+import { RotatingHint } from "./RotatingHint";
 
 type Msg = { from: "bot" | "me"; text: string; reply?: Reply };
 
@@ -322,7 +323,7 @@ export function AssistantChat() {
             compact ? "ml-0 max-w-0 opacity-0" : "ml-3 max-w-[16rem] opacity-100",
           )}
         >
-          {t.hint}
+          <RotatingHint locale={locale} />
         </span>
       </button>
     </div>
