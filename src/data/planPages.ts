@@ -67,7 +67,7 @@ export const planPageCopy: Record<PlanId, PlanPageCopy> = {
       en: ["Your place online,", "*on a single page.*"],
     },
     lead: t(
-      "Una página pensada para un único objetivo: que quien llega entienda qué ofreces y te contacte. Diseño propio, rápida y adaptada a móvil. Es el punto de partida más sencillo, y si el negocio crece se puede ampliar a una web completa.",
+      "Una página pensada para un único objetivo: que quien llega entienda qué ofreces y contacte. Diseño propio, rápida y adaptada a móvil. Es el punto de partida más sencillo, y si el negocio crece se puede ampliar a una web completa.",
       "A page built for one goal: that whoever lands on it understands what you offer and gets in touch. Custom design, fast and made for mobile. It's the simplest place to start, and if the business grows it can become a full website.",
     ),
     needs: [
