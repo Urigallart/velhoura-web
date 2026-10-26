@@ -17,7 +17,7 @@ const copy = {
   es: {
     label: "Servicios",
     lines: ["Marca, web", "y *clientes.*"],
-    intro: "Puedes contratarnos para una sola cosa o para todo. Lo habitual es empezar por lo que más falta hace y sumar el resto cuando tiene sentido.",
+    intro: "Empieza por la web y añade la marca o el posicionamiento cuando lo necesites.",
     unsure: "¿No sabes por dónde empezar? Cuéntanos tu negocio y te decimos qué priorizar.",
     all: "Ver todos los servicios",
     ask: "Pedir propuesta",
@@ -25,7 +25,7 @@ const copy = {
   en: {
     label: "Services",
     lines: ["Brand, web", "and *clients.*"],
-    intro: "Hire us for one thing or for everything. Most clients start with what's most needed and add the rest when it makes sense.",
+    intro: "Start with the website and add branding or search visibility when you need it.",
     unsure: "Not sure where to start? Tell us about your business and we'll tell you what to prioritise.",
     all: "See all services",
     ask: "Request a proposal",
