@@ -83,17 +83,28 @@ const brand = (logo: Cost, identity: Cost): QuizQuestion => ({
   ],
 });
 
+/** A share of a cost, rounded to the nearest 5 € (a [min, max] range stays a range). */
+const share = (c: Cost, k: number): Cost => {
+  const r = (n: number) => Math.round((n * k) / 5) * 5;
+  return typeof c === "number" ? r(c) : [r(c[0]), r(c[1])];
+};
+
+/**
+ * The more room we get, the less it adds. Only the urgent surcharge is set per
+ * plan; the others follow from it — a month adds half of it, two or three
+ * months a fifth, and no rush adds nothing (the plan's own starting price).
+ */
 const timing = (urgent: Cost): QuizQuestion => ({
   id: "timing",
   title: { es: "¿Para cuándo lo necesitas?", en: "When do you need it?" },
   help: {
-    es: "Con un plazo muy corto reorganizamos el calendario para llegar.",
-    en: "With a very tight deadline we rearrange our schedule to make it.",
+    es: "Cuanto más margen nos des, mejor precio: con un plazo muy corto reorganizamos el calendario para llegar.",
+    en: "The more time you give us, the better the price: with a very tight deadline we rearrange our schedule to make it.",
   },
   options: [
     p("urgent", "Urgente, en menos de 2 semanas", "Urgent, in under 2 weeks", urgent),
-    p("month", "En un mes, más o menos", "In about a month"),
-    p("later", "En dos o tres meses", "In two or three months"),
+    p("month", "En un mes, más o menos", "In about a month", share(urgent, 0.5)),
+    p("later", "En dos o tres meses", "In two or three months", share(urgent, 0.2)),
     p("exploring", "Sin prisa, estoy mirando opciones", "No rush, I'm exploring options"),
   ],
 });
@@ -157,7 +168,7 @@ const landing: QuizQuestion[] = [
       p("booking", "Reservas o citas", "Bookings or appointments", [30, 50]),
       p("newsletter", "Captar emails para newsletter", "Collect emails for a newsletter", [20, 30]),
       p("whatsapp", "Botón de WhatsApp", "WhatsApp button", 10),
-      p("languages", "Varios idiomas", "Several languages", [40, 70]),
+      p("languages", "Varios idiomas", "Several languages", [20, 40]),
       p("analytics", "Analítica y píxel para anuncios", "Analytics and an ad pixel", [15, 25]),
       none("nothing", "Nada más, con lo básico me vale", "Nothing else, the basics are fine"),
     ],
