@@ -29,6 +29,10 @@ export function HeroCharacters({
       width={who.figureSize.width}
       height={who.figureSize.height}
       draggable={false}
+      // Only shown from 1280px up: below that the figure is hidden and a lazy
+      // image is never fetched, so phones skip its 119KB.
+      loading="lazy"
+      decoding="async"
       className="h-full w-auto select-none object-contain object-bottom"
     />
   );

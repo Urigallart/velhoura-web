@@ -431,6 +431,9 @@ export function IntroZoom({
                 ref={deskImg}
                 src={desk}
                 alt=""
+                // Hidden on wide windows (display: none), where a lazy image is
+                // never fetched; on a phone it is in view and loads at once.
+                loading="lazy"
                 decoding="async"
                 draggable={false}
                 className="intro-desk absolute select-none object-cover object-top"

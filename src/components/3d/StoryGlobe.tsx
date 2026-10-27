@@ -380,7 +380,7 @@ function DotLand({ radius }: { radius: number }) {
   useEffect(() => {
     let cancelled = false;
     const img = new Image();
-    img.src = "/textures/earth-daymap-2k.jpg";
+    img.src = "/textures/earth-land-1k.webp";
     img.onload = () => {
       if (cancelled) return;
       const W = 1024;
