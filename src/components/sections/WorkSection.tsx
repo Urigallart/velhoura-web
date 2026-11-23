@@ -22,7 +22,7 @@ import { cn } from "@/lib/utils";
  * work joins this grid once there is client work to show.
  */
 
-type Filter = "all" | ProductCategory;
+type Open = ProductCategory | null;
 
 const copy = {
   es: {
@@ -30,6 +30,11 @@ const copy = {
     lines: ["Trabajo real,", "*funcionando hoy.*"],
     intro: "No son maquetas: son productos que hemos diseñado, programado y lanzado nosotros, y que hoy usan personas reales. El mismo método que aplicamos a tu proyecto.",
     cta: "Cuéntanos tu proyecto",
+    folders: { WEB: "Webs y tiendas", APP: "Apps" } as Record<string, string>,
+    projects: (n: number) => (n === 1 ? "1 proyecto" : `${n} proyectos`),
+    folderHint: "Abre una carpeta para verlos.",
+    yourProject: "Tu proyecto",
+    yourProjectBody: "Cuéntanos qué necesitas",
     filters: { all: "Todos", APP: "Apps", WEB: "Webs y tiendas" } as Record<string, string>,
     filterGroup: "Filtrar proyectos",
     category: { APP: "App", WEB: "Web y tienda", SAAS: "SaaS", PLATFORM: "Plataforma" } as Record<string, string>,
@@ -44,6 +49,11 @@ const copy = {
     lines: ["Real work,", "*live today.*"],
     intro: "These aren't mock-ups: they're products we designed, built and launched ourselves, used by real people today. The same method we bring to your project.",
     cta: "Tell us about your project",
+    folders: { WEB: "Sites and stores", APP: "Apps" } as Record<string, string>,
+    projects: (n: number) => (n === 1 ? "1 project" : `${n} projects`),
+    folderHint: "Open a folder to see them.",
+    yourProject: "Your project",
+    yourProjectBody: "Tell us what you need",
     filters: { all: "All", APP: "Apps", WEB: "Sites and stores" } as Record<string, string>,
     filterGroup: "Filter projects",
     category: { APP: "App", WEB: "Site and store", SAAS: "SaaS", PLATFORM: "Platform" } as Record<string, string>,
@@ -59,9 +69,9 @@ export function WorkSection() {
   const locale = useLocale();
   const t = copy[locale];
   const products = getProducts(locale);
-  const categories = Array.from(new Set(products.map((p) => p.category)));
-  const [filter, setFilter] = useState<Filter>("all");
-  const shown = filter === "all" ? products : products.filter((p) => p.category === filter);
+  const categories = (["WEB", "APP"] as ProductCategory[]).filter((c) => products.some((p) => p.category === c));
+  const [open, setOpen] = useState<Open>(null);
+  const shown = open ? products.filter((p) => p.category === open) : [];
 
   return (
     <section
@@ -82,7 +92,7 @@ export function WorkSection() {
           <div className="flex flex-col items-start gap-6 md:col-span-5 md:items-end md:justify-end md:text-right">
             <Reveal delay={160}>
               <p className="max-w-[44ch] text-[0.9375rem] leading-relaxed text-paper-raise/60">
-                {t.intro}
+                {t.intro} {t.folderHint}
               </p>
             </Reveal>
             <Reveal delay={240}>
@@ -110,78 +120,48 @@ export function WorkSection() {
           </div>
         </div>
 
-        {/* Filters, on a hairline that runs to the edge. */}
-        <Reveal delay={120} className="mt-14 md:mt-20">
-          <div className="flex items-center gap-6">
-            <div role="group" aria-label={t.filterGroup} className="flex flex-wrap gap-1">
-              {(["all", ...categories] as Filter[]).map((f) => (
-                <button
-                  key={f}
-                  type="button"
-                  aria-pressed={filter === f}
-                  onClick={() => setFilter(f)}
-                  className={cn(
-                    "rounded-full px-4 py-2 text-sm transition-colors duration-300",
-                    filter === f
-                      ? "border border-paper-raise/20 bg-paper-raise/10 text-paper-raise"
-                      : "border border-transparent text-paper-raise/55 hover:text-paper-raise",
-                  )}
-                >
-                  {t.filters[f] ?? f}
-                </button>
-              ))}
-            </div>
-            <span aria-hidden="true" className="hidden h-px flex-1 bg-paper-raise/15 sm:block" />
-          </div>
-        </Reveal>
-
-        <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {shown.map((p, i) => (
-            <li key={p.slug}>
-              <Reveal delay={i * 70} y={24}>
-                <WorkCard product={p} t={t} href={localePath(locale, `/products/${p.slug}`)} />
-              </Reveal>
-            </li>
-          ))}
-
-          {/* The open slot: the next project in this grid. */}
-          <li
-            className={
-              // Fills what is left of the last row, so the grid never ends on a lone card.
-              shown.length % 3 === 0
-                ? "lg:col-span-3"
-                : shown.length % 3 === 1
-                  ? "lg:col-span-2"
-                  : undefined
-            }
-          >
-            <Reveal delay={shown.length * 70} y={24} className="h-full">
-              <button
-                type="button"
+        {/* Folders: one per kind of work, each with a few of its projects peeking
+            out. Opening one lists its projects below; the last is an open slot. */}
+        <ul className="mt-14 grid gap-4 sm:grid-cols-3 md:mt-20">
+          {categories.map((c, i) => {
+            const items = products.filter((p) => p.category === c);
+            return (
+              <li key={c}>
+                <Reveal delay={i * 80} y={24} className="h-full">
+                  <Folder
+                    label={t.folders[c] ?? c}
+                    sub={t.projects(items.length)}
+                    images={items.map((p) => p.image).filter((x): x is string => Boolean(x))}
+                    active={open === c}
+                    onClick={() => setOpen(open === c ? null : c)}
+                  />
+                </Reveal>
+              </li>
+            );
+          })}
+          <li>
+            <Reveal delay={categories.length * 80} y={24} className="h-full">
+              <Folder
+                label={t.yourProject}
+                sub={t.yourProjectBody}
+                images={[]}
+                empty
+                active={false}
                 onClick={openContactModal}
-                className="group relative flex aspect-[4/3] h-full w-full flex-col justify-between overflow-hidden rounded-2xl border border-paper-raise/15 bg-night-raise p-6 text-left transition-colors duration-300 hover:border-paper-raise/30 sm:aspect-auto sm:min-h-[12rem]"
-              >
-                <span className="t-label !text-paper-raise/45">+1</span>
-                <span>
-                  <span className="block text-[clamp(1.75rem,3vw,2.5rem)] font-semibold leading-[1.02] tracking-[-0.035em] text-paper-raise">
-                    {t.nextTitle[0]}
-                    <br />
-                    <span className="text-paper-raise/45">{t.nextTitle[1]}</span>
-                  </span>
-                  <span className="mt-3 block max-w-[30ch] text-sm text-paper-raise/55">
-                    {t.nextBody}
-                  </span>
-                </span>
-                <span
-                  aria-hidden="true"
-                  className="absolute right-6 top-6 grid size-9 place-items-center rounded-full bg-ember text-paper-raise"
-                >
-                  →
-                </span>
-              </button>
+              />
             </Reveal>
           </li>
         </ul>
+
+        {open && (
+          <ul key={open} className="anim-rise mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {shown.map((p) => (
+              <li key={p.slug}>
+                <WorkCard product={p} t={t} href={localePath(locale, `/products/${p.slug}`)} />
+              </li>
+            ))}
+          </ul>
+        )}
 
         {/* The marks of the projects, as app icons: no heading, the icons say it. */}
         <ul
@@ -209,6 +189,106 @@ export function WorkSection() {
         </ul>
       </div>
     </section>
+  );
+}
+
+/**
+ * A folder card. Back panel with a tab, a few project screenshots fanned out
+ * behind a frosted front panel; on hover or when open the screenshots rise.
+ * With `empty`, the folder holds nothing: a slot for the visitor's project.
+ */
+function Folder({
+  label,
+  sub,
+  images,
+  active,
+  empty,
+  onClick,
+}: {
+  label: string;
+  sub: string;
+  images: string[];
+  active: boolean;
+  empty?: boolean;
+  onClick: () => void;
+}) {
+  const shots = images.slice(0, 3);
+  const fan = shots.length === 1 ? [{ x: "0%", r: 0 }] : shots.length === 2 ? [{ x: "-22%", r: -7 }, { x: "22%", r: 7 }] : [{ x: "-32%", r: -9 }, { x: "32%", r: 9 }, { x: "0%", r: 0 }];
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-expanded={empty ? undefined : active}
+      className={cn(
+        "group relative block h-full w-full rounded-3xl border bg-night-raise p-5 pb-6 text-left transition-colors duration-300 sm:p-6",
+        active ? "border-paper-raise/40" : "border-paper-raise/12 hover:border-paper-raise/30",
+      )}
+    >
+      <div className="relative mx-auto aspect-[5/4] w-[86%]">
+        {/* Back panel and tab */}
+        <span
+          aria-hidden="true"
+          className="absolute left-0 top-0 h-[18%] w-[36%] rounded-t-2xl bg-gradient-to-b from-[#2a3f86] to-[#1b2c68]"
+        />
+        <span
+          aria-hidden="true"
+          className="absolute inset-x-0 bottom-0 top-[11%] rounded-2xl rounded-tl-none bg-gradient-to-b from-[#1b2c68] to-[#101a45]"
+        />
+
+        {/* Projects peeking out */}
+        {shots.map((src, i) => (
+          <span
+            key={src}
+            aria-hidden="true"
+            className={cn(
+              "absolute bottom-[34%] left-1/2 aspect-[4/3] w-[56%] -translate-x-1/2 overflow-hidden rounded-xl bg-night shadow-[0_14px_30px_-10px_rgba(0,0,0,0.7)] ring-1 ring-white/20 transition-[margin] duration-500 ease-[var(--e-out)]",
+              active ? "mb-[22%]" : "mb-[14%] group-hover:mb-[20%]",
+            )}
+            style={{
+              translate: fan[i].x,
+              rotate: `${fan[i].r}deg`,
+              zIndex: i === shots.length - 1 ? 2 : 1,
+            }}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={src} alt="" loading="lazy" className="size-full object-cover object-top" />
+          </span>
+        ))}
+
+        {empty && (
+          <span
+            aria-hidden="true"
+            className="absolute left-1/2 top-[26%] z-[2] grid size-14 -translate-x-1/2 place-items-center rounded-full bg-ember text-2xl leading-none text-paper-raise transition-transform duration-500 group-hover:scale-110"
+          >
+            +
+          </span>
+        )}
+
+        {/* Front panel, frosted */}
+        <span
+          aria-hidden="true"
+          className="absolute inset-x-[-3%] bottom-0 z-[3] h-[46%] rounded-2xl border border-white/25 bg-gradient-to-b from-white/25 to-white/10 backdrop-blur-md"
+        />
+      </div>
+
+      <span className="mt-6 flex items-end justify-between gap-3">
+        <span className="min-w-0">
+          <span className="block text-lg font-semibold tracking-[-0.02em] text-paper-raise">{label}</span>
+          <span className="mt-1 block text-sm text-paper-raise/55">{sub}</span>
+        </span>
+        <span
+          aria-hidden="true"
+          className={cn(
+            "grid size-9 shrink-0 place-items-center rounded-full border transition-all duration-300",
+            active
+              ? "rotate-90 border-paper-raise bg-paper-raise text-night"
+              : "border-paper-raise/25 text-paper-raise group-hover:border-paper-raise",
+          )}
+        >
+          →
+        </span>
+      </span>
+    </button>
   );
 }
 
