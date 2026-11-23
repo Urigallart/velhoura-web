@@ -193,9 +193,11 @@ export function WorkSection() {
 }
 
 /**
- * A folder card. Back panel with a tab, a few project screenshots fanned out
- * behind a frosted front panel; on hover or when open the screenshots rise.
- * With `empty`, the folder holds nothing: a slot for the visitor's project.
+ * A folder card. A back panel with a tab, project screenshots standing
+ * inside it, and a frosted front panel with a sloped edge. On hover (or when
+ * open) the screenshots rise and fan out and the front panel tips forward a
+ * little. With `empty`, the folder holds nothing: a slot for the visitor's
+ * project.
  */
 function Folder({
   label,
@@ -212,77 +214,106 @@ function Folder({
   empty?: boolean;
   onClick: () => void;
 }) {
-  const shots = images.slice(0, 3);
-  const fan = shots.length === 1 ? [{ x: "0%", r: 0 }] : shots.length === 2 ? [{ x: "-22%", r: -7 }, { x: "22%", r: 7 }] : [{ x: "-32%", r: -9 }, { x: "32%", r: 9 }, { x: "0%", r: 0 }];
+  const [hover, setHover] = useState(false);
+  const lift = active || hover;
+  const shots = images.slice(0, 4);
+  const mid = (shots.length - 1) / 2;
   return (
     <button
       type="button"
       onClick={onClick}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      onFocus={() => setHover(true)}
+      onBlur={() => setHover(false)}
       aria-expanded={empty ? undefined : active}
       className={cn(
-        "group relative block h-full w-full rounded-3xl border bg-night-raise p-5 pb-6 text-left transition-colors duration-300 sm:p-6",
-        active ? "border-paper-raise/40" : "border-paper-raise/12 hover:border-paper-raise/30",
+        "group relative block h-full w-full rounded-3xl border bg-[#f6f8fd] p-5 pb-6 text-left text-[#0b1020] transition-[border-color,box-shadow] duration-300 sm:p-6",
+        lift
+          ? "border-[#4d8dff]/50 shadow-[0_18px_50px_-20px_rgba(77,141,255,0.55)]"
+          : "border-[#dfe6f5]",
       )}
     >
-      <div className="relative mx-auto aspect-[5/4] w-[86%]">
-        {/* Back panel and tab */}
+      {/* Shapes are cut with objectBoundingBox clip paths so they scale with the card. */}
+      <svg width="0" height="0" aria-hidden="true" className="absolute">
+        <defs>
+          <clipPath id="folder-back" clipPathUnits="objectBoundingBox">
+            <path d="M0.03,0 H0.325 Q0.355,0 0.375,0.033 L0.41,0.093 H0.97 Q1,0.093 1,0.133 V0.96 Q1,1 0.97,1 H0.03 Q0,1 0,0.96 V0.04 Q0,0 0.03,0 Z" />
+          </clipPath>
+          <clipPath id="folder-front" clipPathUnits="objectBoundingBox">
+            <path d="M0,0.35 Q0,0.27 0.03,0.27 H0.475 Q0.505,0.27 0.525,0.30 L0.58,0.40 Q0.60,0.433 0.63,0.433 H0.97 Q1,0.433 1,0.47 V0.96 Q1,1 0.97,1 H0.03 Q0,1 0,0.96 Z" />
+          </clipPath>
+        </defs>
+      </svg>
+
+      <div className="relative mx-auto mt-16 aspect-[5/4] w-[88%]">
         <span
           aria-hidden="true"
-          className="absolute left-0 top-0 h-[18%] w-[36%] rounded-t-2xl bg-gradient-to-b from-[#2a3f86] to-[#1b2c68]"
-        />
-        <span
-          aria-hidden="true"
-          className="absolute inset-x-0 bottom-0 top-[11%] rounded-2xl rounded-tl-none bg-gradient-to-b from-[#1b2c68] to-[#101a45]"
+          className="absolute inset-0 bg-gradient-to-b from-[#22357a] to-[#0f1a4a]"
+          style={{ clipPath: "url(#folder-back)" }}
         />
 
-        {/* Projects peeking out */}
-        {shots.map((src, i) => (
-          <span
-            key={src}
-            aria-hidden="true"
-            className={cn(
-              "absolute bottom-[34%] left-1/2 aspect-[4/3] w-[56%] -translate-x-1/2 overflow-hidden rounded-xl bg-night shadow-[0_14px_30px_-10px_rgba(0,0,0,0.7)] ring-1 ring-white/20 transition-[margin] duration-500 ease-[var(--e-out)]",
-              active ? "mb-[22%]" : "mb-[14%] group-hover:mb-[20%]",
-            )}
-            style={{
-              translate: fan[i].x,
-              rotate: `${fan[i].r}deg`,
-              zIndex: i === shots.length - 1 ? 2 : 1,
-            }}
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={src} alt="" loading="lazy" className="size-full object-cover object-top" />
-          </span>
-        ))}
+        {/* Projects standing in the folder */}
+        {shots.map((src, i) => {
+          const o = i - mid;
+          const left = 50 + o * (lift ? 21 : 16);
+          const rot = o * (lift ? 8 : 4.5);
+          const top = i === shots.length - 1;
+          return (
+            <span
+              key={src}
+              aria-hidden="true"
+              className={cn(
+                "absolute aspect-[3/5] w-[36%] overflow-hidden rounded-2xl bg-night shadow-[0_16px_34px_-10px_rgba(0,0,0,0.65)] ring-1 ring-white/25 transition-[left,bottom,transform] duration-500 ease-[var(--e-out)]",
+                lift && top && "ring-2 ring-[#4d8dff]",
+              )}
+              style={{
+                left: `${left}%`,
+                bottom: lift ? "50%" : "34%",
+                transform: `translateX(-50%) rotate(${rot}deg)`,
+                transformOrigin: "50% 100%",
+                zIndex: 1 + (i === shots.length - 1 ? 2 : i),
+              }}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={src} alt="" loading="lazy" className="size-full object-cover object-top" />
+            </span>
+          );
+        })}
 
         {empty && (
           <span
             aria-hidden="true"
-            className="absolute left-1/2 top-[26%] z-[2] grid size-14 -translate-x-1/2 place-items-center rounded-full bg-ember text-2xl leading-none text-paper-raise transition-transform duration-500 group-hover:scale-110"
+            className="absolute left-1/2 z-[2] grid size-16 -translate-x-1/2 place-items-center rounded-full bg-ember text-3xl leading-none text-paper-raise transition-all duration-500"
+            style={{ bottom: lift ? "52%" : "44%" }}
           >
             +
           </span>
         )}
 
-        {/* Front panel, frosted */}
+        {/* Front panel, frosted, tipping forward on lift */}
         <span
           aria-hidden="true"
-          className="absolute inset-x-[-3%] bottom-0 z-[3] h-[46%] rounded-2xl border border-white/25 bg-gradient-to-b from-white/25 to-white/10 backdrop-blur-md"
+          className="absolute inset-0 z-[5] origin-bottom bg-gradient-to-b from-[#c4d6fc]/65 to-[#4766c2]/35 backdrop-blur-md transition-transform duration-500 ease-[var(--e-out)]"
+          style={{
+            clipPath: "url(#folder-front)",
+            transform: lift ? "perspective(700px) rotateX(-9deg)" : "none",
+          }}
         />
       </div>
 
       <span className="mt-6 flex items-end justify-between gap-3">
         <span className="min-w-0">
-          <span className="block text-lg font-semibold tracking-[-0.02em] text-paper-raise">{label}</span>
-          <span className="mt-1 block text-sm text-paper-raise/55">{sub}</span>
+          <span className="block text-lg font-semibold tracking-[-0.02em]">{label}</span>
+          <span className="mt-1 block text-sm text-[#0b1020]/55">{sub}</span>
         </span>
         <span
           aria-hidden="true"
           className={cn(
             "grid size-9 shrink-0 place-items-center rounded-full border transition-all duration-300",
             active
-              ? "rotate-90 border-paper-raise bg-paper-raise text-night"
-              : "border-paper-raise/25 text-paper-raise group-hover:border-paper-raise",
+              ? "rotate-90 border-[#0b1020] bg-[#0b1020] text-white"
+              : "border-[#0b1020]/20 text-[#0b1020] group-hover:border-[#0b1020]",
           )}
         >
           →
