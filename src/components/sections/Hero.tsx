@@ -5,7 +5,6 @@ import type { Locale } from "@/i18n/locale";
 
 const copy = {
   es: {
-    badge: "Agencia de diseño web · Toda España y online",
     lines: ["Creamos tu marca.", "Construimos tu web.", "Te traemos clientes"],
     lead: "Diseño web para pymes y autónomos: una página web o tienda online que convierte visitas en clientes, y SEO y Google Ads para que te encuentre quien ya te está buscando. Un solo equipo desde Barcelona, de principio a fin.",
     primary: "Cuéntanos tu negocio",
@@ -13,7 +12,6 @@ const copy = {
     small: "Precios orientativos publicados. Primera conversación sin compromiso.",
   },
   en: {
-    badge: "Web design agency · Worldwide, remote",
     lines: ["We shape your brand.", "We build your site.", "We bring you clients"],
     lead: "Web design for small businesses and freelancers: a website or online store that turns visits into customers, and SEO and Google Ads so the people already looking for you find you. One team from Barcelona, start to finish.",
     primary: "Tell us about your business",
@@ -25,7 +23,7 @@ const copy = {
 /**
  * First screen.
  *
- * One centred column: badge, claim, one paragraph, two calls to action, and a
+ * One centred column: claim, one paragraph, two calls to action, and a
  * line of small print that answers the question the buttons raise. Everything
  * a visitor needs to decide is on one axis, so there is no second place for
  * the eye to go and no competition for the claim.
@@ -66,24 +64,12 @@ export function Hero({
       )}
 
       <div className="shell relative text-center">
-        {/* Badge — says what the studio is before the claim says what it does. */}
-        <p
-          className="anim-rise inline-flex items-center gap-2.5 rounded-full border border-line bg-paper/70 py-1.5 pl-2.5 pr-4 backdrop-blur-sm"
-          style={{ "--d": "60ms" } as React.CSSProperties}
-        >
-          <span
-            aria-hidden="true"
-            className="size-1.5 shrink-0 rounded-full bg-ember"
-          />
-          <span className="t-label !font-sans !tracking-[0.1em] !text-[0.75rem]">{t.badge}</span>
-        </p>
-
         {/* Claim: what we make, what we build, what it gets you. Each line
             rises from behind its own mask; the last one is the outcome, set
             a step quieter, and its full stop is the one piece of colour
             above the fold. Sized for three lines rather than two, so no line
             ever wraps inside its mask. */}
-        <h1 className="mx-auto mt-7 max-w-[22ch] text-balance font-semibold leading-[0.95] tracking-[-0.045em] text-[clamp(1.75rem,7.4vw,6rem)] sm:mt-9">
+        <h1 className="mx-auto max-w-[22ch] text-balance font-semibold leading-[0.95] tracking-[-0.045em] text-[clamp(1.75rem,7.4vw,6rem)]">
           <span className="sr-only">{`${t.lines.join(" ")}.`}</span>
           <span aria-hidden="true" className="block">
             {t.lines.map((text, i) => ({
