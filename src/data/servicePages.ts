@@ -1,4 +1,5 @@
 import { maintenancePrice, plans } from "./plans";
+import { morePages } from "./servicePagesMore";
 import type { Service } from "./services";
 
 /**
@@ -43,7 +44,7 @@ const priceFrom = (id: string) => {
   return p?.pricePrefix ? `${p.pricePrefix} ${p.price}` : undefined;
 };
 
-export const servicePages: ServicePage[] = [
+const basePages: ServicePage[] = [
   {
     slug: "identidad-de-marca",
     area: "brand",
@@ -488,6 +489,8 @@ export const servicePages: ServicePage[] = [
   },
 ];
 
+export const servicePages: ServicePage[] = [...basePages, ...morePages];
+
 export function getServicePage(slug: string) {
   return servicePages.find((s) => s.slug === slug);
 }
@@ -497,3 +500,18 @@ export const areaName: Record<Service["id"], string> = {
   web: "Web",
   growth: "Captación",
 };
+
+/**
+ * The columns of the header menu. They cut across the three areas above
+ * (brand / web / growth), which still organise the services page. Pages not
+ * listed here (Google Ads) stay reachable but are not in the menu.
+ */
+export type MenuGroup = "marketing" | "ai" | "web" | "software" | "brand";
+
+export const menuGroups: { id: MenuGroup; slugs: string[] }[] = [
+  { id: "marketing", slugs: ["agencia-marketing-digital", "agencia-seo", "consultor-seo", "seo", "auditoria-seo", "seo-para-ia"] },
+  { id: "ai", slugs: ["ia-para-empresas", "automatizacion", "chatbots-agentes-ia"] },
+  { id: "web", slugs: ["diseno-web", "desarrollo-a-medida", "tiendas-online", "mantenimiento-web"] },
+  { id: "software", slugs: ["software-a-medida", "apps-a-medida", "crm-inmobiliario"] },
+  { id: "brand", slugs: ["identidad-de-marca", "naming", "diseno-grafico-y-packaging", "diseno-3d", "video-corporativo"] },
+];

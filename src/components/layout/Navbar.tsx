@@ -6,9 +6,10 @@ import { useEffect, useId, useRef, useState, useSyncExternalStore } from "react"
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion, useScroll, useSpring } from "motion/react";
 import { nav as navEs, paymentsLink } from "@/data/site";
+import { menuGroups } from "@/data/servicePages";
 import {
   alternatePath,
-  areaNames,
+  menuGroupNames,
   getNav,
   getPlans,
   getServicePages,
@@ -76,7 +77,16 @@ export function Navbar() {
   }));
   const servicePages = getServicePages(locale);
   const plans = getPlans(locale);
-  const areaName = areaNames[locale];
+  const groupName = menuGroupNames[locale];
+  const menuColumns = menuGroups.map((g) => {
+    const items = g.slugs
+      .map((slug) => servicePages.find((p) => p.esSlug === slug))
+      .filter((p): p is NonNullable<typeof p> => Boolean(p))
+      .map((p) => ({ key: p.slug, label: p.name, href: servicePath(locale, p.esSlug) }));
+    // The landing plan lives on its own page, not among the service pages.
+    if (g.id === "web") items.splice(3, 0, { key: "landing", label: "Landing pages", href: planPath(locale, "landing") });
+    return { id: g.id, label: groupName[g.id], items };
+  });
   const [condensed, setCondensed] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [active, setActive] = useState<string | null>(null);
@@ -449,31 +459,24 @@ export function Navbar() {
                 transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
                 onPointerEnter={(e) => e.pointerType === "mouse" && openServices()}
                 onPointerLeave={(e) => e.pointerType === "mouse" && closeServicesSoon()}
-                className="fixed left-1/2 z-[60] hidden w-[min(640px,calc(100vw-24px))] -translate-x-1/2 origin-top overflow-hidden rounded-3xl glass-panel p-3 md:block"
+                className="fixed left-1/2 z-[60] hidden w-[min(1040px,calc(100vw-24px))] -translate-x-1/2 origin-top overflow-hidden rounded-3xl glass-panel p-3 md:block"
               >
-                <div className="grid grid-cols-3 gap-1">
-                  {(["brand", "web", "growth"] as const).map((area) => (
-                    <div key={area} className="rounded-2xl p-2">
-                      <p className="t-label px-3 pb-2 pt-1 !text-ember">{areaName[area]}</p>
+                <div className="grid grid-cols-3 gap-1 lg:grid-cols-5">
+                  {menuColumns.map((col) => (
+                    <div key={col.id} className="rounded-2xl p-2">
+                      <p className="t-label px-3 pb-2 pt-1 !text-ember">{col.label}</p>
                       <ul>
-                        {servicePages
-                          .filter((p) => p.area === area)
-                          .map((p) => (
-                            <li key={p.slug}>
-                              <Link
-                                href={servicePath(locale, p.esSlug)}
-                                onClick={() => setServicesOpen(false)}
-                                className="group block rounded-xl px-3 py-2.5 transition-colors duration-200 hover:bg-paper-sunk"
-                              >
-                                <span className="block text-[0.875rem] font-medium tracking-[-0.01em] text-ink">
-                                  {p.name}
-                                </span>
-                                <span className="mt-0.5 block font-sans text-[0.8125rem] text-ink-mute">
-                                  {p.tag}
-                                </span>
-                              </Link>
-                            </li>
-                          ))}
+                        {col.items.map((it) => (
+                          <li key={it.key}>
+                            <Link
+                              href={it.href}
+                              onClick={() => setServicesOpen(false)}
+                              className="group block rounded-xl px-3 py-2 text-[0.875rem] font-medium tracking-[-0.01em] text-ink transition-colors duration-200 hover:bg-paper-sunk"
+                            >
+                              {it.label}
+                            </Link>
+                          </li>
+                        ))}
                       </ul>
                     </div>
                   ))}
@@ -647,16 +650,22 @@ export function Navbar() {
                                     >
                                       {isServices ? (
                                         <ul className="pb-3 pt-1">
-                                          {servicePages.map((p) => (
-                                            <li key={p.slug}>
-                                              <Link
-                                                href={servicePath(locale, p.esSlug)}
-                                                onClick={() => setMenuOpen(false)}
-                                                className="flex items-baseline justify-between gap-4 py-2 text-[1.25rem] font-medium tracking-[-0.02em] text-ink"
-                                              >
-                                                {p.name}
-                                                <span className="text-[0.8125rem] font-normal tracking-normal text-ink-mute">{p.tag}</span>
-                                              </Link>
+                                          {menuColumns.map((col) => (
+                                            <li key={col.id} className="pb-2">
+                                              <p className="t-label pb-1 pt-3 !text-ember">{col.label}</p>
+                                              <ul>
+                                                {col.items.map((it) => (
+                                                  <li key={it.key}>
+                                                    <Link
+                                                      href={it.href}
+                                                      onClick={() => setMenuOpen(false)}
+                                                      className="block py-1.5 text-[1.25rem] font-medium tracking-[-0.02em] text-ink"
+                                                    >
+                                                      {it.label}
+                                                    </Link>
+                                                  </li>
+                                                ))}
+                                              </ul>
                                             </li>
                                           ))}
                                           <li>

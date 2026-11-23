@@ -290,6 +290,14 @@ export const servicesEn: Record<
         name: "3D design",
         detail: "Homes for real estate agencies, shops and spaces: see them in 3D before they exist.",
       },
+      {
+        name: "Naming",
+        detail: "Names that are easy to say and spell, with domain and profiles checked.",
+      },
+      {
+        name: "Corporate video",
+        detail: "Short videos for your website, social media and ads, in your brand's style.",
+      },
     ],
   },
   web: {
@@ -308,6 +316,18 @@ export const servicesEn: Record<
       {
         name: "Custom development",
         detail: "Client areas, bookings, internal dashboards and whatever your business needs.",
+      },
+      {
+        name: "Website maintenance",
+        detail: "Updates, backups and support so your site stays up to date.",
+      },
+      {
+        name: "Custom software and apps",
+        detail: "Software, apps and a real estate CRM built to measure for your business.",
+      },
+      {
+        name: "Artificial intelligence",
+        detail: "AI, automation and chatbots to save time on repetitive tasks.",
       },
     ],
   },
@@ -328,6 +348,14 @@ export const servicesEn: Record<
         name: "Measurement and improvement",
         detail: "We see where enquiries come from and fix what isn't performing.",
       },
+      {
+        name: "Digital marketing agency",
+        detail: "Web, SEO and measurement handled by one team.",
+      },
+      {
+        name: "SEO audit",
+        detail: "A clear report on what holds your site back and in what order to fix it.",
+      },
     ],
   },
 };
@@ -335,7 +363,7 @@ export const servicesEn: Record<
 export const faqsEn: { q: string; a: string }[] = [
   {
     q: "What services do you offer?",
-    a: "Three areas that work together: brand (logo, visual identity, graphic design, packaging and 3D design), web (web design, online stores and custom development) and growth (SEO and Google Ads campaigns). You can hire one or all of them.",
+    a: "Five areas that work together: digital marketing (SEO, audits and consulting), AI adoption (AI for business, automation and chatbots), web (web design, online stores, development and maintenance), custom software and apps (including a real estate CRM) and brand (logo, identity, naming, graphic design, packaging, 3D design and corporate video). You can hire one or all of them.",
   },
   {
     q: "How much does a website cost?",

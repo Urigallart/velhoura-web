@@ -55,7 +55,7 @@ function Generated({ page, locale }: { page: ServicePage; locale: Locale }) {
     const Preview =
       page.slug === "tiendas-online"
         ? PreviewEcommerce
-        : page.slug === "desarrollo-a-medida"
+        : ["desarrollo-a-medida", "software-a-medida", "apps-a-medida", "crm-inmobiliario", "automatizacion", "chatbots-agentes-ia", "ia-para-empresas"].includes(page.slug)
           ? PreviewCustom
           : PreviewBusiness;
     return (

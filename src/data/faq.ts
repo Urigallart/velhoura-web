@@ -16,7 +16,7 @@ const webPrices = plans
 export const faqs: Faq[] = [
   {
     q: "¿Qué servicios ofrecéis?",
-    a: "Tres áreas que se complementan: marca (logotipo, identidad visual, diseño gráfico, packaging y diseño 3D), web (diseño web, tiendas online y desarrollo a medida) y captación (posicionamiento SEO y campañas de Google Ads). Puedes contratar una sola o todas.",
+    a: "Cinco áreas que se complementan: marketing digital (SEO, auditoría y consultoría), implantación de IA (IA para empresas, automatización y chatbots), web (diseño web, tiendas online, desarrollo y mantenimiento), software y apps a medida (también CRM inmobiliario) y marca (logotipo, identidad, naming, diseño gráfico, packaging, diseño 3D y vídeo corporativo). Puedes contratar una sola o todas.",
   },
   {
     q: "¿Cuánto cuesta una página web?",

@@ -4,8 +4,9 @@
  */
 
 import { maintenancePrice } from "./plans";
+import { morePagesEn } from "./servicePagesMore";
 
-type PageEn = {
+export type PageEn = {
   slugEn: string;
   name: string;
   tag: string;
@@ -20,7 +21,7 @@ type PageEn = {
   faqs: { q: string; a: string }[];
 };
 
-export const servicePagesEn: Record<string, PageEn> = {
+const baseEn: Record<string, PageEn> = {
   "identidad-de-marca": {
     slugEn: "brand-identity",
     name: "Brand identity",
@@ -442,3 +443,5 @@ export const servicePagesEn: Record<string, PageEn> = {
     ],
   },
 };
+
+export const servicePagesEn: Record<string, PageEn> = { ...baseEn, ...morePagesEn };

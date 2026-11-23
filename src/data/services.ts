@@ -54,6 +54,16 @@ export const services: Service[] = [
         href: "/servicios/diseno-3d",
         detail: "Casas para inmobiliarias, locales y espacios: míralos en 3D antes de que existan.",
       },
+      {
+        name: "Naming",
+        href: "/servicios/naming",
+        detail: "Nombres fáciles de decir y de escribir, con dominio y perfiles comprobados.",
+      },
+      {
+        name: "Vídeo corporativo",
+        href: "/servicios/video-corporativo",
+        detail: "Vídeos cortos para tu web, redes y anuncios, con el estilo de tu marca.",
+      },
     ],
   },
   {
@@ -78,6 +88,21 @@ export const services: Service[] = [
         href: "/servicios/desarrollo-a-medida",
         detail: "Áreas de cliente, reservas, paneles internos y lo que tu negocio necesite.",
       },
+      {
+        name: "Mantenimiento web",
+        href: "/servicios/mantenimiento-web",
+        detail: "Actualizaciones, copias de seguridad y soporte para que tu web siga al día.",
+      },
+      {
+        name: "Software y apps a medida",
+        href: "/servicios/software-a-medida",
+        detail: "Software, apps y un CRM inmobiliario hechos a la medida de tu negocio.",
+      },
+      {
+        name: "Inteligencia artificial",
+        href: "/servicios/ia-para-empresas",
+        detail: "IA, automatización y chatbots para ahorrar tiempo en tareas repetitivas.",
+      },
     ],
   },
   {
@@ -101,6 +126,16 @@ export const services: Service[] = [
         name: "Medición y mejora",
         href: "/servicios/seo",
         detail: "Vemos de dónde llegan los contactos y ajustamos lo que no rinde.",
+      },
+      {
+        name: "Agencia de marketing digital",
+        href: "/servicios/agencia-marketing-digital",
+        detail: "Web, SEO y medición trabajados por un mismo equipo.",
+      },
+      {
+        name: "Auditoría SEO",
+        href: "/servicios/auditoria-seo",
+        detail: "Un informe claro de qué frena tu web y en qué orden corregirlo.",
       },
     ],
   },

@@ -60,8 +60,8 @@ export const topics: Topic[] = [
       en: ["service", "offer", "what do you do", "what you do", "do you do", "specialis", "specializ"],
     },
     answer: {
-      es: "Tres áreas que se complementan: **marca** (logotipo, identidad visual, diseño gráfico, packaging y diseño 3D), **web** (diseño web, tiendas online y desarrollo a medida) y **captación** (SEO y campañas de Google Ads). Puedes contratar una sola o todas.",
-      en: "Three areas that work together: **brand** (logo, visual identity, graphic design, packaging and 3D design), **web** (web design, online shops and custom development) and **growth** (SEO and Google Ads campaigns). You can hire one or all of them.",
+      es: "Cinco áreas que se complementan: **marketing digital** (SEO, auditoría y consultoría), **implantación de IA** (IA para empresas, automatización y chatbots), **web** (diseño web, tiendas online, desarrollo y mantenimiento), **software y apps** a medida (también CRM inmobiliario) y **marca** (logotipo, naming, diseño gráfico, packaging, diseño 3D y vídeo corporativo). Puedes contratar una sola o todas.",
+      en: "Five areas that work together: **digital marketing** (SEO, audits and consulting), **AI adoption** (AI for business, automation and chatbots), **web** (web design, online shops, development and maintenance), custom **software and apps** (including a real estate CRM) and **brand** (logo, naming, graphic design, packaging, 3D design and corporate video). You can hire one or all of them.",
     },
     next: ["prices", "brand", "seo"],
   },

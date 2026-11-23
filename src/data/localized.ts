@@ -214,6 +214,11 @@ export function alternatePath(pathname: string, to: Locale): string {
   return path.startsWith("/en") ? "/" : path;
 }
 
+export const menuGroupNames: Record<Locale, Record<"marketing" | "ai" | "web" | "software" | "brand", string>> = {
+  es: { marketing: "Marketing digital", ai: "Implantación de IA", web: "Web", software: "Software y apps", brand: "Marca" },
+  en: { marketing: "Digital marketing", ai: "AI adoption", web: "Web", software: "Software and apps", brand: "Brand" },
+};
+
 export const areaNames: Record<Locale, Record<Service["id"], string>> = {
   es: { brand: "Marca", web: "Web", growth: "Captación" },
   en: { brand: "Brand", web: "Web", growth: "Growth" },
