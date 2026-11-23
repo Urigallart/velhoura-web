@@ -26,6 +26,7 @@ export type TopicId =
   | "web"
   | "brand"
   | "packaging"
+  | "render3d"
   | "seo"
   | "ads"
   | "nfc";
@@ -123,6 +124,48 @@ const brand: QuizQuestion[] = [
       o("yes", "Sí, tengo marcas que me gustan", "Yes, I have brands I like"),
       o("loose", "Tengo ideas sueltas", "I have a few loose ideas"),
       o("none", "Ninguna, confío en vosotros", "None, I trust you"),
+    ],
+  },
+  timing,
+  budget,
+];
+
+/* ── 3D design ─────────────────────────────────────────────────────────── */
+
+const render3d: QuizQuestion[] = [
+  {
+    id: "space",
+    title: t("¿Qué quieres visualizar en 3D?", "What do you want to visualise in 3D?"),
+    help: pickAll,
+    multi: true,
+    options: [
+      o("home", "Una vivienda o piso (inmobiliaria)", "A home or flat (real estate)"),
+      o("shop", "Un local comercial, tienda o restaurante", "A shop, commercial premises or restaurant"),
+      o("interior", "Un interior o la distribución de un espacio", "An interior or a space layout"),
+      o("other", "Otra cosa", "Something else"),
+    ],
+  },
+  {
+    id: "amount",
+    title: t("¿Cuántas imágenes, más o menos?", "Roughly how many images?"),
+    help: t("Una imagen por estancia o por vista.", "One image per room or view."),
+    options: [
+      o("1-3", "Entre 1 y 3", "1 to 3"),
+      o("4-10", "Entre 4 y 10", "4 to 10"),
+      o("10+", "Más de 10", "More than 10"),
+      o("unknown", "No lo sé", "I don't know"),
+    ],
+  },
+  {
+    id: "material",
+    title: t("¿Qué tienes para empezar?", "What do you have to start with?"),
+    help: pickAll,
+    multi: true,
+    options: [
+      o("plans", "Planos o medidas", "Plans or measurements"),
+      o("photos", "Fotos del espacio", "Photos of the space"),
+      o("refs", "Referencias de estilo", "Style references"),
+      o("none", "Todavía nada", "Nothing yet"),
     ],
   },
   timing,
@@ -363,6 +406,7 @@ const services: Record<Exclude<TopicId, "landing" | "business" | "ecommerce" | "
   web: { name: t("Diseño web", "Web design"), questions: web },
   brand: { name: t("Identidad de marca", "Brand identity"), questions: brand },
   packaging: { name: t("Diseño gráfico y packaging", "Graphic design and packaging"), questions: packaging },
+  render3d: { name: t("Diseño 3D", "3D design"), questions: render3d },
   seo: { name: t("Posicionamiento SEO", "SEO"), questions: seo },
   ads: { name: t("Google Ads", "Google Ads"), questions: ads },
   nfc: { name: t("Tarjetas NFC de reseñas", "NFC review cards"), questions: nfc },
@@ -417,6 +461,7 @@ export function getTopic(id: string | undefined, locale: Locale): Topic | null {
 export const topicForService: Record<string, TopicId> = {
   "identidad-de-marca": "brand",
   "diseno-grafico-y-packaging": "packaging",
+  "diseno-3d": "render3d",
   "diseno-web": "web",
   "tiendas-online": "ecommerce",
   "desarrollo-a-medida": "custom",

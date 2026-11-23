@@ -49,6 +49,11 @@ export const services: Service[] = [
         href: "/servicios/diseno-grafico-y-packaging",
         detail: "Envases y etiquetas que destacan en el estante y cuentan quién eres.",
       },
+      {
+        name: "Diseño 3D",
+        href: "/servicios/diseno-3d",
+        detail: "Casas para inmobiliarias, locales y espacios: míralos en 3D antes de que existan.",
+      },
     ],
   },
   {

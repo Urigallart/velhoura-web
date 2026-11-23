@@ -286,6 +286,10 @@ export const servicesEn: Record<
         name: "Packaging",
         detail: "Boxes and labels that stand out on the shelf and tell people who you are.",
       },
+      {
+        name: "3D design",
+        detail: "Homes for real estate agencies, shops and spaces: see them in 3D before they exist.",
+      },
     ],
   },
   web: {
@@ -331,7 +335,7 @@ export const servicesEn: Record<
 export const faqsEn: { q: string; a: string }[] = [
   {
     q: "What services do you offer?",
-    a: "Three areas that work together: brand (logo, visual identity, graphic design and packaging), web (web design, online stores and custom development) and growth (SEO and Google Ads campaigns). You can hire one or all of them.",
+    a: "Three areas that work together: brand (logo, visual identity, graphic design, packaging and 3D design), web (web design, online stores and custom development) and growth (SEO and Google Ads campaigns). You can hire one or all of them.",
   },
   {
     q: "How much does a website cost?",

@@ -150,7 +150,65 @@ export const servicePages: ServicePage[] = [
         a: "Sí, para redes y documentos habituales te dejamos plantillas editables para que puedas publicar sin depender de nosotros.",
       },
     ],
-    related: ["identidad-de-marca", "tiendas-online"],
+    related: ["identidad-de-marca", "diseno-3d"],
+  },
+  {
+    slug: "diseno-3d",
+    area: "brand",
+    name: "Diseño 3D",
+    tag: "3D",
+    metaTitle: "Diseño 3D para inmobiliarias, locales y espacios en España",
+    metaDescription:
+      "Diseños 3D de todo tipo: casas para inmobiliarias, locales comerciales, interiores y más. Enseña tu proyecto antes de que exista.",
+    headline: ["Véndelo antes", "*de que exista.*"],
+    lead: "Una casa sin reformar, un local por abrir o un espacio por montar cuesta imaginarlo. Hacemos diseños 3D de todo tipo para que tus clientes lo vean tal y como va a quedar, ya sea una vivienda para tu inmobiliaria, un local o un interior.",
+    benefits: [
+      {
+        title: "Se entiende a primera vista",
+        body: "Una imagen en 3D explica en un segundo lo que unos planos o una descripción no consiguen. Quien lo ve, se imagina viviendo o trabajando ahí.",
+      },
+      {
+        title: "Para inmobiliarias y para negocios",
+        body: "Casas y pisos que aún están por reformar o construir, locales por abrir, tiendas, restaurantes y cualquier espacio que quieras enseñar bien.",
+      },
+      {
+        title: "Encaja con tu marca y tu web",
+        body: "Como el mismo equipo hace tu web y tu imagen, las imágenes 3D salen listas para tu página, tus anuncios y tus redes, con el estilo de tu negocio.",
+      },
+    ],
+    includes: [
+      "Diseños 3D de casas y pisos para inmobiliarias",
+      "Locales comerciales, tiendas y restaurantes",
+      "Interiores y distribución de espacios",
+      "Imágenes preparadas para web, redes, catálogo o impresión",
+      "Ves cada avance y lo revisamos juntos antes de seguir",
+      "Opción de integrarlas en tu web o anuncios",
+    ],
+    idealFor: [
+      "Inmobiliarias que quieren enseñar propiedades sobre plano o por reformar",
+      "Negocios que van a abrir o reformar un local",
+      "Estudios, constructoras y profesionales que necesitan presentar un proyecto",
+    ],
+    price: { note: "Presupuesto a medida según el espacio y el número de imágenes." },
+    faqs: [
+      {
+        q: "¿Qué necesitáis para empezar?",
+        a: "Lo que tengas: planos, medidas, fotos o referencias de estilo. Si todavía no tienes nada, lo hablamos y te decimos cómo avanzar.",
+      },
+      {
+        q: "¿Qué tipos de diseño 3D hacéis?",
+        a: "De todo tipo: viviendas para inmobiliarias, locales comerciales, interiores y otros espacios. Cuéntanos qué necesitas y te decimos cómo lo plantearíamos.",
+      },
+      {
+        q: "¿Puedo ver el resultado antes de darlo por bueno?",
+        a: "Sí. Trabajamos por etapas: ves cada avance y lo revisamos juntos antes de seguir.",
+      },
+      {
+        q: "¿Cuánto cuesta?",
+        a: "Depende del espacio y de cuántas imágenes necesites, así que lo presupuestamos a medida. Te lo enviamos por escrito antes de empezar.",
+      },
+    ],
+    related: ["diseno-grafico-y-packaging", "diseno-web"],
   },
   {
     slug: "diseno-web",

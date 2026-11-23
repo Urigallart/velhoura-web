@@ -125,6 +125,62 @@ export const servicePagesEn: Record<string, PageEn> = {
       },
     ],
   },
+  "diseno-3d": {
+    slugEn: "3d-design",
+    name: "3D design",
+    tag: "3D",
+    metaTitle: "3D design for real estate agencies, shops and spaces",
+    metaDescription:
+      "3D designs of every kind: homes for real estate agencies, shops, interiors and more. Show your project before it exists.",
+    headline: ["Sell it before", "*it exists.*"],
+    lead: "A home that still needs renovating, a shop about to open or a space still to be fitted out is hard to picture. We make 3D designs of every kind so your customers see it as it will look, whether it's a property for your agency, a shop or an interior.",
+    benefits: [
+      {
+        title: "Clear at a glance",
+        body: "A 3D image explains in a second what plans or a description can't. People who see it can picture themselves living or working there.",
+      },
+      {
+        title: "For real estate agencies and businesses",
+        body: "Homes and flats still to be renovated or built, shops about to open, restaurants and any space you want to show well.",
+      },
+      {
+        title: "Fits your brand and website",
+        body: "Because the same team makes your website and your image, the 3D images come ready for your site, ads and social media, in your business's style.",
+      },
+    ],
+    includes: [
+      "3D designs of homes and flats for real estate agencies",
+      "Shops, commercial premises and restaurants",
+      "Interiors and space layouts",
+      "Images prepared for web, social media, catalogue or print",
+      "You see each step and we review it together before moving on",
+      "Option to build them into your website or ads",
+    ],
+    idealFor: [
+      "Real estate agencies that want to show off-plan or to-be-renovated properties",
+      "Businesses about to open or refurbish a premises",
+      "Studios, builders and professionals who need to present a project",
+    ],
+    priceNote: "Custom quote depending on the space and the number of images.",
+    faqs: [
+      {
+        q: "What do you need to get started?",
+        a: "Whatever you have: plans, measurements, photos or style references. If you have nothing yet, we'll talk it through and tell you how to move forward.",
+      },
+      {
+        q: "What kinds of 3D design do you do?",
+        a: "All kinds: homes for real estate agencies, commercial premises, interiors and other spaces. Tell us what you need and we'll explain how we'd approach it.",
+      },
+      {
+        q: "Can I see the result before approving it?",
+        a: "Yes. We work in stages: you see each step and we review it together before moving on.",
+      },
+      {
+        q: "How much does it cost?",
+        a: "It depends on the space and how many images you need, so we quote it case by case. You get it in writing before we start.",
+      },
+    ],
+  },
   "diseno-web": {
     slugEn: "web-design",
     name: "Web design",

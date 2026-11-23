@@ -60,8 +60,8 @@ export const topics: Topic[] = [
       en: ["service", "offer", "what do you do", "what you do", "do you do", "specialis", "specializ"],
     },
     answer: {
-      es: "Tres áreas que se complementan: **marca** (logotipo, identidad visual, diseño gráfico y packaging), **web** (diseño web, tiendas online y desarrollo a medida) y **captación** (SEO y campañas de Google Ads). Puedes contratar una sola o todas.",
-      en: "Three areas that work together: **brand** (logo, visual identity, graphic design and packaging), **web** (web design, online shops and custom development) and **growth** (SEO and Google Ads campaigns). You can hire one or all of them.",
+      es: "Tres áreas que se complementan: **marca** (logotipo, identidad visual, diseño gráfico, packaging y diseño 3D), **web** (diseño web, tiendas online y desarrollo a medida) y **captación** (SEO y campañas de Google Ads). Puedes contratar una sola o todas.",
+      en: "Three areas that work together: **brand** (logo, visual identity, graphic design, packaging and 3D design), **web** (web design, online shops and custom development) and **growth** (SEO and Google Ads campaigns). You can hire one or all of them.",
     },
     next: ["prices", "brand", "seo"],
   },
@@ -192,12 +192,12 @@ export const topics: Topic[] = [
   {
     id: "brand",
     keys: {
-      es: ["logo", "logotipo", "marca", "identidad", "branding", "packaging", "envase", "diseno grafico", "diseno de marca"],
-      en: ["logo", "brand", "identity", "branding", "packaging", "graphic design"],
+      es: ["logo", "logotipo", "marca", "identidad", "branding", "packaging", "envase", "diseno grafico", "diseno de marca", "3d", "diseno 3d", "render", "inmobiliaria", "visualizacion"],
+      en: ["logo", "brand", "identity", "branding", "packaging", "graphic design", "3d", "3d design", "render", "real estate"],
     },
     answer: {
-      es: "En marca hacemos logotipos, identidad visual, diseño gráfico y packaging: lo que hace que tu negocio se reconozca y se recuerde. Y como lo hace el mismo equipo que tu web, todo encaja.",
-      en: "In brand we do logos, visual identity, graphic design and packaging: what makes your business recognisable and memorable. And since the same team builds your website, it all fits together.",
+      es: "En marca hacemos logotipos, identidad visual, diseño gráfico, packaging y diseño 3D (casas para inmobiliarias, locales y todo tipo de espacios): lo que hace que tu negocio se reconozca y se recuerde. Y como lo hace el mismo equipo que tu web, todo encaja.",
+      en: "In brand we do logos, visual identity, graphic design, packaging and 3D design (homes for real estate agencies, shops and all kinds of spaces): what makes your business recognisable and memorable. And since the same team builds your website, it all fits together.",
     },
     next: ["services", "prices", "contact"],
   },
