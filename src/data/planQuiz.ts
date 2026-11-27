@@ -394,6 +394,10 @@ const ecommerce: QuizQuestion[] = [
 
 /* ── Custom ────────────────────────────────────────────────────────────── */
 
+const has = (a: QuizAnswers, q: string, ...ids: string[]) => (a[q] ?? []).some((v) => ids.includes(v));
+/** Projects with logins and different views per user: portals, internal tools, management systems. */
+const portal = (a: QuizAnswers) => has(a, "kind", "management", "clientApp", "internal", "platform");
+
 const custom: QuizQuestion[] = [
   {
     id: "kind",
@@ -404,10 +408,117 @@ const custom: QuizQuestion[] = [
     },
     options: [
       p("clientApp", "Una app para mis clientes", "An app for my customers", undefined, ["Reservas, área privada, pedidos…", "Bookings, client area, orders…"]),
+      p("management", "Un programa de gestión con login", "A management system with login", undefined, ["Cada usuario ve lo suyo: clientes, equipo, administración", "Each user sees their own: clients, staff, admin"]),
       p("internal", "Una herramienta para mi equipo", "A tool for my team", undefined, ["Gestión interna, automatizar tareas", "Internal management, automating tasks"]),
       p("platform", "Una plataforma o marketplace", "A platform or marketplace", [1000, 2000]),
       p("saas", "Un producto SaaS", "A SaaS product", [1500, 3000], ["Con usuarios y suscripciones", "With users and subscriptions"]),
       p("other", "Otra cosa", "Something else", [0, 1000]),
+    ],
+  },
+  /* ── Management programs and portals ──────────────────────────────────────
+     Only for projects with users who log in and see different things: a
+     client portal, an internal tool, a management system. Others (AI,
+     automation, a plain app) skip these. */
+  {
+    id: "roles",
+    title: { es: "¿Quién va a entrar y qué ve cada uno?", en: "Who will log in, and what does each one see?" },
+    help: {
+      es: "Cada tipo de usuario ve y puede hacer cosas distintas: un cliente solo ve lo suyo; el equipo gestiona todo.",
+      en: "Each type of user sees and does different things: a client sees only their own; the team manages everything.",
+    },
+    multi: true,
+    when: portal,
+    options: [
+      p("customers", "Clientes (ven solo lo suyo)", "Customers (see only their own)"),
+      p("staff", "Trabajadores o equipo (gestionan el día a día)", "Staff or team (run the day to day)", [100, 200]),
+      p("admin", "Administración (usuarios, tarifas, informes)", "Admin (users, rates, reports)", [100, 200]),
+      p("partners", "Colaboradores externos (transportistas, proveedores)", "External partners (carriers, suppliers)", [250, 500]),
+    ],
+  },
+  {
+    id: "manage",
+    title: { es: "¿Qué hay que gestionar?", en: "What needs to be managed?" },
+    help: pickAll,
+    multi: true,
+    when: portal,
+    options: [
+      p("requests", "Solicitudes o pedidos de los clientes", "Customer requests or orders", [100, 200]),
+      p("shipments", "Seguimiento de envíos o transportes", "Tracking of shipments or transport", [200, 400]),
+      p("invoices", "Facturas", "Invoices", [250, 500]),
+      p("docs", "Documentos (albaranes, contratos, justificantes)", "Documents (delivery notes, contracts, receipts)", [100, 200]),
+      p("clients", "Fichas de clientes y contactos", "Customer and contact records", [100, 200]),
+      p("stock", "Inventario o almacén", "Inventory or warehouse", [300, 600]),
+      p("calendar", "Calendario, rutas o citas", "Calendar, routes or appointments", [150, 300]),
+    ],
+  },
+  {
+    id: "tracking",
+    title: { es: "¿Cómo debe verse dónde va el envío?", en: "How should the shipment's whereabouts show?" },
+    help: {
+      es: "Es lo que más cambia el trabajo: desde un estado que actualiza el equipo hasta un mapa en tiempo real.",
+      en: "This changes the work the most: from a status the team updates to a live map.",
+    },
+    when: (a) => portal(a) && has(a, "manage", "shipments"),
+    options: [
+      p("status", "Con estados (solicitado, recogido, en ruta, entregado)", "With statuses (requested, picked up, on the way, delivered)"),
+      p("history", "Estados con fechas, incidencias y comprobante de entrega", "Statuses with dates, incidents and proof of delivery", [100, 250]),
+      p("carriers", "Conectado a la web de seguimiento de los transportistas", "Connected to the carriers' tracking", [300, 700]),
+      p("gps", "Con un mapa de la posición del vehículo (GPS)", "With a map of the vehicle's position (GPS)", [500, 1200]),
+      p("unsure", "No lo sé, orientadme", "Not sure, advise me"),
+    ],
+  },
+  {
+    id: "invoicing",
+    title: { es: "¿Qué debe hacer el programa con las facturas?", en: "What should the system do with invoices?" },
+    help: {
+      es: "Si las emite el programa, tiene que cumplir la normativa de Hacienda (Veri*factu). Lo valoramos juntos.",
+      en: "If the system issues them, it has to meet the tax authority's rules (Veri*factu in Spain). We'll work it out together.",
+    },
+    when: (a) => portal(a) && has(a, "manage", "invoices"),
+    options: [
+      p("store", "Guardarlas y que cada cliente vea y descargue las suyas", "Store them so each customer can see and download theirs", [100, 200]),
+      p("connect", "Conectar con mi programa de facturación (Holded, Factusol, Quipu…)", "Connect to my invoicing software (Holded, Factusol, Quipu…)", [300, 700]),
+      p("create", "Crearlas dentro del programa (numeración, IVA, PDF)", "Create them inside the system (numbering, VAT, PDF)", [600, 1500]),
+      p("unsure", "No lo sé, orientadme", "Not sure, advise me"),
+    ],
+  },
+  {
+    id: "volume",
+    title: { es: "¿Cuántas solicitudes o facturas al mes, más o menos?", en: "Roughly how many requests or invoices a month?" },
+    help: { es: "Una cifra aproximada basta.", en: "A rough figure is enough." },
+    when: portal,
+    options: [
+      p("low", "Menos de 100", "Fewer than 100"),
+      p("mid", "Entre 100 y 1.000", "Between 100 and 1,000", [100, 300]),
+      p("high", "Más de 1.000", "More than 1,000", [300, 800]),
+      p("unknown", "No lo sé", "I don't know"),
+    ],
+  },
+  {
+    id: "now",
+    title: { es: "¿Cómo lo hacéis ahora?", en: "How do you do it today?" },
+    help: { es: "Así sabemos si hay datos que traer y qué hábitos cambiar.", en: "So we know whether there's data to bring over and habits to change." },
+    when: portal,
+    options: [
+      p("sheets", "En Excel o en papel", "In spreadsheets or on paper", [100, 300]),
+      p("software", "En otro programa que hay que sustituir", "In another program we have to replace", [200, 600]),
+      p("chat", "Por email o WhatsApp", "By email or WhatsApp"),
+      p("nothing", "Todavía no lo hacemos", "We don't do it yet"),
+    ],
+  },
+  {
+    id: "privacy",
+    title: { es: "¿Qué datos se van a manejar?", en: "What data will it handle?" },
+    help: {
+      es: "Si hay datos personales, hay que tratarlos según el RGPD: dónde se guardan, quién accede y por cuánto tiempo.",
+      en: "Personal data has to be handled under GDPR: where it's stored, who can access it and for how long.",
+    },
+    when: portal,
+    options: [
+      p("business", "Solo datos de empresa", "Business data only"),
+      p("personal", "Datos personales de clientes (nombres, direcciones, contactos)", "Customers' personal data (names, addresses, contacts)"),
+      p("sensitive", "Datos sensibles (salud, financieros…)", "Sensitive data (health, financial…)", [100, 300]),
+      p("unsure", "No lo sé", "I don't know"),
     ],
   },
   {
@@ -461,6 +572,8 @@ const custom: QuizQuestion[] = [
       p("notifications", "Notificaciones por email o push", "Email or push notifications", [150, 300]),
       p("integrations", "Conexión con otras herramientas (API)", "Connections to other tools (API)", [300, 700]),
       p("ai", "Automatizaciones o IA", "Automations or AI", [400, 900]),
+      p("reports", "Informes y exportar a Excel o PDF", "Reports and export to Excel or PDF", [150, 300]),
+      p("languages", "Varios idiomas", "Several languages", [150, 300]),
     ],
   },
   care,
@@ -485,7 +598,8 @@ const byPlan: Record<string, PlanQuiz> = {
   landing: { base: 199, cap: 499, questions: landing },
   business: { base: 499, cap: 990, questions: business },
   ecommerce: { base: 799, cap: 1690, questions: ecommerce },
-  custom: { base: 1500, questions: custom },
+  // Past this the range is mostly noise: a project this size is scoped together.
+  custom: { base: 1500, cap: 9000, questions: custom },
 };
 
 export function getPlanQuiz(planId: string): QuizQuestion[] {
